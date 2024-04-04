@@ -51,6 +51,9 @@ $APPLICATION->SetTitle("Independent");
 			<div id="statistics" >
 				<h2>Статистика ответов</h2>
 			</div>
+			<div id="statistics" >
+				<h2>Статистика ответов</h2>
+			</div>
 		</div>
 	</div>
 
