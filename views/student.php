@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var CMain $APPLICATION
  */
@@ -9,6 +8,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 }
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
+global $USER;
+$id = $USER->GetID();
 ?>
 	<div class="table">
 		<div class="navbar-left nav-menu">

@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Exercise;
+namespace Proj\Independent\Model;
 
 use Bitrix\Main\Localization\Loc,
 	Bitrix\Main\ORM\Data\DataManager,
