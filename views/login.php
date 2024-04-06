@@ -9,11 +9,7 @@ $APPLICATION->SetTitle("Independent");
 ?>
 
 <?php
-global $USER;
-$id = $USER->GetID();
-$result = \Bitrix\Main\UserTable::query()->setSelect(['*'])->where('ID', (string)$id)->fetchObject();
-$role = $result->getWorkPosition();
-LocalRedirect("/$role");
+$APPLICATION->IncludeComponent('proj:auth', '');
 ?>
 
 <?php require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
