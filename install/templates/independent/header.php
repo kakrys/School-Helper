@@ -10,7 +10,8 @@
 	<meta name="viewport"
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<title><?php $APPLICATION->ShowTitle(); ?></title>
 
 
@@ -20,108 +21,50 @@
 </head>
 <body>
 <?php $APPLICATION->ShowPanel(); ?>
-
-<section class="section">
-	<div class="container">
-		<nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-			<div class="navbar-brand">
-				<a class="navbar-item has-text-weight-semibold is-size-4 logo" href="/">
-					<span class="has-text-link">🕮</span> Самостоятельные работы
+<nav class="navbar navbar-light d-flex justify-content-between flex-nowrap" style="background-color: #e3f2fd; font-size: 1vw; max-height: 75px;">
+	<div class="container-fluid px-6 nowrap">
+		<ul class="nav nav-pills align-items-center pl-6" style="min-width: 300px;">
+			<li class="nav-item">
+				<a class="nav-link" href="/">
+					<span class="has-text-link fs-3 align-middle"><strong>🕮</span class="align-middle"> Самостоятельные работы</strong>
 				</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Предмет</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="#">Action</a></li>
+					<li><a class="dropdown-item" href="#">Another action</a></li>
+					<li><a class="dropdown-item" href="#">Something else here</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#">Separated link</a></li>
+				</ul>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Класс</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="#">Action</a></li>
+					<li><a class="dropdown-item" href="#">Another action</a></li>
+					<li><a class="dropdown-item" href="#">Something else here</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#">Separated link</a></li>
+				</ul>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">О нас</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="#">Информация</a></li>
+					<li><a class="dropdown-item" href="#">Контакты</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#">Сообщить о баге</a></li>
+				</ul>
+			</li>
+		</ul>
 
-				<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-				</a>
-			</div>
-
-			<div id="navbarBasicExample" class="navbar-menu">
-				<div class="navbar-start">
-					<a class="navbar-item" href="/">
-						Главная страница
-					</a>
-
-					<div class="navbar-item has-dropdown is-hoverable">
-						<a class="navbar-link">
-							Предметы
-						</a>
-
-						<div class="navbar-dropdown">
-							<a class="navbar-item">
-								Математика
-							</a>
-							<a class="navbar-item">
-								Русский язык
-							</a>
-							<a class="navbar-item">
-								Физика
-							</a>
-							<a class="navbar-item">
-								Химия
-							</a>
-						</div>
-					</div>
-
-					<div class="navbar-item has-dropdown is-hoverable">
-						<a class="navbar-link">
-							Классы
-						</a>
-
-						<div class="navbar-dropdown">
-							<a class="navbar-item">
-								1
-							</a>
-							<a class="navbar-item">
-								2
-							</a>
-							<a class="navbar-item">
-								3
-							</a>
-							<a class="navbar-item">
-								4
-							</a>
-							<a class="navbar-item">
-								5
-							</a>
-							<a class="navbar-item">
-								6
-							</a>
-							<a class="navbar-item">
-								7
-							</a>
-							<a class="navbar-item">
-								8
-							</a>
-							<a class="navbar-item">
-								9
-							</a>
-							<a class="navbar-item">
-								10
-							</a>
-							<a class="navbar-item">
-								11
-							</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="navbar-end">
-					<div class="navbar-item">
-						<div class="buttons">
-							<a class="button is-link" href="/register">
-								<strong>Sign up</strong>
-							</a>
-							<a class="button is-info" href="/login">
-								Log in
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</nav>
+		<div class="d-flex justify-content-end" style="width: 40%;margin-right: 2%">
+			<a type="button" class="btn btn-primary" style="width: 30%;margin-right: 1%;" href="/register" role="button">Регистрация</a>
+			<a type="button" class="btn btn-primary" style="width: 30%;margin-left: 1%;" href="/login" role="button">Вход</a>
+		</div>
 	</div>
-</section>
-
-<section class="section">
+</nav>
+<div class="container-fluid">
 

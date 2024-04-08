@@ -6,36 +6,34 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 {
 	die();
 }
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+#require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
 ?>
-	<div class="table">
-		<div class="navbar-left nav-menu">
-			<div class="box">
-				<div class="section">
-			<span class="personal-information ">
-				Фамилия:Валеев
-			</span>
-					<span class="personal-information">
-				Имя:Вадим
-			</span>
-					<span class="personal-information">
-				Школа:129
-			</span>
-					<span class="personal-information">
-				Город:Челябинск
-			</span>
-					<span class="personal-information">
-				Роль:Учитель
-			</span>
-				</div>
-				<div class="menu-buttons">
-					<ul>
-						<li class="is-active"><a class="button is-link mt-4" href="#teachers">Учителя</a></li>
-						<li><a class="button is-link" href="#tasks">Задания</a></li>
-						<li><a class="button is-link" href="#statistics">Статистика</a></li>
-					</ul>
-				</div>
+	<div class="columns">
+		<div class="navbar-left nav-menu box column">
+			<div class="container">
+				<span class="personal-information ">
+					Фамилия:Валеев
+				</span>
+						<span class="personal-information">
+					Имя:Вадим
+				</span>
+						<span class="personal-information">
+					Школа:129
+				</span>
+						<span class="personal-information">
+					Город:Челябинск
+				</span>
+						<span class="personal-information">
+					Роль:Учитель
+				</span>
+			</div>
+			<div class="menu-buttons">
+				<ul>
+					<li class="is-active"><a class="button is-link mt-4" href="#teachers">Учителя</a></li>
+					<li><a class="button is-link" href="#tasks">Задания</a></li>
+					<li><a class="button is-link" href="#statistics">Статистика</a></li>
+				</ul>
 			</div>
 		</div>
 
@@ -74,4 +72,4 @@ $APPLICATION->SetTitle("Independent");
 		})
 	</script>
 <?php
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+#require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
