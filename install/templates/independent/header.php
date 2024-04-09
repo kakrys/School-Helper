@@ -14,6 +14,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<title><?php $APPLICATION->ShowTitle(); ?></title>
+	<style>.bx-auth-reg{display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 1%;}</style>
 	<?php
 	$APPLICATION->ShowHead();
 	?>
@@ -60,8 +61,10 @@
 		</ul>
 
 		<div class="d-flex justify-content-end" style="width: 40%; margin-right: 2%; height: 50%;">
-			<a type="button" class="btn btn-primary" style="width: 30%; margin-right: 1%;font-size: 1vw;" href="/register" role="button">Регистрация</a>
-			<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/login" role="button">Вход</a>
+			<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/login" role="button"><?=$USER->GetID() ? 'Личный кабинет' : 'Вход'?></a>
+			<?php if ($USER->GetID() !== '0'):?>
+				<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/logout" role="button">Выход</a>
+			<?php endif?>
 		</div>
 	</div>
 </nav>
