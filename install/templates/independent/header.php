@@ -2,6 +2,7 @@
 /**
  * @var CMain $APPLICATION
  */
+global $USER
 ?>
 <!doctype html>
 <html lang="<?= LANGUAGE_ID; ?>">

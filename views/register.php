@@ -21,8 +21,4 @@ $APPLICATION->IncludeComponent("bitrix:main.register","",Array(
 													   )
 );
 
-global $USER;
-$id = $USER->GetID();
-$USER->Update($id,['WORK_POSITION' => 'student']);
-
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

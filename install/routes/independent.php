@@ -2,7 +2,6 @@
 
 use Bitrix\Main\Routing\Controllers\PublicPageController;
 use Bitrix\Main\Routing\RoutingConfigurator;
-
 return function (RoutingConfigurator $routes) {
 
 	$routes->get('/', new PublicPageController('/local/modules/proj.independent/views/main-menu.php'));
@@ -17,6 +16,17 @@ return function (RoutingConfigurator $routes) {
 	$routes->post('/login', new PublicPageController('/local/modules/proj.independent/views/login.php'));
 	$routes->get('/success', new PublicPageController('/local/modules/proj.independent/views/success.php'));
 	$routes->post('/register', new PublicPageController('/local/modules/proj.independent/views/register.php'));
+	$routes->get('/logout', function () {
+		global $USER;
+		$USER->Logout();
+		LocalRedirect('/');
+	});
+	$routes->get('/trainer', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
+	$routes->get('/exercises', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
+	$routes->get('/themes', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
+	$routes->get('/information', new PublicPageController('/local/modules/proj.independent/views/information.php'));
+	$routes->get('/contacts', new PublicPageController('/local/modules/proj.independent/views/contacts.php'));
+	$routes->get('/bugreport', new PublicPageController('/local/modules/proj.independent/views/bugreport.php'));
 
 	// $routes->any('/{route}',new PublicPageController('/local/modules/proj.independent/views/404.php'));
 };
