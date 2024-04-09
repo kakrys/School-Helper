@@ -11,17 +11,16 @@
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<title><?php $APPLICATION->ShowTitle(); ?></title>
-
-
 	<?php
 	$APPLICATION->ShowHead();
 	?>
 </head>
-<body>
+<body class="d-flex flex-column">
 <?php $APPLICATION->ShowPanel(); ?>
-<nav class="navbar navbar-light d-flex justify-content-between flex-nowrap" style="background-color: #e3f2fd; font-size: 1vw; max-height: 75px;">
+<nav class="navbar navbar-light d-flex justify-content-between flex-nowrap h-10" style="height: 7%; background-color: #e3f2fd; font-size: 1vw; height: 7vh;">
 	<div class="container-fluid px-6 nowrap">
 		<ul class="nav nav-pills align-items-center pl-6" style="min-width: 300px;">
 			<li class="nav-item">
@@ -60,11 +59,10 @@
 			</li>
 		</ul>
 
-		<div class="d-flex justify-content-end" style="width: 40%;margin-right: 2%">
-			<a type="button" class="btn btn-primary" style="width: 30%;margin-right: 1%;" href="/register" role="button">Регистрация</a>
-			<a type="button" class="btn btn-primary" style="width: 30%;margin-left: 1%;" href="/login" role="button">Вход</a>
+		<div class="d-flex justify-content-end" style="width: 40%; margin-right: 2%; height: 50%;">
+			<a type="button" class="btn btn-primary" style="width: 30%; margin-right: 1%;font-size: 1vw;" href="/register" role="button">Регистрация</a>
+			<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/login" role="button">Вход</a>
 		</div>
 	</div>
 </nav>
-<div class="container-fluid">
 

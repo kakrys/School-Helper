@@ -1,4 +1,4 @@
-<footer class="container-fluid fixed-bottom d-flex align-items-center justify-content-center border bg-light" style="height: 7%;">
+<footer class="container-fluid fixed-bottom d-flex align-items-center justify-content-center border bg-light" style="height: 7vh;">
 	<div class="d-flex align-items-center justify-content-center">
 		<p style="margin-bottom: 0; font-size: 1vw;">
 			<strong>Independent work trainer©</strong> by <a href="">Bitrix University (Михаил Бакиновский и Вадим Валеев)</a>. The source code is licensed
