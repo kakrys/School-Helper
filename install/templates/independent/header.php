@@ -61,8 +61,10 @@ global $USER
 		</ul>
 
 		<div class="d-flex justify-content-end" style="width: 40%; margin-right: 2%; height: 50%;">
-			<a type="button" class="btn btn-primary" style="width: 30%; margin-right: 1%;font-size: 1vw;" href="/register" role="button">Регистрация</a>
 			<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/login" role="button"><?=$USER->GetID() ? 'Личный кабинет' : 'Вход'?></a>
+			<?php if ($USER->GetID() !== '0'):?>
+			<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/logout" role="button">Выход</a>
+			<?php endif?>
 		</div>
 	</div>
 </nav>
