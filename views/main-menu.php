@@ -12,15 +12,15 @@ $subjects['8']=['Math','Chemistry','English','Literature'];
 $subjects['7']=['Math','Russian','English','Literature'];
 //КОНЕЦ ТЕСТОВЫХ ДАННЫХ
 ?>
-<div class="container-fluid mt-1" style="height: 86vh;">
-	<div class="main-content d-flex" style="width: 100%; height: 100%;">
+<div class="container-fluid mt-1" style="">
+	<div class="main-content d-flex" style="width: 100%; margin-bottom: 1%; min-height: 77vh;">
 		<div class="d-flex left-menu border bg-light flex-column align-items-center" style="width: 10%;">
 			<div class="accordion" id="gradesAndSubjects" style="width: 100%;">
 				<?php foreach ($grades as $grade):?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="grade<?=$grade?>">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?=$grade?>" aria-expanded="true" aria-controls="collapse<?=$grade?>">
-								<?=$grade?> класс
+							<button class="accordion-button collapsed" <?=(isset($subjects["$grade"])?'':'disabled');?> type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?=$grade?>" aria-expanded="true" aria-controls="collapse<?=$grade?>">
+								<?=(isset($subjects["$grade"])?"<a style='font-size: 1vw;'>$grade класс<a>":"<del style='font-size: 1vw;'>$grade класс</del>");?>
 							</button>
 						</h2>
 						<div id="collapse<?=$grade?>" class="accordion-collapse collapse" aria-labelledby="grade<?=$grade?>" data-bs-parent="#gradesAndSubjects">

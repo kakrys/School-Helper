@@ -13,7 +13,7 @@ if (!empty($arResult['ERROR_MESSAGE']))
 }
 ?>
 
-<div class="bx-auth-reg container-fluid d-flex flex-column justify-content-center flex-column align-items-center">
+<div class="bx-auth container-fluid d-flex flex-column justify-content-center flex-column align-items-center">
 <?if($arResult["AUTH_SERVICES"]):?>
 	<div class="bx-auth-title"><?echo GetMessage("AUTH_TITLE")?></div>
 <?endif?>
