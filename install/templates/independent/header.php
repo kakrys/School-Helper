@@ -23,7 +23,7 @@ global $USER
 <body class="d-flex flex-column">
 <?php $APPLICATION->ShowPanel(); ?>
 <nav class="navbar navbar-light d-flex justify-content-between flex-nowrap h-10" style="height: 7%; background-color: #e3f2fd; font-size: 1vw; height: 7vh;">
-	<div class="container-fluid px-6 nowrap">
+	<div class="container-fluid px-6 flex-nowrap">
 		<ul class="nav nav-pills align-items-center pl-6" style="min-width: 300px;">
 			<li class="nav-item">
 				<a class="nav-link" href="/">
@@ -61,10 +61,10 @@ global $USER
 			</li>
 		</ul>
 
-		<div class="d-flex justify-content-end" style="width: 40%; margin-right: 2%; height: 50%;">
-			<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/login" role="button"><?=$USER->GetID() ? 'Личный кабинет' : 'Вход'?></a>
+		<div class="d-flex justify-content-end" style="width: 40%; margin-right: 2%; height: 100%;">
+			<a type="button" class="btn btn-primary align-self-center" style="width: 30%; min-height: 50%; max-height: 75%; margin-left: 1%;font-size: 1vw;" href="/login" role="button"><?=$USER->GetID() ? 'Личный кабинет' : 'Вход'?></a>
 			<?php if ($USER->GetID() !== '0'):?>
-				<a type="button" class="btn btn-primary" style="width: 30%; margin-left: 1%;font-size: 1vw;" href="/logout" role="button">Выход</a>
+				<a type="button" class="btn btn-primary align-self-center" style="width: 30%; min-height: 50%; max-height: 75%; margin-left: 1%;font-size: 1vw;" href="/logout" role="button">Выход</a>
 			<?php endif?>
 		</div>
 	</div>

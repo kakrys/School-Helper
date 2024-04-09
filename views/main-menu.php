@@ -13,7 +13,7 @@ $subjects['7']=['Math','Russian','English','Literature'];
 //КОНЕЦ ТЕСТОВЫХ ДАННЫХ
 ?>
 <div class="container-fluid mt-1" style="">
-	<div class="main-content d-flex" style="width: 100%; margin-bottom: 1%; min-height: 77vh;">
+	<div class="main-content d-flex" style="width: 100%; margin-bottom: 1%; min-height: 81vh;">
 		<div class="d-flex left-menu border bg-light flex-column align-items-center" style="width: 10%;">
 			<div class="accordion" id="gradesAndSubjects" style="width: 100%;">
 				<?php foreach ($grades as $grade):?>
