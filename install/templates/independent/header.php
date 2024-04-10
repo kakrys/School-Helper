@@ -20,9 +20,9 @@ global $USER
 	$APPLICATION->ShowHead();
 	?>
 </head>
-<body class="d-flex flex-column">
+<body class="d-flex flex-column" style="min-height: 100vh;">
 <?php $APPLICATION->ShowPanel(); ?>
-<nav class="navbar navbar-light d-flex justify-content-between flex-nowrap h-10" style="height: 7%; background-color: #e3f2fd; font-size: 1vw; height: 7vh;">
+<nav class="navbar navbar-light d-flex justify-content-between flex-nowrap h-10" style="background-color: #e3f2fd; font-size: 1vw; height: 7%;">
 	<div class="container-fluid px-6 flex-nowrap">
 		<ul class="nav nav-pills align-items-center pl-6" style="min-width: 300px;">
 			<li class="nav-item">
@@ -31,24 +31,15 @@ global $USER
 				</a>
 			</li>
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Предмет</a>
+				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Навигация</a>
 				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#">Action</a></li>
-					<li><a class="dropdown-item" href="#">Another action</a></li>
-					<li><a class="dropdown-item" href="#">Something else here</a></li>
-					<li><hr class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="#">Separated link</a></li>
+					<li><a class="dropdown-item" href="#">Тренажёр</a></li>
+					<li><a class="dropdown-item" href="#">Материалы</a></li>
+					<li><a class="dropdown-item" href="#">Каталог заданий</a></li>
 				</ul>
 			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Класс</a>
-				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#">Action</a></li>
-					<li><a class="dropdown-item" href="#">Another action</a></li>
-					<li><a class="dropdown-item" href="#">Something else here</a></li>
-					<li><hr class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="#">Separated link</a></li>
-				</ul>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Изучение</a>
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">О нас</a>
