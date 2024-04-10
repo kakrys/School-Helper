@@ -2,7 +2,7 @@
 return [
 	'controllers' => [
 		'value' => [
-			'defaultNamespace' => '\\Up\\Independent\\Controller\\',
+			'defaultNamespace' => '\\Proj\\Independent\\Controller\\',
 		],
 		'readonly' => true,
 	]
