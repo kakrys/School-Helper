@@ -10,12 +10,13 @@ $grades = [1,2,3,4,5,6,7,8,9,10,11];
 $subjects['9']=['Math','Chemistry','Russian','English','Physics','Literature'];
 $subjects['8']=['Math','Chemistry','English','Literature'];
 $subjects['7']=['Math','Russian','English','Literature'];
+$subjects['6']=['Math'];
 //КОНЕЦ ТЕСТОВЫХ ДАННЫХ
 ?>
-<div class="container-fluid mt-1" style="">
-	<div class="main-content d-flex" style="width: 100%; margin-bottom: 1%; min-height: 81vh;">
-		<div class="d-flex left-menu border bg-light flex-column align-items-center" style="width: 10%;">
-			<div class="accordion" id="gradesAndSubjects" style="width: 100%;">
+<div class="container-fluid mt-1 main" style="margin-top: 1%;flex-grow: 1;">
+	<div class="main-content d-flex" style="width: 100%; min-height: 100%;">
+		<div class="d-flex left-menu flex-column align-items-center" style="width: 10%;">
+			<div class="accordion border bg-light" id="gradesAndSubjects" style="width: 100%;">
 				<?php foreach ($grades as $grade):?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="grade<?=$grade?>">
@@ -37,6 +38,7 @@ $subjects['7']=['Math','Russian','English','Literature'];
 					</div>
 				<?php endforeach;?>
 			</div>
+			<div class="main-content d-flex" style="flex-grow: 1;"></div>
 		</div>
 		<div class="content border bg-light" style="width: 90%; height: 100%; margin-left: 1%;">
 			<?php foreach ($grades as $grade):?>
