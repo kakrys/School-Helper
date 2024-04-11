@@ -18,7 +18,7 @@ $themesDescriptions = ['Умножение и деление дробей' => "�
 			<div class="d-flex flex-column" style="max-height: 83vh; min-width: 10%; max-width: 15%;">
 				<div class="border bg-light d-flex flex-column p-1" style="overflow-y: auto; overflow-x: auto;">
 					<p style="align-self: center;">Темы "X" класса по "предмету X"</p>
-					<ahref ='#' class="btn" data-target="#theme-1"></a>
+					<a href ='#' class="btn" data-target="#theme-1"></a>
 					<?php foreach ($themes as $key => $theme):?>
 						<a href ='#' class="btn align-self-center" data-target="#theme<?=$key?>"> <?=$theme?></a>
 					<?php endforeach;?>
@@ -90,26 +90,44 @@ $themesDescriptions = ['Умножение и деление дробей' => "�
 
 <script>
 	const links = document.querySelectorAll('a[data-target]');
+	const theme1 = document.getElementById('theme-1');
+
 	links.forEach(link => {
 		link.addEventListener('click', (event) => {
 			event.preventDefault();
 			const target = link.getAttribute('data-target');
 			const content = document.querySelector(target);
 			const showElements = document.querySelectorAll('.show');
+
 			if (content) {
 				const allContents = document.querySelectorAll('.collapse');
+
 				allContents.forEach(c => {
 					if (c !== content) {
 						c.classList.remove('show');
 					}
 				});
-				content.classList.toggle('show');
-				if (showElements.length === 0) {
-					const specificElement = document.getElementById('theme-1');
-					specificElement.classList.add('show');
+
+				if (!content.classList.contains('show')) {
+					allContents.forEach(c => c.classList.remove('show'));
+					content.classList.add('show');
+					theme1.classList.remove('show');
+				} else {
+					content.classList.remove('show');
+					const remainingContents = document.querySelectorAll('.collapse.show');
+					if (remainingContents.length === 0) {
+						theme1.classList.add('show');
+					}
 				}
 			}
 		});
+	});
+
+	window.addEventListener('DOMContentLoaded', () => {
+		const showElements = document.querySelectorAll('.collapse.show');
+		if (showElements.length === 0) {
+			theme1.classList.add('show');
+		}
 	});
 </script>
 <?php require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php"); ?>

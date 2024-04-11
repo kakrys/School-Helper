@@ -20,7 +20,7 @@ global $USER
 	$APPLICATION->ShowHead();
 	?>
 </head>
-<body class="d-flex flex-column" style="min-height: 100vh;">
+<body class="d-flex flex-column" style="min-height: 100vh; overflow-y: hidden;">
 <?php $APPLICATION->ShowPanel(); ?>
 <nav class="navbar navbar-light d-flex justify-content-between flex-nowrap h-10" style="background-color: #e3f2fd; font-size: 1vw; height: 7%;">
 	<div class="container-fluid px-6 flex-nowrap">
@@ -36,6 +36,7 @@ global $USER
 					<li><a class="dropdown-item" href="#">Тренажёр</a></li>
 					<li><a class="dropdown-item" href="#">Материалы</a></li>
 					<li><a class="dropdown-item" href="#">Каталог заданий</a></li>
+					<li><a class="dropdown-item" href="/generator">Generator</a></li>
 				</ul>
 			</li>
 			<li class="nav-item">
@@ -44,10 +45,9 @@ global $USER
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">О нас</a>
 				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#">Информация</a></li>
-					<li><a class="dropdown-item" href="#">Контакты</a></li>
+					<li><a class="dropdown-item" href="/about">Информация</a></li>
 					<li><hr class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="#">Сообщить о баге</a></li>
+					<li><a class="dropdown-item" href="/bugreport">Сообщить о баге</a></li>
 				</ul>
 			</li>
 		</ul>
