@@ -21,3 +21,7 @@ DROP TABLE IF EXISTS proj_school;
 DROP TABLE IF EXISTS proj_user;
 
 DROP TABLE IF EXISTS proj_role;
+
+DROP TABLE IF EXISTS proj_class;
+
+DROP TABLE IF EXISTS proj_class_subject;
