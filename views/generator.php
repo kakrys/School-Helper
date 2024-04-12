@@ -19,9 +19,9 @@ $subjects = [
 
 $jsonData = json_encode($subjects);
 ?>
-	<div class="container-fluid mt-1 main" style="margin-top: 1%;flex-grow: 1;">
-		<div class="main-content d-flex" style="width: 100%; min-height: 100%;">
-			<div class="d-flex flex-column" style="width: 50%;">
+	<div class="container-fluid mt-1 main d-flex" style="margin-top: 1%; flex-grow: 1;">
+		<div class="main-content d-flex" style="width: 100%; min-height: 100%; flex-grow: 1;">
+			<div class="d-flex flex-column" style="width: 50%; height: 100%;">
 				<div class="d-flex">
 					<div class="btn-group" style="width: 33%; max-width: 33%;">
 						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="gradeDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
@@ -37,33 +37,50 @@ $jsonData = json_encode($subjects);
 						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="subjectDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
 							Выберите предмет
 						</button>
-						<ul class="dropdown-menu" aria-labelledby="subjectDropdown" style="overflow-y: auto; max-height: 10vh;">
-							JS
-						</ul>
+						<ul class="dropdown-menu" aria-labelledby="subjectDropdown" style="overflow-y: auto; max-height: 10vh;"></ul>
 					</div>
 					<div id="topicDropdownContainer" class="btn-group invisible" style="width: 33%; max-width: 33%;">
 						<button class="btn btn-secondary dropdown-toggle overflow-hidden" data-value="null" type="button" id="topicDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
 							Выберите тему
 						</button>
-						<ul class="dropdown-menu" aria-labelledby="topicDropdown" style="overflow-y: auto; max-height: 10vh;">
-							JS
-						</ul>
+						<ul class="dropdown-menu" aria-labelledby="topicDropdown" style="overflow-y: auto; max-height: 10vh;"></ul>
 					</div>
 				</div>
-				<div>
-					Окно условий генерации
+				<p style="padding: 0;">
+					Инструкция генерации заданий
+				</p>
+				<div id="instructionsContainer" class="border bg-light d-flex align-items-start" style="margin: 1% 1% 0 0; flex-grow: 0.6; padding: 1%; flex-wrap: wrap; overflow-y: auto; height: 40%;"><i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i></div>
+				<div class="border bg-light d-flex" style="margin: 1% 1% 0 0; height:40%;">
+					<div class="container">
+						<div class="row row-cols-4">
+							<div class="col d-flex justify-content-center" style="padding: 1%;">
+								<a class="btn btn-secondary" onclick="addObjectToInstructions('text')" style="width: 100%; margin: 1%;">Текст</a>
+							</div>
+							<div class="col d-flex justify-content-center" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Отвечает за добавление текста" style="padding: 1%;">
+								<a class="btn btn-secondary" onclick="addObjectToInstructions('rand.Number')" style="width: 100%; margin: 1%;">Случайное число</a>
+							</div>
+							<div class="col d-flex justify-content-center" style="padding: 1%;">
+								<a class="btn btn-secondary" onclick="deleteLastInstruction()" style="width: 100%; margin: 1%;">Удалить последний элемент</a>
+							</div>
+							<div class="col d-flex justify-content-center" style="padding: 1%;">
+								<a class="btn btn-secondary" onclick="clearInstructions()" style="width: 100%; margin: 1%;">Очистить поле инструкций</a>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div>
-					Таблица с кнопками генератора
+				<div class="d-flex justify-content-end" style="margin: 1% 1% 0 0;">
+					<a class="btn btn-primary" role="button" href="#">Сохранить</a>
 				</div>
 			</div>
 			<div class="d-flex flex-column" style="width: 50%;">
-				Правое окно
-				<div>
-					Окно с настройками величин генератора
+				<div class="border bg-light d-flex" style="margin: 1% 1% 0 0; flex-grow: 0.25;">
+					Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!
 				</div>
-				<div>
-					Окно предпросмотра
+				<div style="margin: 1%;">
+					<a class="btn btn-primary" style="margin 1%;" role="button" href="#">Сгенерировать предпросмотр!</a>
+				</div>
+				<div class="border bg-light d-flex" style="margin: 1% 1% 0 0; flex-grow: 0.75;">
+					Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!
 				</div>
 			</div>
 		</div>
@@ -73,6 +90,8 @@ $jsonData = json_encode($subjects);
 	const data = <?php echo $jsonData;?>;
 	const menu2 = document.getElementById('subjectDropdownContainer');
 	const menu3 = document.getElementById('topicDropdownContainer');
+	const instructionsContainer = document.getElementById('instructionsContainer');
+	let addedInstructions = 0;
 
 	function updateMenu2(value){
 		let newHtml = '';
@@ -180,6 +199,37 @@ $jsonData = json_encode($subjects);
 		const $mainButton = document.getElementById('topicDropdown');
 		$mainButton.innerText = element.innerText;
 		$mainButton.setAttribute('data-value',element.getAttribute('data-value'));
+	}
+	function addObjectToInstructions(type){
+		if (instructionsContainer.innerHTML === '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>')
+		{
+			addedInstructions = 1;
+			instructionsContainer.innerHTML = '<span id="instruction" data-instruction="' + addedInstructions + '" class="border" style="padding: 1%; margin:1%;">' + type + '</span>';
+		}
+		else
+		{
+			addedInstructions += 1;
+			instructionsContainer.innerHTML += '<span id="instruction" data-instruction="' + addedInstructions + '" class="border" style="padding: 1%; margin:1%;">' + type + '</span>';
+		}
+	}
+	function clearInstructions(){
+		instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
+	}
+	function deleteLastInstruction(){
+		let addedInstruction = document.querySelectorAll('#instruction');
+		if (addedInstruction.length === 0) {return;}
+		let presavedInstruction = 0;
+		addedInstruction.forEach(element =>{
+			if (element.getAttribute('data-instruction') > presavedInstruction)
+			{
+				presavedInstruction = element.getAttribute('data-instruction');
+			}
+		});
+		let elements = document.querySelectorAll('[data-instruction="' + presavedInstruction + '"]');
+		elements.forEach(function(element) {
+			element.remove();
+		});
+		addedInstructions -= 1;
 	}
 </script>
 <?php require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
