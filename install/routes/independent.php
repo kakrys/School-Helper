@@ -23,7 +23,7 @@ return function (RoutingConfigurator $routes) {
 	});
 	$routes->get('/trainer', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 	$routes->get('/exercises', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
-	$routes->get('/themes', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
+	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
 	$routes->get('/information', new PublicPageController('/local/modules/proj.independent/views/information.php'));
 	$routes->get('/contacts', new PublicPageController('/local/modules/proj.independent/views/contacts.php'));
 	$routes->get('/bugreport', new PublicPageController('/local/modules/proj.independent/views/bugreport.php'));

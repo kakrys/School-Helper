@@ -47,7 +47,7 @@ $APPLICATION->SetTitle("Independent");
 								А также текст с возможностью перехода к
 								<a href="/exercises">задачам по предмету</a>
 								Ну и, конечно же, текст с переходом к
-								<a href="/themes">материалам по предмету и спискам тем</a>
+								<a href="/themes/<?=$grade?>/<?=$subject?>">материалам по предмету и спискам тем</a>
 							</div>
 						</div>
 					<?php endforeach;?>
