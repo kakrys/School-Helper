@@ -4,14 +4,15 @@ class MaterialsComponent extends CBitrixComponent
 {
 	public function executeComponent()
 	{
-		$this->getGrades();
+		$this->getCurrentClassAndSubject();
 		$this->includeComponentTemplate();
 	}
 
-	protected function getGrades()
+	protected function getCurrentClassAndSubject()
 	{
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
-		$this->arResult['CLASS'] = $request->getQueryList()->toArray()['class'];
-		$this->arResult['SUBJECT'] = $request->getQueryList()->toArray()['subject'];
+		$data = $request->getQueryList()->toArray();
+		$this->arResult['CLASS'] = $data['class'];
+		$this->arResult['SUBJECT'] = $data['subject'];
 	}
 }
