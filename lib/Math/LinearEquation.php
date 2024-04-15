@@ -1,6 +1,6 @@
 <?php
 
-class LinearEquation extends Equation
+class LinearEquation implements Equation
 {
 	public function __construct(string $condition)
 	{
