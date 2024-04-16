@@ -22,15 +22,16 @@ CREATE TABLE IF NOT EXISTS proj_subject
 CREATE TABLE IF NOT EXISTS proj_class
 (
 	ID INT AUTO_INCREMENT NOT NULL,
-	CLASS_NUMBER int not null,
+	CLASS_NUMBER varchar(100) not null,
 	PRIMARY KEY (ID)
 );
 
 CREATE TABLE IF NOT EXISTS proj_class_subject
 (
+	ID int auto_increment not null,
 	CLASS_ID int not null,
 	SUBJECT_ID int not null,
-	PRIMARY KEY (CLASS_ID,SUBJECT_ID)
+	PRIMARY KEY (ID)
 );
 
 CREATE TABLE IF NOT EXISTS proj_variant
@@ -60,3 +61,17 @@ CREATE TABLE IF NOT EXISTS proj_variant_user
     VARIANT_ID INT NOT NULL,
     USER_ID INT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS proj_themes
+(
+	ID int auto_increment not null,
+	NAME varchar(100) not null,
+	DESCRIPTION varchar(500) not null,
+	VIDEO_LINK varchar(500),
+	LITERATURE_LINK varchar(500),
+	USEFUL_LINK varchar(500),
+	SUMMARY_LINK varchar(500),
+	CLASS_NUMBER varchar(100) not null,
+	SUBJECT_NAME varchar(100) not null,
+	PRIMARY KEY (ID)
+)
