@@ -9,7 +9,7 @@ class TeacherComponent extends CBitrixComponent
 	}
 	protected function checkRole(): void
 	{
-		$role = \Proj\Independent\Services\UserService::getCurrentUserWorkPosition();
+		$role = \Proj\Independent\Repository\UserRepository::getCurrentUserWorkPosition();
 		if (!isset($role) || $role !== 'teacher')
 		{
 			LocalRedirect('/login');
