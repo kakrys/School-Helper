@@ -12,14 +12,15 @@ $themes=['Умножение и деление дробей', 'Отрицате�
 $themesDescriptions = ['Умножение и деление дробей' => "В этой теме описаны основные принципы деления и умножения дробей. Основные правила, а также их использование",
 					   'Отрицательные числа' => "В этой теме рассказывается об отрицательных числах, их представлении и способах взаимодействия с ними"];
 //КОНЕЦ ТЕСТОВЫХ ДАННЫХ
-var_dump($arResult['SUBJECT']);
-var_dump($arResult['CLASS']);
+// var_dump($arResult['SUBJECT']);
+// var_dump($arResult['CLASS']);
+var_dump($arResult['THEMES']);
 ?>
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 		<div class="main-content d-flex" style="width: 100%;">
 			<div class="d-flex flex-column" style="max-height: 83vh; min-width: 10%; max-width: 15%;">
 				<div class="border bg-light d-flex flex-column p-1" style="overflow-y: auto; overflow-x: auto;">
-					<p style="align-self: center;">Темы "X" класса по "предмету X"</p>
+					<p style="align-self: center;">Темы "<?=$arResult['CLASS']?>" класса по предмету "<?=$arResult['SUBJECT']?>"</p>
 					<a href ='#' class="btn" data-target="#theme-1"></a>
 					<?php foreach ($themes as $key => $theme):?>
 						<a href ='#' class="btn align-self-center" data-target="#theme<?=$key?>"> <?=$theme?></a>
