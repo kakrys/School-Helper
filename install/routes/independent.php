@@ -31,6 +31,7 @@ return function (RoutingConfigurator $routes) {
 	$routes->get('/answers', new PublicPageController('/local/modules/proj.independent/views/answers.php'));
 	$routes->get('/about', new PublicPageController('/local/modules/proj.independent/views/about.php'));
 	$routes->get('/generator', new PublicPageController('/local/modules/proj.independent/views/generator.php'));
+	$routes->get('/test', new PublicPageController('/local/modules/proj.independent/views/test.php'));
 
 	$routes->any('/{route}',new PublicPageController('/local/modules/proj.independent/views/404.php'));
 };

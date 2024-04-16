@@ -1,16 +1,8 @@
 <?php
 
-abstract class Equation
+interface Equation
 {
-	public string $condition;
-	public array $answer;
-	public string $mainVariable;
-	public function solve():string|array
-	{
-		return $this->answer;
-	}
-	public function __toString():string
-	{
-		return $this->condition;
-	}
+	public function getAnswer(): string|array;
+	public function solve(): string|array;
+	public function __toString():string;
 }
