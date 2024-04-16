@@ -15,8 +15,12 @@ Loc::loadMessages(__FILE__);
  * Fields:
  * <ul>
  * <li> ID int mandatory
- * <li> EXERCISE_CONDITION string(900) mandatory
+ * <li> EXERCISE_DESCRIPTION string(200) optional
+ * <li> EXERCISE_CONDITION string(900) optional
+ * <li> EXERCISE_GENERATOR_RULES string(900) optional
+ * <li> GENERATOR_CODE string(100) optional
  * <li> ANSWER string(100) mandatory
+ * <li> EXERCISE_ADDITION_FILE_PATH string(200) optional
  * </ul>
  *
  * @package Bitrix\Exercise
@@ -51,11 +55,31 @@ class ExerciseTable extends DataManager
 				]
 			),
 			new StringField(
+				'EXERCISE_DESCRIPTION',
+				[
+					'validation' => [__CLASS__, 'validateExerciseDescription'],
+					'title' => Loc::getMessage('EXERCISE_ENTITY_EXERCISE_DESCRIPTION_FIELD')
+				]
+			),
+			new StringField(
 				'EXERCISE_CONDITION',
 				[
-					'required' => true,
 					'validation' => [__CLASS__, 'validateExerciseCondition'],
 					'title' => Loc::getMessage('EXERCISE_ENTITY_EXERCISE_CONDITION_FIELD')
+				]
+			),
+			new StringField(
+				'EXERCISE_GENERATOR_RULES',
+				[
+					'validation' => [__CLASS__, 'validateExerciseGeneratorRules'],
+					'title' => Loc::getMessage('EXERCISE_ENTITY_EXERCISE_GENERATOR_RULES_FIELD')
+				]
+			),
+			new StringField(
+				'GENERATOR_CODE',
+				[
+					'validation' => [__CLASS__, 'validateGeneratorCode'],
+					'title' => Loc::getMessage('EXERCISE_ENTITY_GENERATOR_CODE_FIELD')
 				]
 			),
 			new StringField(
@@ -66,6 +90,25 @@ class ExerciseTable extends DataManager
 					'title' => Loc::getMessage('EXERCISE_ENTITY_ANSWER_FIELD')
 				]
 			),
+			new StringField(
+				'EXERCISE_ADDITION_FILE_PATH',
+				[
+					'validation' => [__CLASS__, 'validateExerciseAdditionFilePath'],
+					'title' => Loc::getMessage('EXERCISE_ENTITY_EXERCISE_ADDITION_FILE_PATH_FIELD')
+				]
+			),
+		];
+	}
+
+	/**
+	 * Returns validators for EXERCISE_DESCRIPTION field.
+	 *
+	 * @return array
+	 */
+	public static function validateExerciseDescription()
+	{
+		return [
+			new LengthValidator(null, 200),
 		];
 	}
 
@@ -82,6 +125,30 @@ class ExerciseTable extends DataManager
 	}
 
 	/**
+	 * Returns validators for EXERCISE_GENERATOR_RULES field.
+	 *
+	 * @return array
+	 */
+	public static function validateExerciseGeneratorRules()
+	{
+		return [
+			new LengthValidator(null, 900),
+		];
+	}
+
+	/**
+	 * Returns validators for GENERATOR_CODE field.
+	 *
+	 * @return array
+	 */
+	public static function validateGeneratorCode()
+	{
+		return [
+			new LengthValidator(null, 100),
+		];
+	}
+
+	/**
 	 * Returns validators for ANSWER field.
 	 *
 	 * @return array
@@ -90,6 +157,18 @@ class ExerciseTable extends DataManager
 	{
 		return [
 			new LengthValidator(null, 100),
+		];
+	}
+
+	/**
+	 * Returns validators for EXERCISE_ADDITION_FILE_PATH field.
+	 *
+	 * @return array
+	 */
+	public static function validateExerciseAdditionFilePath()
+	{
+		return [
+			new LengthValidator(null, 200),
 		];
 	}
 }

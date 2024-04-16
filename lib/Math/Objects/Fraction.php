@@ -1,6 +1,6 @@
 <?php
-
-require_once 'MathFunctions.php';
+namespace Proj\Independent\Math\Objects;
+use Proj\Independent\Math\Math;
 /**
  * Describes methods to create/calculate or manipulate fractions
  */
@@ -19,13 +19,20 @@ class Fraction
 	 *
 	 * Has 2 modes: SHORTENED for simplifying fraction by gcd and NOT_SHORTENED to avoid simplifying
 	 */
-	public function __construct(int|float $numerator, int|float $denominator = 1, int $mode = Fraction::SHORTENED)
+	public function __construct(int|float|Fraction $numerator, int|float|Fraction $denominator = 1, int $mode = Fraction::SHORTENED)
 	{
 		$this->mode = match($mode)
 		{
 			Fraction::NOT_SHORTENED => Fraction::NOT_SHORTENED,
 			default => Fraction::SHORTENED,
 		};
+
+		if ($numerator instanceof Fraction || $denominator instanceof Fraction)
+		{
+			$solveFraction = Fraction::divide($numerator, $denominator);
+			$numerator = $solveFraction->numerator;
+			$denominator = $solveFraction->denominator;
+		}
 
 		$this->value = $numerator/$denominator;
 		$this->integerPart = (int)explode('.',$this->value)[0];
@@ -47,7 +54,7 @@ class Fraction
 	{
 		$numerator = $this->numerator;
 		$denominator = $this->denominator;
-		$denominatorDivisors = array_unique(getDivisors($denominator));
+		$denominatorDivisors = array_unique(Math::getDivisors($denominator));
 		$periodDivisors = array_diff($denominatorDivisors, [1,2,5]);
 		if (count($periodDivisors) == 0)
 		{
@@ -61,7 +68,7 @@ class Fraction
 		{
 			$numerator = $this->numerator;
 			$denominator = $this->denominator;
-			$gcd = gcd($numerator, $denominator);
+			$gcd = Math::gcd($numerator, $denominator);
 			$this->numerator = $this->numerator / $gcd;
 			$this->denominator = $this->denominator / $gcd;
 		}
@@ -147,14 +154,14 @@ class Fraction
 	{
 		$numerator = $fraction->numerator;
 		$denominator = $fraction->denominator;
-		$gcd = gcd($numerator, $denominator);
+		$gcd = Math::gcd($numerator, $denominator);
 		return new Fraction($numerator/$gcd, $denominator/$gcd);
 	}
 	public static function lcm(Fraction $a, Fraction $b):int
 	{
 		$denomA = $a->denominator;
 		$denomB = $b->denominator;
-		return lcm($denomA, $denomB);
+		return Math::lcm($denomA, $denomB);
 	}
 	public static function power(Fraction $fraction, int $exponent):Fraction
 	{
@@ -173,15 +180,27 @@ class Fraction
 		{
 			return $this->value;
 		}
-		return "$this->numerator/$this->denominator";
+		return $this->numerator+$this->denominator*$this->integerPart . "/$this->denominator";
+	}
+
+	public function htmlRender():string
+	{
+		$html = "
+			<div class='d-flex' style='justify-content: center; align-items: center;'>";
+		if ($this->integerPart!=0)
+		{
+			$html .= $this->integerPart;
+		}
+		$html .="<div class='d-flex flex-column'>
+					<div style='border-bottom: 1px solid black;align-self: center;'>
+						".$this->numerator%$this->denominator."
+					</div>
+					<div style='align-self: center;'>
+						$this->denominator
+					</div>
+				</div>
+			</div>
+		";
+		return $html;
 	}
 }
-
-$frac1 = Fraction::divide(new Fraction(12,3.2),new Fraction(3.8,4));
-$frac2 = Fraction::power(new Fraction(2,3),-2);
-var_dump($frac1);
-var_dump($frac2);
-var_dump(Fraction::multiply($frac1, $frac2));
-var_dump(new Fraction(33,27, mode:Fraction::NOT_SHORTENED));
-var_dump(Fraction::simplify(new Fraction(33,27, mode:Fraction::NOT_SHORTENED)));
-echo new Fraction(6,2);
