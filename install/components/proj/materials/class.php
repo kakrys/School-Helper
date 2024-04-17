@@ -33,7 +33,6 @@ class MaterialsComponent extends CBitrixComponent
 																   'filter' => [
 																	   '=CLASS_NUMBER' => $class,
 																   ]]);
-		// var_dump($result->fetchAll());
 		$classIsset = !empty($result->fetchAll());
 
 		$result = \Proj\Independent\Model\SubjectTable::getList([
