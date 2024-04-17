@@ -64,7 +64,7 @@ if (empty($arResult['THEMES']))
 													Ссылки на литературу:
 												</p>
 												<?php foreach(explode(',',$theme['LITERATURE_LINK']) as $literatureNumber=> $literatureLink):?>
-												<a href="<?=$literatureLink?>">Литература <?=$literatureNumber+1?></a>
+												<a href="<?=$literatureLink?>" target="_blank">Литература <?=$literatureNumber+1?></a>
 												<?php endforeach;?>
 												<?php endif;?>
 												<?php if(isset($theme['USEFUL_LINK'])):?>
@@ -72,7 +72,7 @@ if (empty($arResult['THEMES']))
 													Полезные ссылки:
 												</p>
 												<?php foreach(explode(',',$theme['USEFUL_LINK']) as $usefulNumber=> $usefulLink):?>
-												<a href="<?=$usefulLink?>">Полезное <?=$usefulNumber+1?></a>
+												<a href="<?=$usefulLink?>" target="_blank">Полезное <?=$usefulNumber+1?></a>
 												<?php endforeach;?>
 												<?php endif;?>
 												<?php if(isset($theme['SUMMARY_LINK'])):?>
@@ -80,7 +80,7 @@ if (empty($arResult['THEMES']))
 													Конспект по теме:
 												</p>
 												<?php foreach(explode(',',$theme['SUMMARY_LINK']) as $summaryNumber=> $summaryLink):?>
-												<a href="<?=$summaryLink?>">Конспект <?=$summaryNumber+1?></a>
+												<a href="<?=$summaryLink?>" target="_blank">Конспект <?=$summaryNumber+1?></a>
 												<?php endforeach;?>
 												<?php endif;?>
 											</div>
