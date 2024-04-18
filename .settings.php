@@ -2,7 +2,10 @@
 return [
 	'controllers' => [
 		'value' => [
-			'defaultNamespace' => '\\Proj\\Independent\\Controller\\',
+			'namespaces' => [
+				'\\Proj\\Independent\\Controller' => 'api',
+			],
+			'defaultNamespace' => '\\Proj\\Independent\\Controller',
 		],
 		'readonly' => true,
 	]

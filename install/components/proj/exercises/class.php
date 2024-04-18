@@ -1,6 +1,6 @@
 <?php
 
-class MainMenuComponent extends CBitrixComponent
+class Exercises extends CBitrixComponent
 {
 	public function executeComponent()
 	{
