@@ -8,7 +8,7 @@ class AuthComponent extends CBitrixComponent
 	}
 	protected function transferToTheDesiredPage()
 	{
-		$role = \Proj\Independent\Services\UserService::getCurrentUserWorkPosition();
+		$role = \Proj\Independent\Repository\UserRepository::getCurrentUserWorkPosition();
 		LocalRedirect("/$role");
 	}
 }

@@ -1,6 +1,8 @@
 <?php
 
-class TeacherComponent extends CBitrixComponent
+use Bitrix\Main\Context;
+
+class AdminComponent extends CBitrixComponent
 {
 	public function executeComponent()
 	{
@@ -10,9 +12,10 @@ class TeacherComponent extends CBitrixComponent
 	protected function checkRole(): void
 	{
 		$role = \Proj\Independent\Repository\UserRepository::getCurrentUserWorkPosition();
-		if (!isset($role) || $role !== 'teacher')
+		if (!isset($role) || $role !== 'admin')
 		{
 			LocalRedirect('/login');
 		}
 	}
+
 }

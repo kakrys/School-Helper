@@ -5,16 +5,10 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
-//ТЕСТОВЫЕ ДАННЫЕ, НАДО ПЕРЕВЕСТИ НА БД
-$themes=['Умножение и деление дробей', 'Отрицательные числа', 'Действия с отрицательными числами',
-		 'Пропорции', 'Симметрия', 'Решение линейных уравнений', 'Составление математической модели',
-		 'Проценты', 'Дробь от числа и число по дроби'];
-$themesDescriptions = ['Умножение и деление дробей' => "В этой теме описаны основные принципы деления и умножения дробей. Основные правила, а также их использование",
-					   'Отрицательные числа' => "В этой теме рассказывается об отрицательных числах, их представлении и способах взаимодействия с ними"];
-//КОНЕЦ ТЕСТОВЫХ ДАННЫХ
-// var_dump($arResult['SUBJECT']);
-// var_dump($arResult['CLASS']);
-var_dump($arResult['THEMES']);
+if (empty($arResult['THEMES']))
+{
+	LocalRedirect('/404');
+}
 ?>
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 		<div class="main-content d-flex" style="width: 100%;">
@@ -22,8 +16,8 @@ var_dump($arResult['THEMES']);
 				<div class="border bg-light d-flex flex-column p-1" style="overflow-y: auto; overflow-x: auto;">
 					<p style="align-self: center;">Темы "<?=$arResult['CLASS']?>" класса по предмету "<?=$arResult['SUBJECT']?>"</p>
 					<a href ='#' class="btn" data-target="#theme-1"></a>
-					<?php foreach ($themes as $key => $theme):?>
-						<a href ='#' class="btn align-self-center" data-target="#theme<?=$key?>"> <?=$theme?></a>
+					<?php foreach ($arResult['THEMES'] as $theme):?>
+						<a href ='#' class="btn align-self-center" data-target="#theme<?=$theme['ID']?>"> <?=$theme['NAME']?></a>
 					<?php endforeach;?>
 				</div>
 				<div style="flex-grow: 1;"></div>
@@ -36,15 +30,15 @@ var_dump($arResult['THEMES']);
 								Выберите тему, чтобы увидеть подробную информацию по ней
 							</p>
 						</div>
-						<?php foreach ($themes as $key => $theme):?>
-							<?php if(isset($themesDescriptions[$theme])):?>
-								<div id="theme<?=$key?>" class="collapse">
+						<?php foreach ($arResult['THEMES'] as $theme):?>
+							<?php if(isset($theme['DESCRIPTION'])):?>
+								<div id="theme<?=$theme['ID']?>" class="collapse">
 									<div class="d-flex flex-column">
 										<p style="align-self: center;">
-											Тема: <?=$theme?>
+											Тема: <?=$theme['NAME']?>
 										</p>
 										<a>
-											<?=$themesDescriptions[$theme];?>
+											<?=$theme['DESCRIPTION'];?>
 										</a>
 										<p style="align-self: center;">
 											Тренажёр
@@ -56,32 +50,46 @@ var_dump($arResult['THEMES']);
 											Материалы
 										</p>
 										<div class="d-flex container-fluid">
+											<?php if(isset($theme['VIDEO_LINK'])):?>
 											<div class="d-flex flex-column" style="min-width: 30%;">
 												<p style="align-self: center;">Видео по теме</p>
 												<div class="ratio ratio-16x9">
-													<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=5dY_SXB4De04VEnm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+													<iframe width="560" height="315" src="<?=$theme['VIDEO_LINK']?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 												</div>
 											</div>
+											<?php endif;?>
 											<div style="margin-left: 1%;">
+												<?php if(isset($theme['LITERATURE_LINK'])):?>
 												<p>
 													Ссылки на литературу:
 												</p>
-												<a href="#">Какая-то ссылка1</a>
+												<?php foreach(explode(',',$theme['LITERATURE_LINK']) as $literatureNumber=> $literatureLink):?>
+												<a href="<?=$literatureLink?>" target="_blank">Литература <?=$literatureNumber+1?></a>
+												<?php endforeach;?>
+												<?php endif;?>
+												<?php if(isset($theme['USEFUL_LINK'])):?>
 												<p>
 													Полезные ссылки:
 												</p>
-												<a href="#">Какая-то ссылка2</a>
+												<?php foreach(explode(',',$theme['USEFUL_LINK']) as $usefulNumber=> $usefulLink):?>
+												<a href="<?=$usefulLink?>" target="_blank">Полезное <?=$usefulNumber+1?></a>
+												<?php endforeach;?>
+												<?php endif;?>
+												<?php if(isset($theme['SUMMARY_LINK'])):?>
 												<p>
 													Конспект по теме:
 												</p>
-												<a href="#">Какая-то ссылка3</a>
+												<?php foreach(explode(',',$theme['SUMMARY_LINK']) as $summaryNumber=> $summaryLink):?>
+												<a href="<?=$summaryLink?>" target="_blank">Конспект <?=$summaryNumber+1?></a>
+												<?php endforeach;?>
+												<?php endif;?>
 											</div>
 										</div>
 									</div>
 								</div>
 							<?php else:?>
-								<div id="theme<?=$key?>" class="collapse">
-									Нам очень жаль, но тему "<?=$theme?>" пока не заполнили :(
+								<div id="theme<?=$theme['ID']?>" class="collapse">
+									Нам очень жаль, но тему "<?=$theme['NAME']?>" пока не заполнили :(
 								</div>
 							<?php endif;?>
 						<?php endforeach;?>
