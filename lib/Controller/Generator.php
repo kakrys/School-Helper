@@ -1,11 +1,16 @@
 <?php
 
 namespace Proj\Independent\Controller;
-class GeneratorData extends Bitrix\Main\Engine\Controller
+class Generator extends \Bitrix\Main\Engine\Controller
 {
-	public function getDataAction()
+	protected function getDefaultPreFilters()
 	{
-		$subjects = [
+		return [];
+	}
+
+	public function getDataAction(): array
+	{
+		return [
 			9 => ['Math','Chemistry','Russian','English','Physics','Literature'],
 			8 => ['Math','Chemistry','English','Literature'],
 			7 => ['Math','Russian','English','Literature'],
@@ -16,7 +21,5 @@ class GeneratorData extends Bitrix\Main\Engine\Controller
 			],
 				'Russian' => '']
 		];
-		header('Content-Type: application/json');
-		return json_encode($subjects);
 	}
 }

@@ -1,6 +1,6 @@
 module.exports = {
-	input: 'src/generator.js',
+	input: 'src/index.js',
 	output: 'dist/generator.bundle.js',
-	namespace: 'Proj.Independent',
+	namespace: 'BX.Proj.Independent',
 	sourceMaps: false,
 };

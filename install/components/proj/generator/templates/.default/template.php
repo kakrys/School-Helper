@@ -2,34 +2,25 @@
 /**
  * @var CMain $APPLICATION
  */
+
+Bitrix\Main\UI\Extension::load('proj.generator');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
-$subjects = [
-	9 => ['Math','Chemistry','Russian','English','Physics','Literature'],
-	8 => ['Math','Chemistry','English','Literature'],
-	7 => ['Math','Russian','English','Literature'],
-	6 => ['Math' => [
-		'Умножение и деление дробей', 'Отрицательные числа', 'Действия с отрицательными числами',
-		'Пропорции', 'Симметрия', 'Решение линейных уравнений', 'Составление математической модели',
-		'Проценты', 'Дробь от числа и число по дроби'
-	],
-		'Russian' => '']
-];
-$jsonData = json_encode($subjects);
-$this->addExternalJS("/local/components/proj/generator/templates/js/mainScript.js");
+
+$jsonData = json_encode($arResult['CST_DATA']);
 ?>
 	<div class="container-fluid mt-1 main d-flex" style="margin-top: 1%; flex-grow: 1;">
-		<div class="main-content d-flex" style="width: 100%; min-height: 100%; flex-grow: 1;">
-			<div class="d-flex flex-column" style="width: 50%; height: 100%;">
-				<div class="d-flex">
+		<div id="mainWorkingArea" class="main-content d-flex" style="width: 100%; min-height: 100%; flex-grow: 1;">
+			<div id="mainGeneratorWindow" class="d-flex flex-column" style="width: 50%; height: 100%;">
+				<div id="topMenu" class="d-flex">
 					<div class="btn-group" style="width: 33%; max-width: 33%;">
 						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="gradeDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
 							Выберите класс
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="gradeDropdown" style="overflow-y: auto; max-height: 10vh;">
-						<?php foreach(array_keys($subjects) as $grade):?>
-							<li><a class="dropdown-item" data-value="<?=$grade?>" onclick="changeGradeValue(this)"><?=$grade?> класс</a></li>
+						<?php foreach(array_keys($arResult['CST_DATA']) as $grade):?>
+							<li><a class="dropdown-item" data-value="<?=$grade?>" onclick="topMenu.changeGradeValue(this)"><?=$grade?> класс</a></li>
 						<?php endforeach;?>
 						</ul>
 					</div>
@@ -54,19 +45,19 @@ $this->addExternalJS("/local/components/proj/generator/templates/js/mainScript.j
 					<div class="container">
 						<div class="row row-cols-4">
 							<div class="col d-flex justify-content-center" style="padding: 1%;">
-								<a class="btn btn-secondary" onclick="addObjectToInstructions('text', 'lightgreen')" style="width: 100%; margin: 1%;">Текст</a>
+								<a class="btn btn-secondary" onclick="generator.addObjectToInstructions('text', 'lightgreen')" style="width: 100%; margin: 1%;">Текст</a>
 							</div>
 							<div class="col d-flex justify-content-center" style="padding: 1%;">
-								<a class="btn btn-secondary" onclick="addObjectToInstructions('rand.Number' , 'lightblue')" style="width: 100%; margin: 1%;">Случайное число</a>
+								<a class="btn btn-secondary" onclick="generator.addObjectToInstructions('rand.Number' , 'lightblue')" style="width: 100%; margin: 1%;">Случайное число</a>
 							</div>
 							<div class="col d-flex justify-content-center" style="padding: 1%;">
-								<a class="btn btn-secondary" onclick="deleteLastInstruction()" style="width: 100%; margin: 1%;">Удалить последний элемент</a>
+								<a class="btn btn-secondary" onclick="generator.deleteLastInstruction()" style="width: 100%; margin: 1%;">Удалить последний элемент</a>
 							</div>
 							<div class="col d-flex justify-content-center" style="padding: 1%;">
-								<a class="btn btn-secondary" onclick="clearInstructions()" style="width: 100%; margin: 1%;">Очистить поле инструкций</a>
+								<a class="btn btn-secondary" onclick="generator.clearInstructions()" style="width: 100%; margin: 1%;">Очистить поле инструкций</a>
 							</div>
 							<div class="col d-flex justify-content-center" style="padding: 1%;">
-								<a class="btn btn-secondary" onclick="addObjectToInstructions('image' , 'lightcoral')" style="width: 100%; margin: 1%;">Картинка</a>
+								<a class="btn btn-secondary" onclick="generator.addObjectToInstructions('image' , 'lightcoral')" style="width: 100%; margin: 1%;">Картинка</a>
 							</div>
 						</div>
 					</div>
@@ -86,9 +77,20 @@ $this->addExternalJS("/local/components/proj/generator/templates/js/mainScript.j
 			</div>
 		</div>
 	</div>
+
 <script>
-	Proj.ready(function () {
-		window.generator = new Proj.Independent.generator();
+	BX.ready(function () {
+		window.topMenu = new BX.Proj.Independent.ClassSubjectThemeMenu({
+			rootNodeId: 'topMenu',
+			data: <?=$jsonData;?>,
+		});
+		window.generator = new BX.Proj.Independent.Generator({
+			rootNodeId: 'mainGeneratorWindow',
+			optionClassName: 'optionator',
+		});
+		window.optionator = new BX.Proj.Independent.Optionator({
+			rootNodeId: 'mainWorkingArea',
+		});
 	})
 </script>
 <?php require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
