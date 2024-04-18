@@ -34,13 +34,3 @@ VALUES ('Умножение и деление дробей','В этой тем�
 	      '7','english');
 
 UPDATE b_user SET WORK_POSITION = 'admin' where ID = 1;
-
-	                  insert into proj_themes(NAME, DESCRIPTION, VIDEO_LINK, LITERATURE_LINK, USEFUL_LINK, SUMMARY_LINK, CLASS_NUMBER,SUBJECT_NAME)
-VALUES ('TEST1','В этой теме описаны основные принципы деления и умножения дробей. Основные правила, а также их использование',
-        'https://www.youtube.com/embed/aUJM2uj9ccU?si=EFkxOY8KSLCiH64d','https://resolventa.ru/dejstviya-s-drobyami','https://ru.onlinemschool.com/math/assistance/fraction/fraction_calc/',
-        'https://infourok.ru/konspekt-uroka-po-matematike-na-temu-umnozhenie-drobej-5-klass-5811245.html,https://up.bitrix.info/2023/module-4/team-6/finalproject/-/blob/materials_branch/install/components/proj/materials/templates/.default/template.php?ref_type=heads,https://www.youtube.com/watch?v=iMRdIhRJkFY','6','math');
-
-insert into proj_themes(NAME, DESCRIPTION, VIDEO_LINK, LITERATURE_LINK, USEFUL_LINK, CLASS_NUMBER,SUBJECT_NAME)
-VALUES ('TEST1','В этой теме описаны основные принципы деления и умножения дробей. Основные правила, а также их использование',
-        'https://www.youtube.com/embed/aUJM2uj9ccU?si=EFkxOY8KSLCiH64d','https://resolventa.ru/dejstviya-s-drobyami','https://ru.onlinemschool.com/math/assistance/fraction/fraction_calc/'
-        ,'6','math');

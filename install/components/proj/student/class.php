@@ -1,6 +1,7 @@
 <?php
 
 use Bitrix\Main\Context;
+use Proj\Independent\Services\UserService;
 
 class StudentComponent extends CBitrixComponent
 {
@@ -31,7 +32,10 @@ class StudentComponent extends CBitrixComponent
 			$updateField = array_key_first($data);
 			$newInfo = array_shift($data);
 			$funcName = 'updateUser' . $updateField;
-			$changeInfoError = \Proj\Independent\Services\UserService::$funcName($newInfo);
+			if (method_exists(UserService::class, (string)$funcName))
+			{
+				$changeInfoError = UserService::$funcName($newInfo);
+			}
 		}
 	}
 }
