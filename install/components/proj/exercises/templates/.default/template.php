@@ -9,17 +9,13 @@ $APPLICATION->SetTitle("Independent");
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 		<div class="main-content d-flex flex-column justify-content-center align-items-center border bg-light">
 			<p>
-				Выбранные темы:
-			</p>
-			<span>Пока тут заглушка</span>
-			<p>
-				Задачи по темам: заглушечным
+				Вариант: <?=$arResult['GENERATOR_CODE']?>
 			</p>
 			<div class="border bg-light" style="min-width: 70%; min-height: 30%;">
 				<?php $count = 1;foreach ($arResult['EXERCISES'] as $exercise):?>
 				<div class="border bg-light">
 					<div>
-						<p>Задание <?=$count?> по заглушечной теме с кодом[заглушка]</p>
+						<p>Задание <?=$count?></p>
 						<span><?=$exercise['EXERCISE_DESCRIPTION']?></span>
 						<span><?=$exercise['EXERCISE_CONDITION']?></span>
 						<?php $count++;?>

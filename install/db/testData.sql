@@ -1,15 +1,27 @@
 insert into proj_subject (SUBJECT_NAME)
 values ('Math'),('Russian'),('English'),('Literature'),('Chemistry'),('Physics');
 
-insert into proj_variant(generator_code, count, subject_id)
-VALUES ('hFDGdfu43nfds2345', 3, 1);
+# insert into proj_variant(generator_code, count, subject_id)
+# VALUES ('hFDGdfu43nfds2345', 3, 1);
 
-insert into proj_exercise(exercise_description, exercise_condition, exercise_generator_rules, generator_code, answer, exercise_addition_file_path)
+insert into proj_exercise(exercise_description, exercise_condition, exercise_generator_rules, generator_code, answer, exercise_addition_file_path,THEME_ID)
 VALUES
-    ('Вычислите выражение','(2+3*(9-17)+24/8-(|(56*sqrt(3*(1+2)^(4-1)-72)*2):4|-1))+2', null, null, '-100', null),
-    ('Вычислите выражение','2.3*3.1-10+14', null, null, '-100', null),
-    ('Вычислите выражение','123-15^2+(3*33-70+2.15^2)-11', null, null, '-100', null),
-    ('Вычислите выражение','|sqrt(121)+(sqrt(3^2+4^2)-3^5)|-10', null, null, '-100', null);
+    ('Вычислите выражение','(2+3*(9-17)+24/8-(|(56*sqrt(3*(1+2)^(4-1)-72)*2):4|-1))+2', null, null, '-100', null,1),
+    ('Вычислите выражение','2.3*3.1-10+14', null, null, '-100', null,1),
+    ('Вычислите выражение','123-15^2+(3*33-70+2.15^2)-11', null, null, '-100', null,2),
+    ('Вычислите выражение','|sqrt(121)+(sqrt(3^2+4^2)-3^5)|-10', null, null, '-100', null,2),
+    ('В каком слове верно выделена буква,обозначающая ударный звук','а)красИвее, б)укрАинский, в)газопрОвод, г)дОбыча',null,null,'а',null,3),
+    ('Какое слово пишется раздельно?', 'а)сколько(то), б)сколько(нибудь), в)(кое)о(чем), г)сколько(либо)',null,null,'в',null,3),
+    ('Найдите причастие, в суффиксе которого пропущена буква Я?', '1)беле...щий парус, 2)вер...щий в справедливость, 3)дремл...щий щенок, 4)бре...щийся человек',null,null,'2',null,3),
+    ('Укажите слово, в котором на месте пропуска пишется Ь.','1)надеть плащ..., 2)суп горяч..., 3)невтерпёж... сидеть, 4)увлеч...ся спортом',null,null,'4',null,4),
+    ('Какое слово пишется через дефис?','1) (по) немногу, 2) (по) прежнему, 3) (в) двоем, 4) (по) просту',null,null,'2',null,4);
+
+# insert into proj_variant(GENERATOR_CODE, CLASS_NUMBER, SUBJECT_NAME)
+# values ('13beda878d4932b72d8a816fb3b5f9f1','7','Russian'),
+#        ('74857d850dd8cf1f42f77f9c99d150fd','7','Russian');
+
+insert into proj_exercise_variant(VARIANT_ID, EXERCISE_ID)
+values (1,5),(1,6),(2,7),(2,8),(2,9);
 
 insert into proj_class(CLASS_NUMBER)
 VALUES ('1'),('2'),('3'),('4'),('5'),('6'),('7'),('8'),('9'),('10'),('11');

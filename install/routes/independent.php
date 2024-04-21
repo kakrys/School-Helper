@@ -21,8 +21,8 @@ return function (RoutingConfigurator $routes) {
 		$USER->Logout();
 		LocalRedirect('/');
 	});
-	$routes->get('/trainer', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
-	$routes->get('/exercises', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
+	$routes->get('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
+	$routes->get('/exercises/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
 	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
 	$routes->get('/information', new PublicPageController('/local/modules/proj.independent/views/information.php'));
 	$routes->get('/contacts', new PublicPageController('/local/modules/proj.independent/views/contacts.php'));
@@ -32,6 +32,7 @@ return function (RoutingConfigurator $routes) {
 	$routes->get('/about', new PublicPageController('/local/modules/proj.independent/views/about.php'));
 	$routes->get('/generator', new PublicPageController('/local/modules/proj.independent/views/generator.php'));
 	$routes->get('/test', new PublicPageController('/local/modules/proj.independent/views/test.php'));
+	$routes->post('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 
 	$routes->any('/{route}',new PublicPageController('/local/modules/proj.independent/views/404.php'));
 };
