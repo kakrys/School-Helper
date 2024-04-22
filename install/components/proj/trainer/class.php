@@ -63,7 +63,7 @@ class TrainerComponent extends CBitrixComponent
 					if ($numberOfExercise !== '')
 					{
 						$exercises = ExerciseTable::getList([
-																'select' => ['ID'],
+																'select' => ['ID','ANSWER'],
 																'filter' => ['THEME_ID' => $themeID],
 																'runtime' => [
 																	'RAND' => [
@@ -83,6 +83,7 @@ class TrainerComponent extends CBitrixComponent
 									'VARIANT_ID' => $variantID,
 								]
 							);
+							$this->arResult['STUDENT_ANSWERS'][$exercise['ID']] = $exercise['ANSWER'];
 						}
 					}
 				}

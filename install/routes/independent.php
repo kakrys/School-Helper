@@ -27,7 +27,9 @@ return function (RoutingConfigurator $routes) {
 	$routes->get('/information', new PublicPageController('/local/modules/proj.independent/views/information.php'));
 	$routes->get('/contacts', new PublicPageController('/local/modules/proj.independent/views/contacts.php'));
 	$routes->get('/bugreport', new PublicPageController('/local/modules/proj.independent/views/bugreport.php'));
-	$routes->get('/check', new PublicPageController('/local/modules/proj.independent/views/check.php'));
+	$routes->get('/check/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/check.php'));
+	$routes->post('/check/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/check.php'));
+
 	$routes->get('/answers', new PublicPageController('/local/modules/proj.independent/views/answers.php'));
 	$routes->get('/about', new PublicPageController('/local/modules/proj.independent/views/about.php'));
 	$routes->get('/generator', new PublicPageController('/local/modules/proj.independent/views/generator.php'));
