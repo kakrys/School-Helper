@@ -21,6 +21,11 @@ return function (RoutingConfigurator $routes) {
 		$USER->Logout();
 		LocalRedirect('/');
 	});
+	$routes->post('/find', function () {
+		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+		$variant = $request->getPostList()->toArray()['Variant'];
+		LocalRedirect("/exercises/$variant");
+	});
 	$routes->get('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 	$routes->get('/exercises/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
 	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));

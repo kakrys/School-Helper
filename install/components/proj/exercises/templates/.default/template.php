@@ -5,6 +5,10 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
+if (empty($arResult['EXERCISES']))
+{
+	LocalRedirect('/404');
+}
 ?>
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 		<div class="main-content d-flex flex-column justify-content-center align-items-center border bg-light">

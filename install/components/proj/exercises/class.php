@@ -12,13 +12,7 @@ class Exercises extends CBitrixComponent
 	{
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 		$generatorCode = $request->getQueryList()->toArray()['generator_code'];
-		$result = \Proj\Independent\Model\ExerciseTable::getList(['select' => ['ID',
-			'EXERCISE_DESCRIPTION','EXERCISE_CONDITION', 'EXERCISE_GENERATOR_RULES','GENERATOR_CODE', 'ANSWER', 'EXERCISE_ADDITION_FILE_PATH','THEME_ID'],
-																	 'filter' => [
-																		 '=VARIANTS.GENERATOR_CODE' => $generatorCode]]);
-		$selectionResult = $result->fetchAll();
-		$this->arResult['EXERCISES'] = $selectionResult;
+		$this->arResult['EXERCISES'] = \Proj\Independent\Repository\ExercisesRepository::getExercisesByVariant($generatorCode);
 		$this->arResult['GENERATOR_CODE'] = $generatorCode;
 	}
-
 }

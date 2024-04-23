@@ -9,21 +9,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 }
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
-//ТЕСТОВЫЕ ДАННЫЕ, НАДО ПЕРЕВЕСТИ НА БД
-$themes = [
-	'Умножение и деление дробей',
-	'Отрицательные числа',
-	'Действия с отрицательными числами',
-	'Пропорции',
-	'Симметрия',
-	'Решение линейных уравнений',
-	'Составление математической модели',
-	'Проценты',
-	'Дробь от числа и число по дроби',
-];
-$variants[] = ['name' => 'Входной', 'id' => 'l2j3b2'];
-$variants[] = ['name' => 'Итоговый', 'id' => '23klm4bnrklj'];
-//КОНЕЦ ТЕСТОВЫХ ДАННЫХ
 ?>
 	<div class="container-fluid mt-1 main" style="margin-top: 1%;flex-grow: 1;">
 		<div class="main-content d-flex" style="width: 100%; min-height: 100%;">
@@ -31,15 +16,15 @@ $variants[] = ['name' => 'Итоговый', 'id' => '23klm4bnrklj'];
 				<p>
 					Готовые варианты
 				</p>
-				<?php
-				foreach ($variants as $var): ?>
 					<div>
-						<a class="btn" href="/exercises?<?= $var['id'] ?>"> <?= $var['name'] ?></a>
+						<a data-bs-toggle="collapse" href="#collapseFindVariant" role="button" class="btn" aria-expanded="false" aria-controls="collapseVariant">
+								Найти готовый вариант
+						</a>
 					</div>
-				<?php
-				endforeach; ?>
 				<a data-bs-toggle="collapse" href="#collapseVariant" role="button" class="btn" aria-expanded="false" aria-controls="collapseVariant">
+					<p>
 					Составить свой вариант
+					</p>
 				</a>
 				<div class="main-content d-flex" style="flex-grow: 1;"></div>
 			</div>
@@ -59,22 +44,32 @@ $variants[] = ['name' => 'Итоговый', 'id' => '23klm4bnrklj'];
 							<div class="col-auto">
 								<input type="text" name="<?=$theme['ID']?>" id="inputNumberOfExercise" class="form-control" aria-describedby="exerciseHelpInline">
 							</div>
-							<div class="col-auto">
-    							<span id="exerciseHelpInline" class="form-text">
-      								Максимум "Х" заданий
-    							</span>
-							</div>
 						</div>
 						<?php endforeach; ?>
 						</p>
 						<p>
 							<button type="submit" class="btn btn-primary">Создать вариант</button>
-<!--							<a class="btn btn-link" href="/exercises">варианта</a>-->
 						</p>
 						</form>
 					</div>
 				</div>
+				<div class="collapse" id="collapseFindVariant">
+					<div class="card card-body">
+						<p>
+							Введите номер варианта
+						</p>
+						<form method="post" action="/find">
+							<div class="col-auto">
+								<input type="text" name="Variant" id="inputVariant" class="form-control" aria-describedby="exerciseHelpInline">
+							</div>
+							<p>
+								<button type="submit" class="btn btn-primary">Найти</button>
+							</p>
+						</form>
+					</div>
+				</div>
 			</div>
+
 		</div>
 	</div>
 <?php

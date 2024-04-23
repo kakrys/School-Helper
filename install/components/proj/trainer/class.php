@@ -8,7 +8,6 @@ class TrainerComponent extends CBitrixComponent
 	public function executeComponent()
 	{
 		$this->generateUserVariant();
-		$this->testFunc();
 		$this->fetchThemes();
 		$this->includeComponentTemplate();
 	}
@@ -23,18 +22,6 @@ class TrainerComponent extends CBitrixComponent
 		$this->arResult['SUBJECT'] = $subject;
 		$this->arResult['THEMES'] = MaterialsRepository::getThemesByClassAndSubject($class, $subject);
 	}
-
-	protected function testFunc()
-	{
-		$result = ExerciseTable::getList([
-											 'select' => ['*'],
-											 'filter' => [
-												 '=THEME_ID' => 3,
-											 ],
-										 ]);
-		$this->arResult['EXERCISE'] = $result->fetchAll();
-	}
-
 	protected function generateUserVariant()
 	{
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
@@ -55,6 +42,7 @@ class TrainerComponent extends CBitrixComponent
 					'SUBJECT_NAME' => $subject,
 				]
 			);
+			//REFACTOR THIS!!!!!!!!!!!!!!!!
 			if ($result->isSuccess())
 			{
 				$variantID = $result->getId();
@@ -74,7 +62,6 @@ class TrainerComponent extends CBitrixComponent
 																'order' => ['RAND' => 'ASC'],
 																'limit' => $numberOfExercise,
 															]);
-						$exercises = $exercises->fetchAll();
 						foreach ($exercises as $exercise)
 						{
 							\Proj\Independent\Model\ExerciseVariantTable::add(
