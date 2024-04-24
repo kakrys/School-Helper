@@ -1,5 +1,9 @@
-import {Type} from 'main.core';
-
+import {Type, Loc} from 'main.core';
+import {OptionList as OL} from 'proj.operators';
+import {OperatorList as OpL} from 'proj.constructor';
+import {Controls} from "./Controls";
+const OptionList = BX.Proj.Independent.OptionList;
+const OperatorList = BX.Proj.Independent.OperatorList;
 export class Generator {
 	constructor(options = {})
 	{
@@ -17,55 +21,177 @@ export class Generator {
 		{
 			throw new Error(`Generator: element with id "${this.rootNodeId}" not found`);
 		}
+		this.expressionViewType = 'full';
+		this.controlsContainer = document.getElementById(options.controlsContainer);
 		this.optionClassName = options.optionClassName;
-		this.instructionsContainer = document.getElementById('instructionsContainer');
-		this.parametersContainer = document.getElementById('parametersContainer');
-		this.addedInstructions = 0;
+		this.instructionsContainer = document.getElementById(options.instructionsNodeId);
+		this.parametersContainer = document.getElementById(options.settingsNodeId);
+		this.instructions = new OptionList();
+		this.expressionInstruction = new OperatorList();
+		this.expressionList = [];
+		this.currentGeneratorWindow = this.instructions;
+		this.generatorWindowType = 'task';
+		this.controlsContainer.innerHTML = Controls.showTaskControls();
 	}
-	addObjectToInstructions(type, color)
+	backToGenerator()
 	{
-		if (this.instructionsContainer.innerHTML === '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>')
-		{
-			this.addedInstructions = 1;
-			this.instructionsContainer.innerHTML = '<span id="instruction'  + this.addedInstructions + '" data-instruction="' + this.addedInstructions + '" onclick="' + this.optionClassName + '.showOptions(this)" class="border btn" style="padding: 1%; margin:1%; background:' + color + ';">' + type + '</span>';
-		}
-		else
-		{
-			this.addedInstructions += 1;
-			this.instructionsContainer.innerHTML += '<span id="instruction' + this.addedInstructions + '" data-instruction="' + this.addedInstructions + '" onclick="' + this.optionClassName + '.showOptions(this)" class="border btn" style="padding: 1%; margin:1%; background:' + color + ';">' + type + '</span>';
-		}
+		document.getElementById('ExpressionType').innerHTML='задача';
+		this.generatorWindowType = 'task';
+		this.currentGeneratorWindow = this.instructions;
+		this.controlsContainer.innerHTML = Controls.showTaskControls();
+		this.renderInstructions();
 	}
-	clearInstructions()
+	openExerciseMenu(id)
 	{
-		this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
-		this.addedInstructions = 0;
+		if (this.expressionList[id] === undefined)
+		{
+			this.expressionList[id] = new OperatorList();
+		}
+		this.generatorWindowType = 'expression';
+		this.currentGeneratorWindow = this.expressionList[id];
+		let element = document.getElementById('ExpressionType');
+		element.innerHTML = `[объект:Выражение_№${id}]`;
+		this.controlsContainer.innerHTML = Controls.showCurrentExerciseControls(id);
 		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+		this.renderInstructions();
 	}
-	deleteLastInstruction()
+	changeExpressionType()
 	{
-		let addedInstruction = document.querySelectorAll('[id^="instruction"]');
-		if (addedInstruction.length === 0)
+		let element = document.getElementById('ExpressionType');
+		switch(element.innerHTML)
 		{
-			return;
+			case 'задача':
+				element.innerHTML = 'выражение';
+				this.generatorWindowType = 'exercise';
+				this.currentGeneratorWindow = this.expressionInstruction;
+				this.controlsContainer.innerHTML = Controls.showExerciseControls();
+				this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+				this.renderInstructions();
+				break;
+			case 'выражение':
+				element.innerHTML = 'задача';
+				this.generatorWindowType = 'task';
+				this.currentGeneratorWindow = this.instructions;
+				this.controlsContainer.innerHTML = Controls.showTaskControls();
+				this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+				this.renderInstructions();
+				break;
 		}
-		let presavedInstruction = 0;
-		addedInstruction.forEach(element =>
-		{
-			if (element.getAttribute('data-instruction') > presavedInstruction)
-			{
-				presavedInstruction = element.getAttribute('data-instruction');
-			}
-		});
-		let elements = document.querySelectorAll('[data-instruction="' + presavedInstruction + '"]');
-		elements.forEach(function(element)
-		{
-			element.remove();
-		});
-		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
-		this.addedInstructions -= 1;
-		if (this.addedInstructions === 0)
+	}
+	dumpInstructions()
+	{
+		console.log(this.instructions);
+		this.instructions.list.forEach(instruction => {
+			console.log(instruction);
+		})
+	}
+	showOption(id)
+	{
+		this.currentGeneratorWindow.showOption(id, this.parametersContainer);
+	}
+	renderInstructions()
+	{
+		this.expressionViewType = 'full';
+		if (this.currentGeneratorWindow.addedInstructions === 0)
 		{
 			this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 		}
+		else
+		{
+			this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderInstructions();
+		}
 	}
+	addInstruction(type, color)
+	{
+		this.currentGeneratorWindow.addInstruction(type, color);
+		this.renderInstructions();
+	}
+	clearInstructions(id)
+	{
+		this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
+		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+		if (id === undefined)
+		{
+			if (this.generatorWindowType === 'exercise')
+			{
+				this.expressionInstruction = new OperatorList();
+				this.currentGeneratorWindow = this.expressionInstruction;
+			}
+			else
+			{
+				this.instructions = new OptionList();
+				this.currentGeneratorWindow = this.instructions;
+			}
+		}
+		else
+		{
+			this.expressionList[id] = new OperatorList();
+			this.currentGeneratorWindow = this.expressionList[id];
+		}
+		this.renderInstructions();
+
+	}
+	deleteLastInstruction(id)
+	{
+		if (this.currentGeneratorWindow.addedInstructions > 0)
+		{
+			if (this.currentGeneratorWindow.openedInstruction === this.currentGeneratorWindow.addedInstructions - 1)
+			{
+				this.currentGeneratorWindow.openedInstruction = -1;
+				this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+			}
+			if (this.currentGeneratorWindow.list[this.currentGeneratorWindow.addedInstructions - 1].type === 'customEx')
+			{
+				this.expressionList[this.currentGeneratorWindow.addedInstructions - 1] = undefined;
+			}
+			this.currentGeneratorWindow.deleteLastInstruction();
+		}
+		if (id === undefined)
+		{
+			if (this.generatorWindowType === 'exercise')
+			{
+				this.expressionInstruction = this.currentGeneratorWindow;
+				this.currentGeneratorWindow = this.expressionInstruction;
+			}
+			else
+			{
+				this.instructions = this.currentGeneratorWindow;
+
+				this.currentGeneratorWindow = this.instructions;
+			}
+		}
+		else
+		{
+			this.expressionList[id] = this.currentGeneratorWindow;
+			this.currentGeneratorWindow = this.expressionList[id];
+		}
+		this.renderInstructions();
+	}
+
+	movePointer(direction)
+	{
+		if(this.currentGeneratorWindow instanceof OperatorList)
+		{
+			this.currentGeneratorWindow.movePointer(direction);
+			this.renderInstructions();
+		}
+	}
+	renderTextView()
+	{
+		if (this.expressionViewType === 'full')
+		{
+			this.expressionViewType = 'text'
+			if (this.currentGeneratorWindow instanceof OperatorList)
+			{
+				this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderTextView();
+			}
+		}
+		else
+		{
+			this.expressionViewType = 'full'
+			this.renderInstructions();
+		}
+	}
+
+	send
 }

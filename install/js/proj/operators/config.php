@@ -5,12 +5,10 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 }
 
 return [
-	'css' => 'dist/generator.bundle.css',
-	'js' => 'dist/generator.bundle.js',
+	'css' => 'dist/operators.bundle.css',
+	'js' => 'dist/operators.bundle.js',
 	'rel' => [
 		'main.core',
-		'proj.operators',
-		'proj.constructor',
 	],
 	'skip_core' => false,
 ];
