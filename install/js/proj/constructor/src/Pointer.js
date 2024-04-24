@@ -17,7 +17,7 @@ export class Pointer extends Operator
 		this.isDelitable = false;
 		this.id = -1;
 		this.pos = 0;
-		this.textView = '>|<'
+		this.textView = '|<'
 	}
 	showOption()
 	{

@@ -32,8 +32,6 @@ export class OperatorList extends OptionList{
 			this.list.splice(this.pointerPosition + 1);
 			listPart = listPart.splice(this.pointerPosition + 1);
 			this.list.push(newOperator);
-			console.log(this.list)
-			console.log(listPart)
 			this.list = this.list.concat(listPart);
 		}
 		else
@@ -48,16 +46,16 @@ export class OperatorList extends OptionList{
 		let newOperator = '';
 		switch (type){
 			case 'ABS':
-				newOperator = new AbsoluteOperator({id: this.idCounter, type: type, color: color, textView: '|', PairId: this.idCounter + 1});
+				newOperator = new AbsoluteOperator({id: this.idCounter, type: type, color: color, textView: '|', PairId: this.idCounter + 1, isOperator: false});
 				this.checkPointerPosition(newOperator);
 				this.movePointer('right');
-				newOperator = new AbsoluteOperator({id: this.idCounter, type: type, color: color, textView: '|', PairId: this.idCounter - 1});
+				newOperator = new AbsoluteOperator({id: this.idCounter, type: type, color: color, textView: '|', PairId: this.idCounter - 1, isOperator: false});
 				break;
 			case 'Bracket':
-				newOperator = new BracketOperator({id: this.idCounter, type: type, color: color, textView: '(', PairId: this.idCounter + 1});
+				newOperator = new BracketOperator({id: this.idCounter, type: type, color: color, textView: '(', PairId: this.idCounter + 1, isOperator: false});
 				this.checkPointerPosition(newOperator);
 				this.movePointer('right');
-				newOperator = new BracketOperator({id: this.idCounter, type: type, color: color, textView: ')', PairId: this.idCounter - 1});
+				newOperator = new BracketOperator({id: this.idCounter, type: type, color: color, textView: ')', PairId: this.idCounter - 1, isOperator: false});
 				break;
 			case 'Div':
 				newOperator = new DivOperator({id: this.idCounter, type: type, color: color, textView: ':'});
@@ -78,7 +76,7 @@ export class OperatorList extends OptionList{
 				newOperator = new PowerOperator({id: this.idCounter, type: type, color: color, textView: '^'});
 				break;
 			case 'rand.Number':
-				newOperator = new RandNumberOperator({id: this.idCounter, type: type, color: color, textView: '[X]'});
+				newOperator = new RandNumberOperator({id: this.idCounter, type: type, color: color, textView: '[X]', isOperator: false});
 				break;
 			case 'Rand.Operation':
 				newOperator = new RandomOperator({id: this.idCounter, type: type, color: color, textView: '?¿'});
@@ -87,7 +85,7 @@ export class OperatorList extends OptionList{
 				newOperator = new RootOperator({id: this.idCounter, type: type, color: color, textView: '√¯'});
 				break;
 			case 'Answer':
-				newOperator = new AnswerOperator({id: this.idCounter, type: type, color: color, textView: '=>'});
+				newOperator = new AnswerOperator({id: this.idCounter, type: type, color: color, textView: '<==>'});
 				break;
 			default:
 				newOperator = new Operator({id: this.idCounter, type: type, color: color, textView: 'null'});
@@ -100,7 +98,7 @@ export class OperatorList extends OptionList{
 			this.movePointer('left');
 		}
 	}
-	deleteLastInstruction()
+	deleteLastInstruction(container)
 	{
 		if (this.pointerPosition === 0 || this.addedInstructions === 1)
 		{
@@ -140,6 +138,10 @@ export class OperatorList extends OptionList{
 			this.pointerPosition -= 1;
 			this.addedInstructions -= 1;
 		}
+		if(this.list.length === 1)
+		{
+			container.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+		}
 	}
 	showOption(id, container)
 	{
@@ -148,18 +150,31 @@ export class OperatorList extends OptionList{
 			this.openedInstruction = -1;
 		}
 		if (id === this.openedInstruction) return;
-//		this.saveOpenedInstructionData();
+		this.saveOpenedInstructionData();
 		this.openedInstruction = id;
 		this.list.forEach(operator => {
 			if (operator.id === id)
 			{
 				container.innerHTML = operator.showOption();
-				this.list[id].registerEvents();
-				this.list[id].postUpdate();
+				this.list[this.list.indexOf(operator)].registerEvents();
+				this.list[this.list.indexOf(operator)].postUpdate();
 			}
 		});
-
 	}
+	saveOpenedInstructionData()
+	{
+		if (this.openedInstruction === -1)
+		{
+			return;
+		}
+		this.list.forEach(operator => {
+			if(this.openedInstruction === operator.id)
+			{
+				operator.save();
+			}
+		});
+	}
+
 
 	movePointer(direction)
 	{
@@ -196,5 +211,18 @@ export class OperatorList extends OptionList{
 			html += instruction.render('text');
 		});
 		return html;
+	}
+
+	saveAllData()
+	{
+		let symbolicExpression = '';
+		let generatorInstruction = [];
+		this.list.forEach(operator => {
+			if (operator.id === -1) return;
+			symbolicExpression += operator.textView;
+			generatorInstruction.push(operator.getGeneratorData());
+		});
+		generatorInstruction.push(symbolicExpression);
+		return generatorInstruction;
 	}
 }

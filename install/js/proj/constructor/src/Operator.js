@@ -11,7 +11,11 @@ export class Operator extends Option
 			this.textView = 'null';
 		}
 		this.textView = options.textView;
-		this.isOperator = true;
+		this.isOperator = true
+		if (options.isOperator !== undefined)
+		{
+			this.isOperator = options.isOperator;
+		}
 		this.isDelitable = true;
 		this.isPair = false;
 		this.PairId = null;
@@ -30,8 +34,16 @@ export class Operator extends Option
 	{
 		let html = `<p class="d-flex">Описание оператора c id=${this.id} Тип:[${this.optionName}]</p>`;
 		html += `<div class="form-group col-12">
-					<textarea class="form-control" id="textArea_${this.id}" rows="3" placeholder="Ввведите текст задания">${this.text}</textarea>
+					У этого оператора нет особых настроек. Выберите другой оператор для настройки
 				</div>`;
 		return html;
+	}
+	getGeneratorData()
+	{
+		return {};
+	}
+	save()
+	{
+
 	}
 }
