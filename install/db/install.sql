@@ -73,4 +73,20 @@ CREATE TABLE IF NOT EXISTS proj_themes
 	CLASS_NUMBER varchar(100) not null,
 	SUBJECT_NAME varchar(100) not null,
 	PRIMARY KEY (ID)
-)
+);
+
+CREATE TABLE IF NOT EXISTS proj_bug_categories
+(
+	ID int auto_increment not null,
+	NAME varchar(200) not null,
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE IF NOT EXISTS proj_bug_report
+(
+	ID int auto_increment not null,
+	CATEGORY_ID int not null,
+	PAGE varchar(100) not null,
+	DESCRIPTION varchar(1000) not null,
+	PRIMARY KEY (ID)
+);

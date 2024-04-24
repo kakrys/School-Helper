@@ -26,6 +26,10 @@ return function (RoutingConfigurator $routes) {
 		$variant = $request->getPostList()->toArray()['Variant'];
 		LocalRedirect("/exercises/$variant");
 	});
+	$routes->post('/sendreport', function () {
+		\Proj\Independent\Repository\BugRepository::addBugReport();
+		LocalRedirect('/');
+	});
 	$routes->get('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 	$routes->get('/exercises/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
 	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));

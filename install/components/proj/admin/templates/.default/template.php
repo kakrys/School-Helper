@@ -20,7 +20,7 @@ global $USER;
 				<p style="align-self: center;">Роль: Админ</p>
 				</span>
 				<a href ='/generator' class="btn align-self-center"> Генератор</a>
-				<a href ='#' class="btn align-self-center" data-target="#statistics"> Какая-то кнопка</a>
+				<a href ='#' class="btn align-self-center" data-target="#bugs"> Сообщения о багах</a>
 			</div>
 			<div style="flex-grow: 1;"></div>
 		</div>
@@ -28,13 +28,26 @@ global $USER;
 			<div class="d-flex flex-column" style="margin-left: 1%;">
 				<div class="border bg-light">
 
-					<div id="statistics" class="collapse">
-<!--						МЕСТО ДЛЯ ИЗМЕНЕНИЯ ВКЛАДКИ 'СТАТИСТИКА'-->
+					<div id="bugs" class="collapse">
 						<div class="d-flex flex-column">
-							<strong>coming soon</strong>
-							<div class="spinner-border text-info" role="status">
-								<span class="visually-hidden">Загрузка...</span>
-							</div>
+							<table class="table">
+								<thead>
+								<tr>
+									<th scope="col">Категория</th>
+									<th scope="col">Описание</th>
+									<th scope="col">Страница</th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($arResult['BUG_LIST'] as $bug): ?>
+								<tr>
+									<td><?=$bug['CATEGORY_NAME']?></td>
+									<td><?=$bug['DESCRIPTION']?></td>
+									<td><?=$bug['PAGE']?></td>
+								</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
