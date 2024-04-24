@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS proj_exercise
     GENERATOR_CODE VARCHAR(100),
     ANSWER VARCHAR(100) NOT NULL,
     EXERCISE_ADDITION_FILE_PATH VARCHAR(200),
-
+    THEME_ID int not null,
     PRIMARY KEY (ID)
 );
 
@@ -38,11 +38,11 @@ CREATE TABLE IF NOT EXISTS proj_variant
 (
     ID INT AUTO_INCREMENT NOT NULL,
     GENERATOR_CODE varchar(900),
-    COUNT int NOT NULL,
-    SUBJECT_ID INT NOT NULL,
+    CLASS_NUMBER varchar(100) not null,
+    SUBJECT_NAME varchar(100) not null,
+	NAME varchar(100),
 
-    PRIMARY KEY (ID),
-    FOREIGN KEY (SUBJECT_ID) REFERENCES proj_subject(ID)
+    PRIMARY KEY (ID)
 );
 
 CREATE TABLE IF NOT EXISTS proj_exercise_variant
@@ -50,8 +50,7 @@ CREATE TABLE IF NOT EXISTS proj_exercise_variant
     EXERCISE_ID INT NOT NULL,
     VARIANT_ID INT NOT NULL,
 
-    FOREIGN KEY (EXERCISE_ID) REFERENCES proj_exercise(ID),
-    FOREIGN KEY (VARIANT_ID) REFERENCES proj_variant(ID)
+    primary key (EXERCISE_ID,VARIANT_ID)
 );
 
 
@@ -74,4 +73,20 @@ CREATE TABLE IF NOT EXISTS proj_themes
 	CLASS_NUMBER varchar(100) not null,
 	SUBJECT_NAME varchar(100) not null,
 	PRIMARY KEY (ID)
-)
+);
+
+CREATE TABLE IF NOT EXISTS proj_bug_categories
+(
+	ID int auto_increment not null,
+	NAME varchar(200) not null,
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE IF NOT EXISTS proj_bug_report
+(
+	ID int auto_increment not null,
+	CATEGORY_ID int not null,
+	PAGE varchar(100) not null,
+	DESCRIPTION varchar(1000) not null,
+	PRIMARY KEY (ID)
+);

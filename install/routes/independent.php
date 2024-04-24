@@ -21,17 +21,29 @@ return function (RoutingConfigurator $routes) {
 		$USER->Logout();
 		LocalRedirect('/');
 	});
-	$routes->get('/trainer', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
-	$routes->get('/exercises', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
+	$routes->post('/find', function () {
+		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+		$variant = $request->getPostList()->toArray()['Variant'];
+		LocalRedirect("/exercises/$variant");
+	});
+	$routes->post('/sendreport', function () {
+		\Proj\Independent\Repository\BugRepository::addBugReport();
+		LocalRedirect('/');
+	});
+	$routes->get('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
+	$routes->get('/exercises/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
 	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
 	$routes->get('/information', new PublicPageController('/local/modules/proj.independent/views/information.php'));
 	$routes->get('/contacts', new PublicPageController('/local/modules/proj.independent/views/contacts.php'));
 	$routes->get('/bugreport', new PublicPageController('/local/modules/proj.independent/views/bugreport.php'));
-	$routes->get('/check', new PublicPageController('/local/modules/proj.independent/views/check.php'));
+	$routes->get('/check/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/check.php'));
+	$routes->post('/check/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/check.php'));
+
 	$routes->get('/answers', new PublicPageController('/local/modules/proj.independent/views/answers.php'));
 	$routes->get('/about', new PublicPageController('/local/modules/proj.independent/views/about.php'));
 	$routes->get('/generator', new PublicPageController('/local/modules/proj.independent/views/generator.php'));
 	$routes->get('/test', new PublicPageController('/local/modules/proj.independent/views/test.php'));
+	$routes->post('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 
 	$routes->any('/{route}',new PublicPageController('/local/modules/proj.independent/views/404.php'));
 };

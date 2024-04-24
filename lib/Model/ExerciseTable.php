@@ -6,6 +6,9 @@ use Bitrix\Main\Localization\Loc,
 	Bitrix\Main\ORM\Fields\IntegerField,
 	Bitrix\Main\ORM\Fields\StringField,
 	Bitrix\Main\ORM\Fields\Validators\LengthValidator;
+use Bitrix\Main\ORM\Fields\Relations\ManyToMany;
+use Bitrix\Main\ORM\Fields\Relations\Reference;
+use Bitrix\Main\ORM\Query\Join;
 
 Loc::loadMessages(__FILE__);
 
@@ -21,6 +24,7 @@ Loc::loadMessages(__FILE__);
  * <li> GENERATOR_CODE string(100) optional
  * <li> ANSWER string(100) mandatory
  * <li> EXERCISE_ADDITION_FILE_PATH string(200) optional
+ * <li> THEME_NAME string(100) optional
  * </ul>
  *
  * @package Bitrix\Exercise
@@ -97,6 +101,22 @@ class ExerciseTable extends DataManager
 					'title' => Loc::getMessage('EXERCISE_ENTITY_EXERCISE_ADDITION_FILE_PATH_FIELD')
 				]
 			),
+			new IntegerField(
+				'THEME_ID',
+				[
+					'required' => true,
+					'title' => Loc::getMessage('EXERCISE_ENTITY_THEME_ID_FIELD')
+				]
+			),
+			new Reference(
+				'THEME',
+				ThemesTable::class,
+				Join::on('this.THEME_ID','ref.ID')
+			),
+			(new ManyToMany(
+				'VARIANTS',
+				VariantTable::class)
+			)->configureTableName('proj_exercise_variant'),
 		];
 	}
 
@@ -169,6 +189,18 @@ class ExerciseTable extends DataManager
 	{
 		return [
 			new LengthValidator(null, 200),
+		];
+	}
+
+	/**
+	 * Returns validators for THEME_NAME field.
+	 *
+	 * @return array
+	 */
+	public static function validateThemeName()
+	{
+		return [
+			new LengthValidator(null, 100),
 		];
 	}
 }

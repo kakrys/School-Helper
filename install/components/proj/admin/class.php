@@ -7,6 +7,7 @@ class AdminComponent extends CBitrixComponent
 	public function executeComponent()
 	{
 		$this->checkRole();
+		$this->fetchBugList();
 		$this->includeComponentTemplate();
 	}
 	protected function checkRole(): void
@@ -16,6 +17,11 @@ class AdminComponent extends CBitrixComponent
 		{
 			LocalRedirect('/login');
 		}
+	}
+
+	protected function fetchBugList()
+	{
+		$this->arResult['BUG_LIST'] = \Proj\Independent\Repository\BugRepository::getBugListForAdmin();
 	}
 
 }
