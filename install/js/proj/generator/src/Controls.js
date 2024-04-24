@@ -92,7 +92,7 @@ export class Controls
 		</div>
 		<div class="row row-cols-4" style="width: 100%;">
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
-				<a class="btn btn-secondary" onclick="generator.renderTextView()" style="width: 100%; margin: 1%; background:lightsteelblue;">Символьное представление</a>
+				<a class="btn btn-secondary" onclick="generator.changeViewType()" style="width: 100%; margin: 1%; background:lightsteelblue;">Переключить представление</a>
 			</div>
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				
@@ -159,7 +159,7 @@ export class Controls
 		</div>
 		<div class="row row-cols-4" style="width: 100%;">
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
-				<a class="btn btn-secondary" onclick="generator.renderTextView()" style="width: 100%; margin: 1%; background:lightsteelblue;">Символьное представление</a>
+				<a class="btn btn-secondary" onclick="generator.changeViewType()" style="width: 100%; margin: 1%; background:lightsteelblue;">Переключить представление</a>
 			</div>
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				

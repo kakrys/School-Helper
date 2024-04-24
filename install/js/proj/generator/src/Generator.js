@@ -26,6 +26,7 @@ export class Generator {
 		this.optionClassName = options.optionClassName;
 		this.instructionsContainer = document.getElementById(options.instructionsNodeId);
 		this.parametersContainer = document.getElementById(options.settingsNodeId);
+		this.previewContainer = document.getElementById(options.previewContainer)
 		this.instructions = new OptionList();
 		this.expressionInstruction = new OperatorList();
 		this.expressionList = [];
@@ -91,6 +92,11 @@ export class Generator {
 	}
 	renderInstructions()
 	{
+		if (this.currentGeneratorWindow instanceof OperatorList && this.expressionViewType === 'text')
+		{
+			this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderTextView();
+			return;
+		}
 		this.expressionViewType = 'full';
 		if (this.currentGeneratorWindow.addedInstructions === 0)
 		{
@@ -144,7 +150,7 @@ export class Generator {
 			{
 				this.expressionList[this.currentGeneratorWindow.addedInstructions - 1] = undefined;
 			}
-			this.currentGeneratorWindow.deleteLastInstruction();
+			this.currentGeneratorWindow.deleteLastInstruction(this.parametersContainer);
 		}
 		if (id === undefined)
 		{
@@ -165,7 +171,7 @@ export class Generator {
 			this.expressionList[id] = this.currentGeneratorWindow;
 			this.currentGeneratorWindow = this.expressionList[id];
 		}
-		this.renderInstructions();
+		this.renderInstructions(this.parametersContainer);
 	}
 
 	movePointer(direction)
@@ -176,7 +182,7 @@ export class Generator {
 			this.renderInstructions();
 		}
 	}
-	renderTextView()
+	changeViewType()
 	{
 		if (this.expressionViewType === 'full')
 		{
@@ -193,5 +199,20 @@ export class Generator {
 		}
 	}
 
-	send
+	generatePreview()
+	{
+		let data = this.currentGeneratorWindow.saveAllData();
+		BX.ajax.runAction('proj:independent.Generator.getData',
+			{
+				data:
+					{
+					genSett: data,
+				}
+			}).then((response) => {this.previewContainer.innerHTML = response.data});
+
+	}
 }
+
+
+//BX.ajax.runAction('proj:independent.Generator.getData')
+//BX.ajax.runAction('proj:independent.Контроллер.Действие')

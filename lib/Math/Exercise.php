@@ -1,4 +1,6 @@
 <?php
+
+namespace Proj\Independent\Math;
 class Exercise
 {
 	/**
@@ -17,16 +19,23 @@ class Exercise
 	public function __construct(string $generatorCode, string $generatorRules)
 	{
 		$this->generatorCode = $generatorCode;
-		$this->seed = hexdec($generatorCode);
+		$this->seed = intval(hexdec($generatorCode));
 		$this->generatorRules = $generatorRules;
 		$this->constructExercise();
 	}
 
 	public function constructExercise()
 	{
-		mt_srand($this->seed);
+		#mt_srand($this->seed);
 		$exercise = '';
-		$this->stringExercise = $exercise;
+		$rules = $this->generatorRules;
+		while(str_contains($rules, '[X]'))
+		{
+			$number = (string)mt_rand();
+			$rules = str_replace('[X]',$number,$rules);
+		}
+		$this->stringExercise = $rules;
+		$this->renderExercise = $rules;
 	}
 
 	public function calculateByCondition()

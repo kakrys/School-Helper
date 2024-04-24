@@ -71,7 +71,7 @@ export class OptionList{
 	{
 
 	}
-	deleteLastInstruction()
+	deleteLastInstruction(container = undefined)
 	{
 		if (this.addedInstructions > 0)
 		{

@@ -17,6 +17,9 @@ this.BX.Proj = this.BX.Proj || {};
 	    }
 	    _this.textView = options.textView;
 	    _this.isOperator = true;
+	    if (options.isOperator !== undefined) {
+	      _this.isOperator = options.isOperator;
+	    }
 	    _this.isDelitable = true;
 	    _this.isPair = false;
 	    _this.PairId = null;
@@ -37,9 +40,17 @@ this.BX.Proj = this.BX.Proj || {};
 	    key: "showOption",
 	    value: function showOption() {
 	      var html = "<p class=\"d-flex\">\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 c id=".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
-	      html += "<div class=\"form-group col-12\">\n\t\t\t\t\t<textarea class=\"form-control\" id=\"textArea_".concat(this.id, "\" rows=\"3\" placeholder=\"\u0412\u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u0435\u043A\u0441\u0442 \u0437\u0430\u0434\u0430\u043D\u0438\u044F\">").concat(this.text, "</textarea>\n\t\t\t\t</div>");
+	      html += "<div class=\"form-group col-12\">\n\t\t\t\t\t\u0423 \u044D\u0442\u043E\u0433\u043E \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 \u043D\u0435\u0442 \u043E\u0441\u043E\u0431\u044B\u0445 \u043D\u0430\u0441\u0442\u0440\u043E\u0435\u043A. \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0440\u0443\u0433\u043E\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0434\u043B\u044F \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438\n\t\t\t\t</div>";
 	      return html;
 	    }
+	  }, {
+	    key: "getGeneratorData",
+	    value: function getGeneratorData() {
+	      return {};
+	    }
+	  }, {
+	    key: "save",
+	    value: function save() {}
 	  }]);
 	  return Operator;
 	}(Option);
@@ -56,7 +67,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    _this.isDelitable = false;
 	    _this.id = -1;
 	    _this.pos = 0;
-	    _this.textView = '>|<';
+	    _this.textView = '|<';
 	    return _this;
 	  }
 	  babelHelpers.createClass(Pointer, [{
@@ -79,6 +90,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    _this.PairId = options.PairId;
 	    return _this;
 	  }
+	  babelHelpers.createClass(AbsoluteOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041C\u043E\u0434\u0443\u043B\u044C - \u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0430\u0431\u0441\u043E\u043B\u044E\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0440\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u043E \u0432\u043D\u0443\u0442\u0440\u0438 \u043D\u0435\u0433\u043E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043C\u043E\u0434\u0443\u043B\u044C \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041C\u043E\u0434\u0443\u043B\u044C - \u043F\u0430\u0440\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u044D\u0442\u043E \u0437\u043D\u0430\u0447\u0438\u0442, \u0447\u0442\u043E \u043F\u0440\u0438 \u0435\u0434\u0438\u043D\u043E\u0440\u0430\u0437\u043E\u0432\u043E\u043C \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u0438 \u043C\u043E\u0434\u0443\u043B\u044F, \u0441\u043E\u0437\u0434\u0430\u0434\u0443\u0442\u0441\u044F \u0434\u0432\u0430 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430 \u0432 \u043F\u043E\u043B\u0435 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0439.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u043F\u0440\u0438 \u0443\u0434\u0430\u043B\u0435\u043D\u0438\u0438 \u043E\u0434\u043D\u043E\u0433\u043E \u0438\u0437 \u043F\u0430\u0440\u043D\u044B\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 - \u0435\u0433\u043E \u043F\u0430\u0440\u0430 \u0442\u0430\u043A\u0436\u0435 \u0443\u0434\u0430\u043B\u044F\u0435\u0442\u0441\u044F!.\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return AbsoluteOperator;
 	}(Operator);
 
@@ -93,6 +112,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    _this.PairId = options.PairId;
 	    return _this;
 	  }
+	  babelHelpers.createClass(BracketOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043A\u043E\u0431\u043A\u0438 - \u0432\u044B\u0434\u0435\u043B\u044F\u044E\u0442 \u043F\u043E\u0440\u044F\u0434\u043E\u043A \u0432\u044B\u0447\u0438\u0441\u043B\u0435\u043D\u0438\u0439, \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438 \u0432\u043D\u0443\u0442\u0440\u0438 \u0441\u043A\u043E\u0431\u043E\u043A - \u0432\u044B\u0448\u0435 \u043F\u043E \u043F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442\u0443.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0441\u043A\u043E\u0431\u043A\u0438 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043A\u043E\u0431\u043A\u0438 - \u043F\u0430\u0440\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u044D\u0442\u043E \u0437\u043D\u0430\u0447\u0438\u0442, \u0447\u0442\u043E \u043F\u0440\u0438 \u0435\u0434\u0438\u043D\u043E\u0440\u0430\u0437\u043E\u0432\u043E\u043C \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u0438 \u0441\u043A\u043E\u0431\u043E\u043A, \u0441\u043E\u0437\u0434\u0430\u0434\u0443\u0442\u0441\u044F \u0434\u0432\u0430 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430 \u0432 \u043F\u043E\u043B\u0435 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0439.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u043F\u0440\u0438 \u0443\u0434\u0430\u043B\u0435\u043D\u0438\u0438 \u043E\u0434\u043D\u043E\u0433\u043E \u0438\u0437 \u043F\u0430\u0440\u043D\u044B\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 - \u0435\u0433\u043E \u043F\u0430\u0440\u0430 \u0442\u0430\u043A\u0436\u0435 \u0443\u0434\u0430\u043B\u044F\u0435\u0442\u0441\u044F!.\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return BracketOperator;
 	}(Operator);
 
@@ -103,6 +130,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, DivOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(DivOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(DivOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0414\u0435\u043B\u0435\u043D\u0438\u0435 - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0440\u0430\u0437\u0434\u0435\u043B\u0438\u0442\u044C \u043E\u0431\u044A\u0435\u043A\u0442 \u0441\u043B\u0435\u0432\u0430 \u043E\u0442 \u043D\u0435\u0433\u043E \u043D\u0430 \u043E\u0431\u044A\u0435\u043A\u0442 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u043D\u0435\u0433\u043E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0434\u0435\u043B\u0435\u043D\u0438\u0435 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041F\u043E\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442 \u0434\u0432\u0430 \u0440\u0435\u0436\u0438\u043C\u0430 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u044F:\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t1) \u0412\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u043E\u0431\u0440\u0430\u0449\u0430\u0435\u0442\u0441\u044F \u0432 \u0434\u0440\u043E\u0431\u044C\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t2) \u0412\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u043D\u0435 \u043E\u0431\u0440\u0430\u0449\u0430\u0435\u0442\u0441\u044F \u0432 \u0434\u0440\u043E\u0431\u044C, \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044F \u043E\u0431\u044B\u0447\u043D\u044B\u043C \u0434\u0435\u043B\u0435\u043D\u0438\u0435\u043C\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0414\u0435\u043B\u0435\u043D\u0438\u0435 - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return DivOperator;
 	}(Operator);
 
@@ -113,6 +148,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, RandomOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(RandomOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(RandomOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0432\u044B\u0431\u043E\u0440 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 \u043D\u0430\u0443\u0433\u0430\u0434. \u041F\u0440\u0438 \u043A\u0430\u0436\u0434\u043E\u043C \u0437\u0430\u043F\u0443\u0441\u043A\u0435 \u043F\u0440\u0438\u043C\u0435\u0440\u0430 - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0431\u0443\u0434\u0435\u0442 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u044B\u043C.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u044C \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0433\u043E \u0432\u044B\u0431\u043E\u0440\u0430 \u0441\u0440\u0435\u0434\u0438 \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u044B\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E\u0442 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u043C\u043E\u0436\u043D\u043E \u043D\u0430\u0441\u0442\u0440\u043E\u0438\u0442\u044C, \u0437\u0430\u0434\u0430\u0432 \u0435\u043C\u0443 \u0447\u0451\u0440\u043D\u044B\u0439 \u0441\u043F\u0438\u0441\u043E\u043A \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 (\u0442\u0435\u0445, \u0447\u0442\u043E \u043D\u0435 \u043F\u043E\u044F\u0432\u044F\u0442\u0441\u044F \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438 \u0437\u0430\u0434\u0430\u043D\u0438\u044F)\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return RandomOperator;
 	}(Operator);
 
@@ -123,6 +166,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, MultiplyOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(MultiplyOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(MultiplyOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0423\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u0435 - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0443\u043C\u043D\u043E\u0436\u0438\u0442\u044C \u043B\u0435\u0432\u044B\u0439 \u044D\u0435\u043C\u0435\u043D\u0442 \u043D\u0430 \u043F\u0440\u0430\u0432\u044B\u0439.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0443\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0423\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u0435 - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return MultiplyOperator;
 	}(Operator);
 
@@ -133,6 +184,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, EqualOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(EqualOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(EqualOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0420\u0430\u0432\u0435\u043D\u0441\u0442\u0432\u043E - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0432\u0432\u0435\u0441\u0442\u0438 \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0443 \u0441\u043E\u043E\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0438\u044F \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0439 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0441\u043B\u0435\u0432\u0430 \u0438 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u043D\u0435\u0433\u043E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0414\u043B\u044F \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0438 \u0441\u043E\u043E\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0438\u044F \u0431\u0435\u0440\u0451\u0442\u0441\u044F \u0432\u0441\u0451 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0441\u043B\u0435\u0432\u0430 \u043E\u0442 \u0440\u0430\u0432\u0435\u043D\u0441\u0442\u0432\u0430 \u0438 \u0432\u0441\u0451 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u0440\u0430\u0432\u0435\u043D\u0441\u0442\u0432\u0430.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0440\u0430\u0432\u0435\u043D\u0441\u0442\u0432\u0430 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C, \u043A \u043F\u0440\u0438\u043C\u0435\u0440\u0443, \u0434\u043B\u044F \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u044F \u0443\u0440\u0430\u0432\u043D\u0435\u043D\u0438\u0439.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0420\u0430\u0432\u0435\u043D\u0441\u0442\u0432\u043E - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u041D\u0430\u043B\u0438\u0447\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u0440\u0430\u0432\u0435\u043D\u0441\u0442\u0432\u0430 \u0432 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0438 - \u043F\u0440\u0438\u0432\u0435\u0434\u0451\u0442 \u043A \u043E\u0448\u0438\u0431\u043A\u0435!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return EqualOperator;
 	}(Operator);
 
@@ -143,6 +202,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, MinusOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(MinusOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(MinusOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u044B\u0447\u0438\u0442\u0430\u0435\u043D\u0438\u0435 - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0432\u044B\u0447\u0435\u0441\u0442\u044C \u0438\u0437 \u043B\u0435\u0432\u043E\u0433\u043E \u044D\u0435\u043C\u0435\u043D\u0442\u0430 \u043F\u0440\u0430\u0432\u044B\u0439.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0432\u044B\u0447\u0438\u0442\u0430\u043D\u0438\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u044B\u0447\u0438\u0442\u0430\u043D\u0438\u0435 - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return MinusOperator;
 	}(Operator);
 
@@ -153,6 +220,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, PlusOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(PlusOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(PlusOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u043E\u0436\u0435\u043D\u0438\u0435 - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043F\u0440\u0438\u0431\u0430\u0432\u0438\u0442\u044C \u043A \u043B\u0435\u0432\u043E\u043C\u0443 \u044D\u0435\u043C\u0435\u043D\u0442\u0443 \u043F\u0440\u0430\u0432\u044B\u0439.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0441\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u043E\u0436\u0435\u043D\u0438\u0435 - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return PlusOperator;
 	}(Operator);
 
@@ -163,6 +238,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, PowerOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(PowerOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(PowerOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043E\u0437\u0432\u0435\u0434\u0435\u043D\u0438\u0435 \u0432 \u0441\u0442\u0435\u043F\u0435\u043D\u044C - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0432\u043E\u0437\u0432\u0435\u0441\u0442\u0438 \u0432 \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u043B\u0435\u0432\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0432\u043E\u0437\u0432\u0435\u0434\u0435\u043D\u0438\u044F \u0432 \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041F\u043E\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442 \u0434\u0432\u0430 \u0440\u0435\u0436\u0438\u043C\u0430 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u044F:\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t1) \u0421\u0442\u0435\u043F\u0435\u043D\u044C \u043F\u0440\u043E\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u0442\u0441\u044F \u0442\u043E\u0447\u043D\u043E \u0438 \u0432\u0440\u0443\u0447\u043D\u0443\u044E \u0432 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t2) \u0412 \u043A\u0430\u0447\u0435\u0441\u0442\u0432\u0435 \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u0435\u043B\u044F \u0441\u0442\u0435\u043F\u0435\u043D\u0438 \u0432\u043E\u0437\u044C\u043C\u0451\u0442\u0441\u044F \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043E\u0437\u0432\u0435\u0434\u0435\u043D\u0438\u0435 \u0432 \u0441\u0442\u0435\u043F\u0435\u043D\u044C - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return PowerOperator;
 	}(Operator);
 
@@ -173,6 +256,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, RootOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(RootOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(RootOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u0437\u044F\u0442\u0438\u0435 \u043A\u043E\u0440\u043D\u044F - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0432\u0437\u044F\u0442\u044C \u043A\u043E\u0440\u0435\u043D\u044C \u0438\u0437 \u043F\u0440\u0430\u0432\u043E\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044E \u0432\u0437\u044F\u0442\u0438\u044F \u043A\u043E\u0440\u043D\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041F\u043E\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442 \u0434\u0432\u0430 \u0440\u0435\u0436\u0438\u043C\u0430 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u044F:\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t1) \u0421\u0442\u0435\u043F\u0435\u043D\u044C \u043A\u043E\u0440\u043D\u044F \u043F\u0440\u043E\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u0442\u0441\u044F \u0442\u043E\u0447\u043D\u043E \u0438 \u0432\u0440\u0443\u0447\u043D\u0443\u044E \u0432 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t2) \u0411\u0435\u0440\u0451\u0442\u0441\u044F \u0441\u0442\u0430\u043D\u0434\u0430\u0440\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 = 2. \u0412 \u0442\u0430\u043A\u043E\u043C \u0441\u043B\u0443\u0447\u0430\u0435 \u0432\u0441\u0435\u0433\u0434\u0430 \u0432\u044B\u0441\u0447\u0438\u0442\u044B\u0432\u0430\u0435\u0442\u0441\u044F \u043A\u0432\u0430\u0434\u0440\u0430\u0442\u043D\u044B\u0439 \u043A\u043E\u0440\u0435\u043D\u044C\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u0437\u044F\u0442\u0438\u0435 \u043A\u043E\u0440\u043D\u044F - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0432\u044B\u0437\u043E\u0432\u0435\u0442 \u043E\u0448\u0438\u0431\u043A\u0443!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return RootOperator;
 	}(Operator);
 
@@ -184,10 +275,11 @@ this.BX.Proj = this.BX.Proj || {};
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    babelHelpers.classCallCheck(this, RandNumberOperator);
 	    _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(RandNumberOperator).call(this, options));
-	    if (options.textView === undefined) {
+	    if (options.textView !== undefined) {
+	      _this.textView = options.textView;
+	    } else {
 	      _this.textView = '[X]';
 	    }
-	    _this.textView = options.textView;
 	    _this.isOperator = false;
 	    _this.isDelitable = true;
 	    _this.isPair = false;
@@ -196,6 +288,13 @@ this.BX.Proj = this.BX.Proj || {};
 	    return _this;
 	  }
 	  babelHelpers.createClass(RandNumberOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = babelHelpers.get(babelHelpers.getPrototypeOf(RandNumberOperator.prototype), "showOption", this).call(this);
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0437\u0430\u0434\u0430\u0442\u044C \u0432\u044B\u0431\u043E\u0440 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u0434\u043B\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u0431\u044A\u0435\u043A\u0442, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0432\u044B\u0447\u0438\u0441\u043B\u044F\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 (\u0447\u0438\u0441\u043B\u043E) \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u0442\u0430\u043A\u0438\u0445 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u043F\u0440\u043E\u0441\u0442\u0430\u0432\u0438\u0442 \u043C\u0435\u0436\u0434\u0443 \u043D\u0438\u043C\u0438 \u0437\u043D\u0430\u043A \u0443\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u044F!\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u041E\u0442\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u0441\u043B\u0435\u0432\u0430 \u0438\u043B\u0438 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u044D\u0442\u043E\u0433\u043E \u044D\u0435\u043C\u0435\u043D\u0442\u0430 - \u043F\u043E\u0441\u0442\u0430\u0432\u0438\u0442 \u0432 \u0442\u043E\u043C \u043C\u0435\u0441\u0442\u0435 \u0437\u043D\u0430\u043A \u0443\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u044F!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }, {
 	    key: "render",
 	    value: function render(mode) {
 	      switch (mode) {
@@ -216,6 +315,14 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, AnswerOperator);
 	    return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(AnswerOperator).call(this, options));
 	  }
+	  babelHelpers.createClass(AnswerOperator, [{
+	    key: "showOption",
+	    value: function showOption() {
+	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041E\u0442\u0432\u0435\u0442 - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0437\u0430\u0434\u0430\u0442\u044C \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u043B\u044C\u043D\u044B\u0439 \u043F\u043E\u0440\u044F\u0434\u043E\u043A \u0432\u044B\u0447\u0438\u0441\u043B\u0435\u043D\u0438\u0439 \u0434\u043B\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F. \u0412 \u0441\u043B\u0443\u0447\u0430\u0435, \u0435\u0441\u043B\u0438 \u0438\u0434\u0451\u0442 \u0440\u0430\u0431\u043E\u0442\u0430 \u0441 \u043C\u043D\u043E\u0433\u043E\u0447\u043B\u0435\u043D\u0430\u043C\u0438, \u043A \u043F\u0440\u0438\u043C\u0435\u0440\u0443\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u044C \u043F\u0435\u0440\u0435\u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0438\u0442\u044C \u043E\u0442\u0432\u0435\u0442 \u0438\u043B\u0438 \u043F\u0440\u0430\u0432\u0438\u043B\u0430 \u0435\u0433\u043E \u0432\u044B\u0447\u0438\u0441\u043B\u0435\u043D\u0438\u044F.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u041E\u0442\u0432\u0435\u0442 - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u043F\u0440\u0438 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 \u043E\u0442\u0432\u0435\u0442\u0430 - \u043E\u043D \u0431\u0443\u0434\u0435\u0442 \u043E\u0431\u0440\u0430\u0431\u0430\u0442\u044B\u0432\u0430\u0442\u044C\u0441\u044F \u0432 \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u044E\u044E \u043E\u0447\u0435\u0440\u0435\u0434\u044C \u0432\u043D\u0435 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u0442\u043E\u0433\u043E, \u0433\u0434\u0435 \u0440\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D!.\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      return html;
+	    }
+	  }]);
 	  return AnswerOperator;
 	}(Operator);
 
@@ -243,8 +350,6 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.list.splice(this.pointerPosition + 1);
 	        listPart = listPart.splice(this.pointerPosition + 1);
 	        this.list.push(newOperator);
-	        console.log(this.list);
-	        console.log(listPart);
 	        this.list = this.list.concat(listPart);
 	      } else {
 	        this.list.push(newOperator);
@@ -263,7 +368,8 @@ this.BX.Proj = this.BX.Proj || {};
 	            type: type,
 	            color: color,
 	            textView: '|',
-	            PairId: this.idCounter + 1
+	            PairId: this.idCounter + 1,
+	            isOperator: false
 	          });
 	          this.checkPointerPosition(newOperator);
 	          this.movePointer('right');
@@ -272,7 +378,8 @@ this.BX.Proj = this.BX.Proj || {};
 	            type: type,
 	            color: color,
 	            textView: '|',
-	            PairId: this.idCounter - 1
+	            PairId: this.idCounter - 1,
+	            isOperator: false
 	          });
 	          break;
 	        case 'Bracket':
@@ -281,7 +388,8 @@ this.BX.Proj = this.BX.Proj || {};
 	            type: type,
 	            color: color,
 	            textView: '(',
-	            PairId: this.idCounter + 1
+	            PairId: this.idCounter + 1,
+	            isOperator: false
 	          });
 	          this.checkPointerPosition(newOperator);
 	          this.movePointer('right');
@@ -290,7 +398,8 @@ this.BX.Proj = this.BX.Proj || {};
 	            type: type,
 	            color: color,
 	            textView: ')',
-	            PairId: this.idCounter - 1
+	            PairId: this.idCounter - 1,
+	            isOperator: false
 	          });
 	          break;
 	        case 'Div':
@@ -346,7 +455,8 @@ this.BX.Proj = this.BX.Proj || {};
 	            id: this.idCounter,
 	            type: type,
 	            color: color,
-	            textView: '[X]'
+	            textView: '[X]',
+	            isOperator: false
 	          });
 	          break;
 	        case 'Rand.Operation':
@@ -370,7 +480,7 @@ this.BX.Proj = this.BX.Proj || {};
 	            id: this.idCounter,
 	            type: type,
 	            color: color,
-	            textView: '=>'
+	            textView: '<==>'
 	          });
 	          break;
 	        default:
@@ -390,7 +500,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    }
 	  }, {
 	    key: "deleteLastInstruction",
-	    value: function deleteLastInstruction() {
+	    value: function deleteLastInstruction(container) {
 	      var _this2 = this;
 	      if (this.pointerPosition === 0 || this.addedInstructions === 1) {
 	        return;
@@ -424,6 +534,9 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.pointerPosition -= 1;
 	        this.addedInstructions -= 1;
 	      }
+	      if (this.list.length === 1) {
+	        container.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+	      }
 	    }
 	  }, {
 	    key: "showOption",
@@ -433,13 +546,26 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.openedInstruction = -1;
 	      }
 	      if (id === this.openedInstruction) return;
-	      //		this.saveOpenedInstructionData();
+	      this.saveOpenedInstructionData();
 	      this.openedInstruction = id;
 	      this.list.forEach(function (operator) {
 	        if (operator.id === id) {
 	          container.innerHTML = operator.showOption();
-	          _this3.list[id].registerEvents();
-	          _this3.list[id].postUpdate();
+	          _this3.list[_this3.list.indexOf(operator)].registerEvents();
+	          _this3.list[_this3.list.indexOf(operator)].postUpdate();
+	        }
+	      });
+	    }
+	  }, {
+	    key: "saveOpenedInstructionData",
+	    value: function saveOpenedInstructionData() {
+	      var _this4 = this;
+	      if (this.openedInstruction === -1) {
+	        return;
+	      }
+	      this.list.forEach(function (operator) {
+	        if (_this4.openedInstruction === operator.id) {
+	          operator.save();
 	        }
 	      });
 	    }
@@ -483,6 +609,19 @@ this.BX.Proj = this.BX.Proj || {};
 	        html += instruction.render('text');
 	      });
 	      return html;
+	    }
+	  }, {
+	    key: "saveAllData",
+	    value: function saveAllData() {
+	      var symbolicExpression = '';
+	      var generatorInstruction = [];
+	      this.list.forEach(function (operator) {
+	        if (operator.id === -1) return;
+	        symbolicExpression += operator.textView;
+	        generatorInstruction.push(operator.getGeneratorData());
+	      });
+	      generatorInstruction.push(symbolicExpression);
+	      return generatorInstruction;
 	    }
 	  }]);
 	  return OperatorList;

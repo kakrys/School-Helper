@@ -31,4 +31,9 @@ export class Option{
 	{
 
 	}
+
+	getGeneratorData()
+	{
+		return {};
+	}
 }

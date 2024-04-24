@@ -1,6 +1,7 @@
 <?php
 
 namespace Proj\Independent\Controller;
+use Proj\Independent\Math\Exercise;
 class Generator extends \Bitrix\Main\Engine\Controller
 {
 	protected function getDefaultPreFilters()
@@ -8,18 +9,10 @@ class Generator extends \Bitrix\Main\Engine\Controller
 		return [];
 	}
 
-	public function getDataAction(): array
+	public function getDataAction(array $genSett): string
 	{
-		return [
-			9 => ['Math','Chemistry','Russian','English','Physics','Literature'],
-			8 => ['Math','Chemistry','English','Literature'],
-			7 => ['Math','Russian','English','Literature'],
-			6 => ['Math' => [
-				'Умножение и деление дробей', 'Отрицательные числа', 'Действия с отрицательными числами',
-				'Пропорции', 'Симметрия', 'Решение линейных уравнений', 'Составление математической модели',
-				'Проценты', 'Дробь от числа и число по дроби'
-			],
-				'Russian' => '']
-		];
+		$seed = md5(time());
+		$exrc = new Exercise($seed, implode('',$genSett));
+		return $exrc->renderExercise;
 	}
 }

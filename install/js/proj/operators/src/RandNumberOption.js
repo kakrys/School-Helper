@@ -5,9 +5,11 @@ export class RandNumberOption extends Option{
 	{
 		super(options);
 		this.parameters = {};
+		this.FloatDigits = '';
 		this.MinNumber = '';
 		this.MaxNumber = '';
 		this.Exclude = '';
+		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', '']];
 
 		this.FractionType = ['','','','checked="true"'];
 		this.FractionNumber = ['','','checked="true"'];
@@ -20,18 +22,15 @@ export class RandNumberOption extends Option{
 		this.minNumberContainer = document.querySelector(`[id^="textArea_${this.id}_1"]`);
 		this.maxNumberContainer = document.querySelector(`[id^="textArea_${this.id}_2"]`);
 		this.excludeNumberContainer = document.querySelector(`[id^="textArea_${this.id}_3"]`);
+		this.floatCountContainer = document.querySelector(`[id^="textArea_${this.id}_4"]`);
 		this.parameters = {
 			OptionId: this.id,
-		}
-		if (this.minNumberContainer.value !== null) {
-			this.parameters.MinNumber = this.minNumberContainer.value
-		}
-		if (this.maxNumberContainer.value !== null) {
-			this.parameters.MaxNumber = this.maxNumberContainer.value
-		}
-		if (this.excludeNumberContainer.value !== null) {
-			this.parameters.Exclude = this.excludeNumberContainer.value.split(/[,\s]+/)
-		}
+			MinNumber: this.minNumberContainer.value,
+			MaxNumber: this.maxNumberContainer.value,
+			Exclude: this.excludeNumberContainer.value.split(/[,\s]+/),
+			FloatDigits: this.floatCountContainer.value,
+		};
+
 		this.checkButtonElements = document.querySelectorAll('.form-check-input[aria-expanded="true"]');
 		this.checkButtonElements.forEach(element => {
 			if(element.getAttribute('aria-controls') === "FractionCollapse")
@@ -70,11 +69,19 @@ export class RandNumberOption extends Option{
 					this.parameters.Absolute = properties;
 				}
 			}
+			if(element.getAttribute('aria-controls') === "FloatCollapse")
+			{
+				if (this.floatCountContainer.value !== null)
+				{
+					this.parameters.FloatDigits = this.floatCountContainer.value;
+				}
+			}
 		});
 		this.unregisterEvents();
 	}
 	updateParameters()
 	{
+		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', '']];
 		console.log(this.parameters);
 		if ('MinNumber' in this.parameters) {
 			this.MinNumber = this.parameters.MinNumber;
@@ -82,10 +89,16 @@ export class RandNumberOption extends Option{
 		if ('MaxNumber' in this.parameters) {
 			this.MaxNumber = this.parameters.MaxNumber;
 		}
+		if ('FloatDigits' in this.parameters && this.parameters.FloatDigits !== '') {
+			this.viewParameters[1] = ['', 'true', 'checked="true"', 'show'];
+			this.FloatDigits = this.parameters.FloatDigits;
+		}
 		if ('Exclude' in this.parameters) {
 			this.Exclude = this.parameters.Exclude.join(',');
 		}
-		if ('Fraction' in this.parameters) {
+		if ('Fraction' in this.parameters)
+		{
+			this.viewParameters[0] = ['', 'true', 'checked="true"', 'show'];
 			this.FractionType = ['','','',''];
 			this.FractionNumber = ['','',''];
 			this.FractionView = ['','',''];
@@ -106,6 +119,7 @@ export class RandNumberOption extends Option{
 			});
 		}
 		if ('Root' in this.parameters) {
+			this.viewParameters[2] = ['', 'true', 'checked="true"', 'show'];
 			this.RootType = ['','',''];
 			this.parameters.Root.forEach(param => {
 				switch(param){
@@ -116,6 +130,7 @@ export class RandNumberOption extends Option{
 			});
 		}
 		if ('Absolute' in this.parameters) {
+			this.viewParameters[3] = ['', 'true', 'checked="true"', 'show'];
 			this.AbsoluteModule = ['','',''];
 			this.parameters.Absolute.forEach(param => {
 				switch(param){
@@ -149,12 +164,12 @@ export class RandNumberOption extends Option{
 		<p>Гибкая настройка</p>
 		<a>Допустимые элементы к генерации</a>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#FractionCollapse" role="button" aria-expanded="false" aria-controls="FractionCollapse">
+			<input class="form-check-input ${this.viewParameters[0][0]}" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#FractionCollapse" role="button" aria-expanded="${this.viewParameters[0][1]}" aria-controls="FractionCollapse" ${this.viewParameters[0][2]}>
 			<label class="form-check-label" for="flexCheckDefault">
 				Дроби 
 			</label>
 		</div>
-		<div class="collapse" id="FractionCollapse" style="width:100%;">
+		<div class="collapse ${this.viewParameters[0][3]}" id="FractionCollapse" style="width:100%;">
 			<div class="d-flex border" style="width:100%;">
 				<div class="d-flex flex-column" style="margin-left:2%; width:33%;">
 					<a>Вид дроби</a>
@@ -228,14 +243,32 @@ export class RandNumberOption extends Option{
 			</div>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#RootCollapse" role="button" aria-expanded="false" aria-controls="RootCollapse">
+			<input class="form-check-input ${this.viewParameters[1][0]}" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#FloatCollapse" role="button" aria-expanded="${this.viewParameters[1][1]}" aria-controls="FloatCollapse" ${this.viewParameters[1][2]}>
+			<label class="form-check-label" for="flexCheckDefault">
+				Десятичные дроби (числа с запятой)
+			</label>
+		</div>
+		<div class="collapse ${this.viewParameters[1][3]}" id="FloatCollapse" style="width:100%;">
+			<div class="d-flex border" style="width:100%;">
+				<div class="d-flex flex-column" style="margin-left:2%; width:100%;">
+					<a>Укажите количество знаков за запятой</a>
+					<div class="d-flex flex-column col-12">
+						<div class="d-flex">
+							<input class="form-control" id="textArea_${this.id}_4" placeholder="Формат: 0<'целое число'<10">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-check">
+			<input class="form-check-input ${this.viewParameters[2][0]}" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#RootCollapse" role="button" aria-expanded="${this.viewParameters[2][1]}" aria-controls="RootCollapse" ${this.viewParameters[2][2]}>
 			<label class="form-check-label" for="flexCheckDefault">
 				Корни
 			</label>
 		</div>
-		<div class="collapse" id="RootCollapse" style="width:100%;">
+		<div class="collapse ${this.viewParameters[2][3]}" id="RootCollapse" style="width:100%;">
 			<div class="d-flex border" style="width:100%;">
-				<div class="d-flex flex-column" style="margin-left:2%; width:33%;">
+				<div class="d-flex flex-column" style="margin-left:2%; width:100%;">
 					<a>Вид корней</a>
 					<div class="form-check">
 						<input class="form-check-input" type="radio" name="RadioRootType" id="RadioRootType1" value="Irrational" ${this.RootType[0]}>
@@ -259,14 +292,14 @@ export class RandNumberOption extends Option{
 			</div>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  data-bs-toggle="collapse" href="#AbsCollapse" role="button" aria-expanded="false" aria-controls="AbsCollapse">
+			<input class="form-check-input ${this.viewParameters[3][0]}" type="checkbox" value="" id="flexCheckDefault"  data-bs-toggle="collapse" href="#AbsCollapse" role="button" aria-expanded="${this.viewParameters[3][1]}" aria-controls="AbsCollapse" ${this.viewParameters[3][2]}>
 			<label class="form-check-label" for="flexCheckDefault">
 				Отрицательные числа (игнорируется, если указан отрицательный диапазон)
 			</label>
 		</div>
-		<div class="collapse" id="AbsCollapse" style="width:100%;">
+		<div class="collapse ${this.viewParameters[3][3]}" id="AbsCollapse" style="width:100%;">
 			<div class="d-flex border" style="width:100%;">
-				<div class="d-flex flex-column" style="margin-left:2%; width:33%;">
+				<div class="d-flex flex-column" style="margin-left:2%; width:100%;">
 					<a>Представление отрицательных чисел</a>
 					<div class="form-check">
 						<input class="form-check-input" type="radio" name="AbsVar" id="AbsVar1" value="UseModule" ${this.AbsoluteModule[0]}>
@@ -288,7 +321,8 @@ export class RandNumberOption extends Option{
 					</div>
 				</div>
 			</div>
-		</div>`;
+		</div>
+		`;
 		return html;
 	}
 	postUpdate()
@@ -296,6 +330,7 @@ export class RandNumberOption extends Option{
 		document.querySelector(`[id^="textArea_${this.id}_1"]`).value = this.MinNumber;
 		document.querySelector(`[id^="textArea_${this.id}_2"]`).value = this.MaxNumber;
 		document.querySelector(`[id^="textArea_${this.id}_3"]`).value = this.Exclude;
+		document.querySelector(`[id^="textArea_${this.id}_4"]`).value = this.FloatDigits;
 	}
 
 	registerEvents()
