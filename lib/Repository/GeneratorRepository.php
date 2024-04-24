@@ -13,7 +13,7 @@ class GeneratorRepository
 		foreach ($resultClasses as $class)
 		{
 			$resultSubject = \Proj\Independent\Model\ClassSubjectTable::getList([
-				'select' => ['SUBJECT.SUBJECT_NAME'],
+				'select' => [ 'SUBJ_NAME' => 'SUBJECT.SUBJECT_NAME'],
 				'filter' => [
 					'=CLASS.ID' => $class["CLASS_NUMBER"]
 				]])->fetchAll();
@@ -23,7 +23,7 @@ class GeneratorRepository
 				$dataSubjects = [];
 				foreach($resultSubject as $subject)
 				{
-					$dataSubjects[]=$subject["PROJ_INDEPENDENT_MODEL_CLASS_SUBJECT_SUBJECT_SUBJECT_NAME"];
+					$dataSubjects[]=$subject['SUBJ_NAME'];
 				}
 				$data[$class["CLASS_NUMBER"]] = $dataSubjects;
 			}
