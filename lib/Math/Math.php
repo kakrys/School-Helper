@@ -7,7 +7,7 @@ class Math
 {
 	/**Calculates simple equations from string format like 3+2; 9*4 and so on.
 	 *
-	 * WITHOUT BRACKETS like '(' or '|' or '['!
+	 * WITHOUT INNER BRACKETS such as (()) and so on!
 	 * @param string $equation
 	 * @return int|float
 	 */
@@ -59,12 +59,10 @@ class Math
 		{
 			while (preg_match($arr['regExp'], $equation, $matches))
 			{
-				#var_dump($matches);
 				if (str_split($matches[0])[0] == $operator)
 				{
 					$values = explode($operator,$matches[0]);
 					$result = $arr['function']((float)($operator . $values[1]),(float)$values[2]);
-					#echo $result . "res\n";
 				}
 				else
 				{
@@ -88,7 +86,6 @@ class Math
 				{
 					$equation = substr($equation,1);
 				}
-				#echo $equation . "eq\n";
 			}
 		}
 		return (float)$equation;

@@ -8,4 +8,5 @@ $APPLICATION->SetTitle("Independent");
 
 $APPLICATION->IncludeComponent('proj:materials','');
 
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php"); ?>

@@ -14,9 +14,9 @@ global $USER;
 		<div class="d-flex flex-column" style="max-height: 83vh; min-width: 10%; max-width: 15%;">
 			<div class="border bg-light d-flex flex-column p-1" style="overflow-y: auto; overflow-x: auto;">
 				<span class="border border-3 text-primary">
-				<p style="align-self: center;">Фамилия: <?=$USER->GetLastName()?></p>
-				<p style="align-self: center;">Имя: <?=$USER->GetFirstName()?></p>
-				<p style="align-self: center;">Логин: <?=$USER->GetLogin()?></p>
+				<p style="align-self: center;">Фамилия: <?=htmlspecialcharsbx($USER->GetLastName())?></p>
+				<p style="align-self: center;">Имя: <?=htmlspecialcharsbx($USER->GetFirstName())?></p>
+				<p style="align-self: center;">Логин: <?=htmlspecialcharsbx($USER->GetLogin())?></p>
 				<p style="align-self: center;">Роль: Ученик</p>
 				</span>
 				<a href ='#' class="btn align-self-center" data-target="#changeData"> Смена личной информации</a>
@@ -30,35 +30,33 @@ global $USER;
 							<div id="changeData" class="collapse">
 <!--								МЕСТО ДЛЯ ИЗМЕНЕНИЯ ВКЛАДКИ СМЕНА ЛИЧНЫХ ДАННЫХ-->
 								<div class="d-flex flex-column">
-									<form style="margin-bottom: 10px">
+									<form style="margin-bottom: 10px" method="post" action="/student">
 										<div class="mb-3">
 											<label for="exampleInputNewLastName" class="form-label">Фамилия</label>
-											<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="LastNameHelp">
-											<div id="LastNameHelp" class="form-text">We'll never share your email with anyone else.</div>
+											<input type="text" class="form-control" id="exampleInputLastName" name="Surname" aria-describedby="SurnameHelp">
 										</div>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form>
-									<form style="margin-bottom: 10px">
+									<form style="margin-bottom: 10px" method="post" action="/student">
 										<div class="mb-3">
 											<label for="exampleInputNewLastName" class="form-label">Имя</label>
-											<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="LastNameHelp">
-											<div id="LastNameHelp" class="form-text">We'll never share your email with anyone else.</div>
+											<input type="text" class="form-control" id="exampleInputName" name="Name" aria-describedby="LNameHelp">
 										</div>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form >
-									<form style="margin-bottom: 10px">
+									<form style="margin-bottom: 10px" method="post" action="/student">
 										<div class="mb-3">
 											<label for="exampleInputNewLastName" class="form-label">Логин</label>
-											<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="LastNameHelp">
-											<div id="LastNameHelp" class="form-text">We'll never share your email with anyone else.</div>
+											<input type="text" class="form-control" id="exampleInputLogin" name="Login" aria-describedby="LoginHelp">
+											<div id="LastNameHelp" class="form-text">Введите новый логин,длиной не менее 3 символов</div>
 										</div>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form>
-									<form>
+									<form method="post" action="/student">
 										<div class="mb-3">
 											<label for="exampleInputNewLastName" class="form-label">Пароль</label>
-											<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="LastNameHelp">
-											<div id="LastNameHelp" class="form-text">We'll never share your email with anyone else.</div>
+											<input type="text" class="form-control" id="exampleInputPassword" name="Password" aria-describedby="PasswordHelp">
+											<div id="LastNameHelp" class="form-text">Введите новый пароль,длиной не менее 6 символов</div>
 										</div>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form>

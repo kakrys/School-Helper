@@ -1,6 +1,6 @@
 <?php
 
-class MainMenuComponent extends CBitrixComponent
+class Exercises extends CBitrixComponent
 {
 	public function executeComponent()
 	{
@@ -10,10 +10,9 @@ class MainMenuComponent extends CBitrixComponent
 
 	protected function fetchExercises()
 	{
-		$result = \Proj\Independent\Model\ExerciseTable::getList(['select' => [
-			'EXERCISE_DESCRIPTION','EXERCISE_CONDITION', 'EXERCISE_GENERATOR_RULES','GENERATOR_CODE', 'ANSWER', 'EXERCISE_ADDITION_FILE_PATH']]);
-		$selectionResult = $result->fetchAll();
-		$this->arResult['EXERCISES'] = $selectionResult;
+		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+		$generatorCode = $request->getQueryList()->toArray()['generator_code'];
+		$this->arResult['EXERCISES'] = \Proj\Independent\Repository\ExercisesRepository::getExercisesByVariant($generatorCode);
+		$this->arResult['GENERATOR_CODE'] = $generatorCode;
 	}
-
 }

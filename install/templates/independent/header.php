@@ -36,7 +36,6 @@ global $USER
 					<li><a class="dropdown-item" href="#">Тренажёр</a></li>
 					<li><a class="dropdown-item" href="#">Материалы</a></li>
 					<li><a class="dropdown-item" href="#">Каталог заданий</a></li>
-					<li><a class="dropdown-item" href="/generator">Generator</a></li>
 				</ul>
 			</li>
 			<li class="nav-item">
