@@ -8,6 +8,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 }
 $APPLICATION->SetTitle("Independent");
 global $USER;
+$jsonData = json_encode($arResult['CST_DATA']);
 ?>
 <div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 	<div class="main-content d-flex" style="width: 100%;">
@@ -21,13 +22,13 @@ global $USER;
 				</span>
 				<a href ='/generator' class="btn align-self-center"> Генератор</a>
 				<a href ='#' class="btn align-self-center" data-target="#bugs"> Сообщения о багах</a>
+				<a href ='#' class="btn align-self-center" data-target="#addThemes"> Добавить тему </a>
 			</div>
 			<div style="flex-grow: 1;"></div>
 		</div>
 		<div style="min-height: 83vh; flex-grow: 1;">
 			<div class="d-flex flex-column" style="margin-left: 1%;">
 				<div class="border bg-light">
-
 					<div id="bugs" class="collapse">
 						<div class="d-flex flex-column">
 							<table class="table">
@@ -49,6 +50,9 @@ global $USER;
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div id="addThemes" class="collapse">
+						ВОТ ТУТ ИЗМЕНЕНИЕ ТЕМ
 					</div>
 				</div>
 			</div>

@@ -38,6 +38,7 @@ VALUES ('Умножение и деление дробей','В этой тем�
 	      'https://infourok.ru/tablica-nastoyashie-vremena-v-anglijskom-yazyke-6214905.html','https://infourok.ru/konspekt-uroka-po-angliyskomu-yaziku-na-temu-nastoyaschie-vremena-klass-2449635.html',
 	      '7','english');
 
+
 UPDATE b_user SET WORK_POSITION = 'admin' where ID = 1;
 
 insert into proj_bug_categories(NAME)
