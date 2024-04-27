@@ -9,6 +9,7 @@ class StudentComponent extends CBitrixComponent
 	{
 		$this->checkRole();
 		$this->updateInfo();
+		$this->fetchUserStatistics();
 		$this->includeComponentTemplate();
 	}
 	protected function checkRole(): void
@@ -37,5 +38,11 @@ class StudentComponent extends CBitrixComponent
 				$changeInfoError = UserService::$funcName($newInfo);
 			}
 		}
+	}
+
+	protected function fetchUserStatistics()
+	{
+		$statistics = \Proj\Independent\Repository\UserRepository::getUserStatistics();
+		$this->arResult['STATISTICS'] = $statistics;
 	}
 }

@@ -90,3 +90,14 @@ CREATE TABLE IF NOT EXISTS proj_bug_report
 	DESCRIPTION varchar(1000) not null,
 	PRIMARY KEY (ID)
 );
+
+CREATE TABLE IF NOT EXISTS proj_statistics
+(
+	ID int auto_increment not null,
+	USER_ID int not null,
+	CLASS_NUMBER varchar(100) not null,
+	SUBJECT_NAME varchar(100) not null,
+	SOLVED_TASKS int,
+	TASKS_SOLVED_CORRECTLY int,
+	PRIMARY KEY (ID)
+);

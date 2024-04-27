@@ -9,9 +9,15 @@ if (empty($arResult['EXERCISES']))
 {
 	LocalRedirect('/404');
 }
+global $USER;
 ?>
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 		<div class="main-content d-flex flex-column justify-content-center align-items-center border bg-light">
+			<?php if ($USER->GetID()==='0'): ?>
+			<p style="color:red">
+				ПРЕДУПРЕЖДЕНИЕ: сейчас вы не авторизованы,после решения варианта статистика НЕ будет сохранена
+			</p>
+			<?php endif;?>
 			<p>
 				Вариант: <?=$arResult['GENERATOR_CODE']?>
 			</p>

@@ -16,7 +16,7 @@ class Check extends CBitrixComponent
 		$result = \Proj\Independent\Model\ExerciseTable::getList(['select' => [
 																				'ANSWER'],
 																  'filter' => [
-																	  			'=VARIANTS.GENERATOR_CODE' => $generatorCode
+																	  			'=VARIANTS.GENERATOR_CODE' => $generatorCode,
 																  				]]);
 		$selectionResult = $result->fetchAll();
 		foreach ($selectionResult as $item)
@@ -27,6 +27,7 @@ class Check extends CBitrixComponent
 		$this->arResult['EXERCISES'] = $selectionResult;
 		$this->arResult['GENERATOR_CODE'] = $generatorCode;
 		$this->arResult['STUDENT_ANSWERS'] = $studentAnswers;
+		\Proj\Independent\Repository\UserRepository::saveStatistics($studentAnswers,$correctAnswers,$generatorCode);
 	}
 
 }
