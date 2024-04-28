@@ -7,8 +7,8 @@ class AdminComponent extends CBitrixComponent
 	public function executeComponent()
 	{
 		$this->checkRole();
+		$this->fetchClassAndSubject();
 		$this->fetchBugList();
-		$this->setData();
 		$this->includeComponentTemplate();
 	}
 	protected function checkRole(): void
@@ -25,9 +25,10 @@ class AdminComponent extends CBitrixComponent
 		$this->arResult['BUG_LIST'] = \Proj\Independent\Repository\BugRepository::getBugListForAdmin();
 	}
 
-	protected function setData()
+	protected function fetchClassAndSubject()
 	{
-		$data = \Proj\Independent\Repository\GeneratorRepository::getThemesByClassAndSubject();
-		$this->arResult['CST_DATA'] = $data;
+		$data = \Proj\Independent\Repository\SubjectRepository::getClassAndSubject();
+		$this->arResult['SUBJECTS'] = $data;
 	}
+
 }

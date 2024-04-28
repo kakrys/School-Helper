@@ -68,16 +68,20 @@ global $USER;
 							<table class="table">
 								<thead>
 								<tr>
-									<th scope="col">Дисциплина</th>
 									<th scope="col">Класс</th>
+									<th scope="col">Дисциплина</th>
+									<th scope="col">Всего решено заданий</th>
+									<th scope="col">Решено верно</th>
 									<th scope="col">Процент верно решенных заданий</th>
 								</tr>
 								</thead>
 								<tbody>
 								<?php foreach ($arResult['STATISTICS'] as $statistic): ?>
 									<tr>
-										<td><?=$statistic['SUBJECT_NAME']?></td>
 										<td><?=$statistic['CLASS_NUMBER']?></td>
+										<td><?=$statistic['SUBJECT_NAME']?></td>
+										<td><?=$statistic['SOLVED_TASKS']?></td>
+										<td><?=$statistic['TASKS_SOLVED_CORRECTLY']?></td>
 										<td><?=round($statistic['TASKS_SOLVED_CORRECTLY']/$statistic['SOLVED_TASKS']*100)?>%</td>
 									</tr>
 								<?php endforeach;?>

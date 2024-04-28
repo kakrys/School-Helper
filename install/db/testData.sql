@@ -1,5 +1,5 @@
 insert into proj_subject (SUBJECT_NAME)
-values ('Math'),('Russian'),('English'),('Literature'),('Chemistry'),('Physics');
+values ('Math'),('Russian'),('English');
 
 
 insert into proj_exercise(exercise_description, exercise_condition, exercise_generator_rules, generator_code, answer, exercise_addition_file_path,THEME_ID)

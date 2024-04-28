@@ -8,7 +8,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 }
 $APPLICATION->SetTitle("Independent");
 global $USER;
-$jsonData = json_encode($arResult['CST_DATA']);
 ?>
 <div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 	<div class="main-content d-flex" style="width: 100%;">
@@ -52,7 +51,26 @@ $jsonData = json_encode($arResult['CST_DATA']);
 						</div>
 					</div>
 					<div id="addThemes" class="collapse">
-						ВОТ ТУТ ИЗМЕНЕНИЕ ТЕМ
+						<div class="d-flex flex-column">
+							<table class="table">
+								<thead>
+								<tr>
+									<th scope="col">Класс</th>
+									<th scope="col">Дисциплина</th>
+									<th></th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($arResult['SUBJECTS'] as $subject): ?>
+									<tr>
+										<td><?=$subject['CLASS']?></td>
+										<td><?=$subject['SUBJECT_NAME']?></td>
+										<td><a href="/addtheme/<?=$subject['CLASS'] . '/' . $subject['SUBJECT_NAME']?>" type="button" class="btn btn-primary">Добавить</a></td>
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

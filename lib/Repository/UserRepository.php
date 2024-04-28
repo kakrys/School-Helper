@@ -3,6 +3,7 @@ namespace Proj\Independent\Repository;
 
 use Proj\Independent\Model\StatisticsTable;
 use Proj\Independent\Model\VariantTable;
+use Proj\Independent\Model\VariantUserTable;
 
 class UserRepository
 {
@@ -36,6 +37,13 @@ class UserRepository
 		if ($USER->IsAuthorized())
 		{
 			$userID = $USER->GetID();
+
+
+			$variantNotSolvedByThisUser = empty(VariantUserTable::getList(['select' => ['GENERATOR_CODE'],
+																  'filter' => ['USER_ID' => $userID,
+																			   'GENERATOR_CODE' => $generatorCode
+																  ]
+																 ])->fetchAll());
 
 			$result = VariantTable::getList(['select' => ['CLASS_NUMBER', 'SUBJECT_NAME'],
 											 'filter' => [
@@ -74,7 +82,7 @@ class UserRepository
 					]
 				);
 			}
-			else
+			elseif ($variantNotSolvedByThisUser)
 			{
 				$statisticsID = $statistics[0]['ID'];
 				$result = StatisticsTable::getList(['select' => ['SOLVED_TASKS','TASKS_SOLVED_CORRECTLY'],
@@ -89,6 +97,12 @@ class UserRepository
 											'SOLVED_TASKS' => $totalSolvedTasks + count($studentAnswers),
 											'TASKS_SOLVED_CORRECTLY' => $totalSolvedCorrectlyTasks + $solvedCorrectly,
 										]);
+				VariantUserTable::add(
+					[
+						'GENERATOR_CODE' => $generatorCode,
+						'USER_ID' => $userID
+					]
+				);
 			}
 		}
 	}
