@@ -69,12 +69,15 @@ export class Controls
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Root' , 'lightcyan')" style="width: 100%; margin: 1%;">Корень</a>
 			</div>
-			<div class="col d-flex justify-content-center" style="padding: 1%;">
+			<!--<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Equal' , 'olivedrab')" style="width: 100%; margin: 1%;">Равенство</a>
-			</div>
+			</div>-->
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Rand.Operation' , 'lightslategray')" style="width: 100%; margin: 1%;">Случайный оператор</a>
 			</div>
+		<!--	<div class="col d-flex justify-content-center" style="padding: 1%;">
+				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Polynom' , 'aliceblue')" style="width: 100%; margin: 1%;">Полином</a>
+			</div> -->
 		</div>
 		<div class="row row-cols-4" style="width: 100%;">
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
@@ -86,13 +89,13 @@ export class Controls
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a class="btn btn-secondary" onclick="generator.changeExpressionType()" style="width: 100%; margin: 1%; background:lightcoral;">Смена режима</a>
 			</div>
-			<div class="col d-flex justify-content-center" style="padding: 1%;">
+		<!--	<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a class="btn btn-secondary" onclick="generator.addInstruction('Answer' , 'lightsalmon')" style="width: 100%; margin: 1%;">Генерация ответа</a>
-			</div>
+			</div>-->
 		</div>
 		<div class="row row-cols-4" style="width: 100%;">
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
-				<a class="btn btn-secondary" onclick="generator.changeViewType()" style="width: 100%; margin: 1%; background:lightsteelblue;">Переключить представление</a>
+				<a class="btn btn-secondary" onclick="generator.changeViewType()" style="width: 100%; margin: 1%; background:lightsteelblue;">Сменить отображение</a>
 			</div>
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				
@@ -136,12 +139,15 @@ export class Controls
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Root' , 'lightcyan')" style="width: 100%; margin: 1%;">Корень</a>
 			</div>
-			<div class="col d-flex justify-content-center" style="padding: 1%;">
+			<!--<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Equal' , 'olivedrab')" style="width: 100%; margin: 1%;">Равенство</a>
-			</div>
+			</div>-->
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Rand.Operation' , 'lightslategray')" style="width: 100%; margin: 1%;">Случайный оператор</a>
 			</div>
+		<!--	<div class="col d-flex justify-content-center" style="padding: 1%;">
+				<a id="draggableElement" class="btn btn-secondary" onclick="generator.addInstruction('Polynom' , 'aliceblue')" style="width: 100%; margin: 1%;">Полином</a>
+			</div> -->
 		</div>
 		<div class="row row-cols-4" style="width: 100%;">
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
@@ -153,13 +159,13 @@ export class Controls
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a class="btn btn-secondary" onclick="generator.backToGenerator()" style="width: 100%; margin: 1%; background:lightcoral;">Вернуться</a>
 			</div>
-			<div class="col d-flex justify-content-center" style="padding: 1%;">
+			<!--<div class="col d-flex justify-content-center" style="padding: 1%;">
 				<a class="btn btn-secondary" onclick="generator.addInstruction('Answer' , 'lightsalmon')" style="width: 100%; margin: 1%;">Генерация ответа</a>
-			</div>
+			</div>-->
 		</div>
 		<div class="row row-cols-4" style="width: 100%;">
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
-				<a class="btn btn-secondary" onclick="generator.changeViewType()" style="width: 100%; margin: 1%; background:lightsteelblue;">Переключить представление</a>
+				<a class="btn btn-secondary" onclick="generator.changeViewType()" style="width: 100%; margin: 1%; background:lightsteelblue;">Сменить отображение</a>
 			</div>
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
 				

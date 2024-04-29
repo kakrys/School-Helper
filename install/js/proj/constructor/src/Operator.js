@@ -40,7 +40,7 @@ export class Operator extends Option
 	}
 	getGeneratorData()
 	{
-		return {};
+		return this.parameters;
 	}
 	save()
 	{

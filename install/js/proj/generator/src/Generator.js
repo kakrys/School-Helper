@@ -134,6 +134,7 @@ export class Generator {
 			this.expressionList[id] = new OperatorList();
 			this.currentGeneratorWindow = this.expressionList[id];
 		}
+		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 		this.renderInstructions();
 
 	}
@@ -171,6 +172,7 @@ export class Generator {
 			this.expressionList[id] = this.currentGeneratorWindow;
 			this.currentGeneratorWindow = this.expressionList[id];
 		}
+		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 		this.renderInstructions(this.parametersContainer);
 	}
 
@@ -202,14 +204,22 @@ export class Generator {
 	generatePreview()
 	{
 		let data = this.currentGeneratorWindow.saveAllData();
-		BX.ajax.runAction('proj:independent.Generator.getData',
-			{
-				data:
-					{
-					genSett: data,
-				}
-			}).then((response) => {this.previewContainer.innerHTML = response.data});
-
+		if (data.preview === '')
+		{
+			this.previewContainer.innerHTML = `<i>Нечего отображать: вы не выбрали инструкции!</i>`;
+			return;
+		}
+		else
+		{
+			this.previewContainer.innerHTML = ``;
+			BX.ajax.runAction('proj:independent.Generator.getData',
+				{
+					data:
+						{
+							genSett: data,
+						}
+				}).then((response) => {this.previewContainer.innerHTML = response.data});
+		}
 	}
 }
 
