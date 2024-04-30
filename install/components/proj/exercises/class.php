@@ -12,7 +12,8 @@ class Exercises extends CBitrixComponent
 	{
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 		$generatorCode = $request->getQueryList()->toArray()['generator_code'];
-		$this->arResult['EXERCISES'] = \Proj\Independent\Repository\ExercisesRepository::getExercisesByVariant($generatorCode);
+		$exercises = \Proj\Independent\Repository\ExercisesRepository::getExercisesByVariant($generatorCode);
+		$this->arResult['EXERCISES'] = $exercises;
 		$this->arResult['GENERATOR_CODE'] = $generatorCode;
 	}
 }

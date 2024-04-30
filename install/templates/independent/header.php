@@ -30,17 +30,9 @@ global $USER
 					<span class="has-text-link fs-3 align-middle"><strong>🕮</span class="align-middle"> Самостоятельные работы</strong>
 				</a>
 			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Навигация</a>
-				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#">Тренажёр</a></li>
-					<li><a class="dropdown-item" href="#">Материалы</a></li>
-					<li><a class="dropdown-item" href="#">Каталог заданий</a></li>
-				</ul>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Изучение</a>
-			</li>
+<!--			<li class="nav-item">-->
+<!--				<a class="nav-link" href="#">Изучение</a>-->
+<!--			</li>-->
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">О нас</a>
 				<ul class="dropdown-menu">

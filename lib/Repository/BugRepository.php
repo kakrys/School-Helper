@@ -24,7 +24,7 @@ class BugRepository
 
 	public static function getBugListForAdmin(): array
 	{
-		$result = BugReportTable::getList(['select' => ['PAGE', 'DESCRIPTION', 'CATEGORY_NAME' => 'CATEGORY.NAME']]);
+		$result = BugReportTable::getList(['select' => ['ID','PAGE', 'DESCRIPTION', 'CATEGORY_NAME' => 'CATEGORY.NAME']]);
 		return $result->fetchAll();
 	}
 
@@ -32,5 +32,15 @@ class BugRepository
 	{
 		$result = \Proj\Independent\Model\BugCategoriesTable::getList(['select' => ['ID','NAME']]);
 		return $result->fetchAll();
+	}
+
+	public static function deleteBugById($id)
+	{
+		global $USER;
+		$role = \Proj\Independent\Repository\UserRepository::getCurrentUserWorkPosition();
+		if (isset($role) && $role === 'admin')
+		{
+			BugReportTable::delete($id);
+		}
 	}
 }

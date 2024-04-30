@@ -20,7 +20,7 @@ class TrainerComponent extends CBitrixComponent
 		$subject = $data['subject'];
 		$this->arResult['CLASS'] = $class;
 		$this->arResult['SUBJECT'] = $subject;
-		$this->arResult['THEMES'] = MaterialsRepository::getThemesByClassAndSubject($class, $subject);
+		$this->arResult['THEMES'] = MaterialsRepository::getThemesRelatedToAssignmentsByClassAndSubject($class,$subject);
 	}
 	protected function generateUserVariant()
 	{

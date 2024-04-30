@@ -36,6 +36,7 @@ global $USER;
 									<th scope="col">Категория</th>
 									<th scope="col">Описание</th>
 									<th scope="col">Страница</th>
+									<th scope="col"></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -44,6 +45,7 @@ global $USER;
 									<td><?=$bug['CATEGORY_NAME']?></td>
 									<td><?=$bug['DESCRIPTION']?></td>
 									<td><?=$bug['PAGE']?></td>
+									<td><a type="button" href="/deletebug/<?=$bug['ID']?>" class="btn btn-danger">Устранено</a></td>
 								</tr>
 								<?php endforeach; ?>
 								</tbody>

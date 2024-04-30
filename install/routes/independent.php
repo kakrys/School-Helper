@@ -33,6 +33,20 @@ return function (RoutingConfigurator $routes) {
 	$routes->get('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 	$routes->get('/addtheme/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/addtheme.php'));
 	$routes->post('/addtheme/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/addtheme.php'));
+	$routes->get('/edittheme/{ID}', new PublicPageController('/local/modules/proj.independent/views/edittheme.php'));
+	$routes->post('/edittheme/{ID}', new PublicPageController('/local/modules/proj.independent/views/edittheme.php'));
+	$routes->get('/deletetheme/{ID}',function() {
+		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+		$id = $request->getQueryList()->toArray()['ID'];
+		\Proj\Independent\Repository\ThemesRepository::deleteThemeById($id);
+		LocalRedirect('/');
+	});
+	$routes->get('/deletebug/{ID}',function() {
+		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+		$id = $request->getQueryList()->toArray()['ID'];
+		\Proj\Independent\Repository\BugRepository::deleteBugById($id);
+		LocalRedirect('/admin');
+	});
 
 	$routes->get('/exercises/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
 	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
