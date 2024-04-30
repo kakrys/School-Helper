@@ -2,6 +2,8 @@
 namespace Proj\Independent\Services;
 
 use Bitrix\Main\UserTable;
+use Proj\Independent\Model\StatisticsTable;
+use Proj\Independent\Model\VariantTable;
 
 class UserService
 {

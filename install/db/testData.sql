@@ -1,5 +1,5 @@
 insert into proj_subject (SUBJECT_NAME)
-values ('Math'),('Russian'),('English'),('Literature'),('Chemistry'),('Physics');
+values ('Math'),('Russian'),('English');
 
 
 insert into proj_exercise(exercise_description, exercise_condition, exercise_generator_rules, generator_code, answer, exercise_addition_file_path,THEME_ID)
@@ -37,6 +37,7 @@ VALUES ('Умножение и деление дробей','В этой тем�
 	      'https://englex.ru/ways-to-express-the-present-in-english/',
 	      'https://infourok.ru/tablica-nastoyashie-vremena-v-anglijskom-yazyke-6214905.html','https://infourok.ru/konspekt-uroka-po-angliyskomu-yaziku-na-temu-nastoyaschie-vremena-klass-2449635.html',
 	      '7','english');
+
 
 UPDATE b_user SET WORK_POSITION = 'admin' where ID = 1;
 

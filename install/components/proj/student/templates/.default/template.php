@@ -65,10 +65,28 @@ global $USER;
 					<div id="statistics" class="collapse">
 <!--						МЕСТО ДЛЯ ИЗМЕНЕНИЯ ВКЛАДКИ 'СТАТИСТИКА'-->
 						<div class="d-flex flex-column">
-							<strong>coming soon</strong>
-							<div class="spinner-border text-info" role="status">
-								<span class="visually-hidden">Загрузка...</span>
-							</div>
+							<table class="table">
+								<thead>
+								<tr>
+									<th scope="col">Класс</th>
+									<th scope="col">Дисциплина</th>
+									<th scope="col">Всего решено заданий</th>
+									<th scope="col">Решено верно</th>
+									<th scope="col">Процент верно решенных заданий</th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($arResult['STATISTICS'] as $statistic): ?>
+									<tr>
+										<td><?=$statistic['CLASS_NUMBER']?></td>
+										<td><?=$statistic['SUBJECT_NAME']?></td>
+										<td><?=$statistic['SOLVED_TASKS']?></td>
+										<td><?=$statistic['TASKS_SOLVED_CORRECTLY']?></td>
+										<td><?=round($statistic['TASKS_SOLVED_CORRECTLY']/$statistic['SOLVED_TASKS']*100)?>%</td>
+									</tr>
+								<?php endforeach;?>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>

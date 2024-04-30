@@ -21,13 +21,13 @@ global $USER;
 				</span>
 				<a href ='/generator' class="btn align-self-center"> Генератор</a>
 				<a href ='#' class="btn align-self-center" data-target="#bugs"> Сообщения о багах</a>
+				<a href ='#' class="btn align-self-center" data-target="#addThemes"> Добавить тему </a>
 			</div>
 			<div style="flex-grow: 1;"></div>
 		</div>
 		<div style="min-height: 83vh; flex-grow: 1;">
 			<div class="d-flex flex-column" style="margin-left: 1%;">
 				<div class="border bg-light">
-
 					<div id="bugs" class="collapse">
 						<div class="d-flex flex-column">
 							<table class="table">
@@ -45,6 +45,28 @@ global $USER;
 									<td><?=$bug['DESCRIPTION']?></td>
 									<td><?=$bug['PAGE']?></td>
 								</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div id="addThemes" class="collapse">
+						<div class="d-flex flex-column">
+							<table class="table">
+								<thead>
+								<tr>
+									<th scope="col">Класс</th>
+									<th scope="col">Дисциплина</th>
+									<th></th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($arResult['SUBJECTS'] as $subject): ?>
+									<tr>
+										<td><?=$subject['CLASS']?></td>
+										<td><?=$subject['SUBJECT_NAME']?></td>
+										<td><a href="/addtheme/<?=$subject['CLASS'] . '/' . $subject['SUBJECT_NAME']?>" type="button" class="btn btn-primary">Добавить</a></td>
+									</tr>
 								<?php endforeach; ?>
 								</tbody>
 							</table>

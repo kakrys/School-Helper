@@ -32,3 +32,5 @@ DROP TABLE IF EXISTS proj_bug_categories;
 
 DROP TABLE IF EXISTS proj_bug_report;
 
+DROP TABLE IF EXISTS proj_statistics;
+

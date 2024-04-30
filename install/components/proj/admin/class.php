@@ -7,6 +7,7 @@ class AdminComponent extends CBitrixComponent
 	public function executeComponent()
 	{
 		$this->checkRole();
+		$this->fetchClassAndSubject();
 		$this->fetchBugList();
 		$this->includeComponentTemplate();
 	}
@@ -22,6 +23,12 @@ class AdminComponent extends CBitrixComponent
 	protected function fetchBugList()
 	{
 		$this->arResult['BUG_LIST'] = \Proj\Independent\Repository\BugRepository::getBugListForAdmin();
+	}
+
+	protected function fetchClassAndSubject()
+	{
+		$data = \Proj\Independent\Repository\SubjectRepository::getClassAndSubject();
+		$this->arResult['SUBJECTS'] = $data;
 	}
 
 }
