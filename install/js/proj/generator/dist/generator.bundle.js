@@ -221,12 +221,17 @@ this.BX.Proj = this.BX.Proj || {};
 	    this.instructionsContainer = document.getElementById(options.instructionsNodeId);
 	    this.parametersContainer = document.getElementById(options.settingsNodeId);
 	    this.previewContainer = document.getElementById(options.previewContainer);
+	    this.AdditiveContainer = document.getElementById('AdditiveContainer');
 	    this.instructions = new OptionList();
 	    this.expressionInstruction = new OperatorList();
 	    this.expressionList = [];
 	    this.currentGeneratorWindow = this.instructions;
 	    this.generatorWindowType = 'task';
 	    this.controlsContainer.innerHTML = Controls.showTaskControls();
+	    this.saveAttemptExercise = 0;
+	    this.saveAttemptTask = 0;
+	    this.arePreviewGenerated = 0;
+	    this.saveAttempt = 0;
 	  }
 	  babelHelpers.createClass(Generator, [{
 	    key: "backToGenerator",
@@ -290,6 +295,8 @@ this.BX.Proj = this.BX.Proj || {};
 	  }, {
 	    key: "renderInstructions",
 	    value: function renderInstructions() {
+	      this.AdditiveContainer.innerHTML = "";
+	      this.arePreviewGenerated = 0;
 	      if (this.currentGeneratorWindow instanceof OperatorList && this.expressionViewType === 'text') {
 	        this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderTextView();
 	        return;
@@ -310,6 +317,7 @@ this.BX.Proj = this.BX.Proj || {};
 	  }, {
 	    key: "clearInstructions",
 	    value: function clearInstructions(id) {
+	      this.AdditiveContainer.innerHTML = "";
 	      this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 	      this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
 	      if (id === undefined) {
@@ -330,6 +338,7 @@ this.BX.Proj = this.BX.Proj || {};
 	  }, {
 	    key: "deleteLastInstruction",
 	    value: function deleteLastInstruction(id) {
+	      this.AdditiveContainer.innerHTML = "";
 	      if (this.currentGeneratorWindow.addedInstructions > 0) {
 	        if (this.currentGeneratorWindow.openedInstruction === this.currentGeneratorWindow.addedInstructions - 1) {
 	          this.currentGeneratorWindow.openedInstruction = -1;
@@ -380,6 +389,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    key: "generatePreview",
 	    value: function generatePreview() {
 	      var _this = this;
+	      this.AdditiveContainer.innerHTML = '';
 	      var data = this.currentGeneratorWindow.saveAllData();
 	      if (data.preview === '') {
 	        this.previewContainer.innerHTML = "<i>\u041D\u0435\u0447\u0435\u0433\u043E \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0430\u0442\u044C: \u0432\u044B \u043D\u0435 \u0432\u044B\u0431\u0440\u0430\u043B\u0438 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438!</i>";
@@ -392,15 +402,72 @@ this.BX.Proj = this.BX.Proj || {};
 	          }
 	        }).then(function (response) {
 	          _this.previewContainer.innerHTML = response.data;
+	          if (_this.previewContainer.innerHTML.includes('Ошибка')) {
+	            _this.arePreviewGenerated = 0;
+	          } else {
+	            _this.arePreviewGenerated = 1;
+	          }
+	        });
+	      }
+	    }
+	  }, {
+	    key: "saveExercise",
+	    value: function saveExercise() {
+	      var _this2 = this;
+	      this.AdditiveContainer.innerHTML = "";
+	      var grade = document.getElementById('gradeDropdown').innerText;
+	      var subject = document.getElementById('subjectDropdown').innerText;
+	      var theme = document.getElementById('topicDropdown').innerText;
+	      var saveButton = document.getElementById("saveButton");
+	      var data = this.currentGeneratorWindow.saveAllData();
+	      data.mode = this.generatorWindowType;
+	      data.theme = theme;
+	      data.attempt = this.saveAttempt;
+	      if (grade === "Выберите класс" || subject === "Выберите предмет" || theme === 'Выберите тему') {
+	        this.AdditiveContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F: \u041D\u0435 \u0432\u044B\u0431\u0440\u0430\u043D\u0430 \u0442\u0435\u043C\u0430</div>";
+	        return false;
+	      }
+	      if (this.arePreviewGenerated === 0) {
+	        this.AdditiveContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F: \u0412\u044B \u043D\u0435 \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u043E\u0432\u0430\u043B\u0438 \u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u043F\u0440\u0435\u0434\u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440. \u0421\u0438\u0441\u0442\u0435\u043C\u0435 \u043D\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u043E, \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442 \u043B\u0438 \u0432\u0430\u0448\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F</div>";
+	        return false;
+	      }
+	      if (this.currentGeneratorWindow === this.instructions && this.expressionInstruction.list.length !== 1 && this.saveAttemptTask === 0) {
+	        this.saveAttemptTask += 1;
+	        this.saveAttemptExercise = 0;
+	        this.AdditiveContainer.innerHTML = "<div style=\"color:darkorange;border:darkorange 1px solid; font-size: 125%;\">\u041F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u0435: \u0423 \u0432\u0430\u0441 \u0435\u0441\u0442\u044C \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F, \u043D\u0430\u0431\u0440\u0430\u043D\u043D\u0430\u044F \u0432 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0435 \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F. \u041F\u043E\u0432\u0442\u043E\u0440\u043D\u043E\u0435 \u043D\u0430\u0436\u0430\u0442\u0438\u0435 \u043D\u0430 \u043A\u043D\u043E\u043F\u043A\u0443 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u0437\u0430\u0442\u0440\u0451\u0442 \u044D\u0442\u0443 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0443</div>";
+	      } else if (this.currentGeneratorWindow === this.expressionInstruction && this.instructions.list.length !== 0 && this.saveAttemptExercise === 0) {
+	        this.saveAttemptTask = 0;
+	        this.saveAttemptExercise += 1;
+	        this.AdditiveContainer.innerHTML = "<div style=\"color:darkorange;border:darkorange 1px solid; font-size: 125%;\">\u041F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u0435: \u0423 \u0432\u0430\u0441 \u0435\u0441\u0442\u044C \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F, \u043D\u0430\u0431\u0440\u0430\u043D\u043D\u0430\u044F \u0432 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0435 \u0437\u0430\u0434\u0430\u0447\u0438. \u041F\u043E\u0432\u0442\u043E\u0440\u043D\u043E\u0435 \u043D\u0430\u0436\u0430\u0442\u0438\u0435 \u043D\u0430 \u043A\u043D\u043E\u043F\u043A\u0443 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u0437\u0430\u0442\u0440\u0451\u0442 \u044D\u0442\u0443 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0443</div>";
+	      } else if (this.expressionInstruction.list.length === 1 || this.instructions.list.length === 0 || this.saveAttemptExercise === 1 || this.saveAttemptTask === 1) {
+	        saveButton.removeAttribute('onclick');
+	        this.AdditiveContainer.innerHTML = "\u0418\u0434\u0451\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u0435";
+	        BX.ajax.runAction('proj:independent.Generator.saveExercise', {
+	          data: {
+	            exercise: data
+	          }
+	        }).then(function (response) {
+	          if (response.data[0] === 'false') {
+	            _this2.saveAttempt = response.data[1];
+	            _this2.AdditiveContainer.innerHTML = "<div style=\"color:darkorange;border:darkorange 1px solid; font-size: 125%;\">".concat(response.data[2], "</div>");
+	          }
+	          if (response.data[0] === 'true') {
+	            _this2.saveAttemptTask = 0;
+	            _this2.saveAttemptExercise = 0;
+	            _this2.saveAttempt = 0;
+	            _this2.AdditiveContainer.innerHTML = "<div style=\"color:forestgreen;border:forestgreen 1px solid; font-size: 125%;\">".concat(response.data[1], "</div>");
+	          }
+	          saveButton.setAttribute('onclick', 'generator.saveExercise()');
+	          grade = undefined;
+	          subject = undefined;
+	          theme = undefined;
+	          //Тут надо удалить инструкции!
 	        });
 	      }
 	    }
 	  }]);
 	  return Generator;
 	}();
-
-	//BX.ajax.runAction('proj:independent.Generator.getData')
-	//BX.ajax.runAction('proj:independent.Контроллер.Действие')
 
 	exports.ClassSubjectThemeMenu = ClassSubjectThemeMenu;
 	exports.Generator = Generator;

@@ -219,9 +219,17 @@ this.BX.Proj = this.BX.Proj || {};
 	      var excludeButton = document.querySelector(".form-check-input[id=\"RandomOperator\"]");
 	      if (excludeButton.getAttribute('checked') === 'true') {
 	        if (excludeArea.value !== null && excludeArea.value !== '') {
-	          var exclude = excludeArea.value.replace(' ', '').split(',');
+	          var exclude = excludeArea.value.replace(/\s+/g, '');
+	          if (exclude.includes(':') && exclude.includes('/')) {
+	            exclude = exclude.replace(/\//g, ':');
+	          }
+	          if (exclude.includes('N') && exclude.includes('root')) {
+	            exclude = exclude.replace(/root/g, 'N');
+	          }
+	          exclude = exclude.split(',');
+	          exclude = babelHelpers.toConsumableArray(new Set(exclude));
 	          for (var i = 0; i < exclude.length; i++) {
-	            if (!this.accessibleOperators.includes(exclude[i])) {
+	            if (!this.accessibleOperators.includes("".concat(exclude[i]))) {
 	              this.Exclude = [];
 	              return;
 	            }

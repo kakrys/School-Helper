@@ -27,12 +27,17 @@ export class Generator {
 		this.instructionsContainer = document.getElementById(options.instructionsNodeId);
 		this.parametersContainer = document.getElementById(options.settingsNodeId);
 		this.previewContainer = document.getElementById(options.previewContainer)
+		this.AdditiveContainer = document.getElementById('AdditiveContainer');
 		this.instructions = new OptionList();
 		this.expressionInstruction = new OperatorList();
 		this.expressionList = [];
 		this.currentGeneratorWindow = this.instructions;
 		this.generatorWindowType = 'task';
 		this.controlsContainer.innerHTML = Controls.showTaskControls();
+		this.saveAttemptExercise = 0;
+		this.saveAttemptTask = 0;
+		this.arePreviewGenerated = 0;
+		this.saveAttempt = 0;
 	}
 	backToGenerator()
 	{
@@ -92,6 +97,8 @@ export class Generator {
 	}
 	renderInstructions()
 	{
+		this.AdditiveContainer.innerHTML = ``;
+		this.arePreviewGenerated = 0;
 		if (this.currentGeneratorWindow instanceof OperatorList && this.expressionViewType === 'text')
 		{
 			this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderTextView();
@@ -114,6 +121,7 @@ export class Generator {
 	}
 	clearInstructions(id)
 	{
+		this.AdditiveContainer.innerHTML = ``;
 		this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
 		if (id === undefined)
@@ -140,6 +148,7 @@ export class Generator {
 	}
 	deleteLastInstruction(id)
 	{
+		this.AdditiveContainer.innerHTML = ``;
 		if (this.currentGeneratorWindow.addedInstructions > 0)
 		{
 			if (this.currentGeneratorWindow.openedInstruction === this.currentGeneratorWindow.addedInstructions - 1)
@@ -200,9 +209,9 @@ export class Generator {
 			this.renderInstructions();
 		}
 	}
-
 	generatePreview()
 	{
+		this.AdditiveContainer.innerHTML = '';
 		let data = this.currentGeneratorWindow.saveAllData();
 		if (data.preview === '')
 		{
@@ -218,11 +227,81 @@ export class Generator {
 						{
 							genSett: data,
 						}
-				}).then((response) => {this.previewContainer.innerHTML = response.data});
+				}).then((response) => {
+					this.previewContainer.innerHTML = response.data;
+					if (this.previewContainer.innerHTML.includes('Ошибка'))
+					{
+						this.arePreviewGenerated = 0;
+					}
+					else
+					{
+						this.arePreviewGenerated = 1;
+					}
+				});
+		}
+	}
+	saveExercise()
+	{
+		this.AdditiveContainer.innerHTML = ``;
+		let grade = document.getElementById('gradeDropdown').innerText;
+		let subject = document.getElementById('subjectDropdown').innerText;
+		let theme = document.getElementById('topicDropdown').innerText;
+		let saveButton = document.getElementById("saveButton");
+		let data = this.currentGeneratorWindow.saveAllData();
+		data.mode = this.generatorWindowType;
+		data.theme = theme;
+		data.attempt = this.saveAttempt;
+		if (grade === "Выберите класс" || subject === "Выберите предмет" || theme === 'Выберите тему')
+		{
+			this.AdditiveContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка сохранения: Не выбрана тема</div>`;
+			return false;
+		}
+		if (this.arePreviewGenerated === 0)
+		{
+			this.AdditiveContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка сохранения: Вы не генерировали рабочий предпросмотр. Системе неизвестно, работает ли ваша инструкция</div>`;
+			return false;
+		}
+		if (this.currentGeneratorWindow === this.instructions && this.expressionInstruction.list.length !== 1 && this.saveAttemptTask === 0)
+		{
+			this.saveAttemptTask += 1;
+			this.saveAttemptExercise = 0;
+			this.AdditiveContainer.innerHTML = `<div style="color:darkorange;border:darkorange 1px solid; font-size: 125%;">Предупреждение: У вас есть инструкция, набранная в генераторе выражения. Повторное нажатие на кнопку сохранения затрёт эту настройку</div>`;
+		}
+		else if (this.currentGeneratorWindow === this.expressionInstruction && this.instructions.list.length !== 0  && this.saveAttemptExercise === 0)
+		{
+			this.saveAttemptTask = 0;
+			this.saveAttemptExercise += 1;
+			this.AdditiveContainer.innerHTML = `<div style="color:darkorange;border:darkorange 1px solid; font-size: 125%;">Предупреждение: У вас есть инструкция, набранная в генераторе задачи. Повторное нажатие на кнопку сохранения затрёт эту настройку</div>`;
+		}
+		else if (this.expressionInstruction.list.length === 1 || this.instructions.list.length === 0 || this.saveAttemptExercise === 1 || this.saveAttemptTask === 1)
+		{
+			saveButton.removeAttribute('onclick');
+			BX.ajax.runAction('proj:independent.Generator.saveExercise',
+				{
+					data:
+						{
+							exercise: data,
+						}
+				}).then((response) => {
+					if (response.data[0] === 'false')
+					{
+						this.saveAttempt = response.data[1];
+						this.AdditiveContainer.innerHTML = `<div style="color:darkorange;border:darkorange 1px solid; font-size: 125%;">${response.data[2]}</div>`;
+					}
+					if(response.data[0] === 'true')
+					{
+						this.saveAttemptTask = 0;
+						this.saveAttemptExercise = 0;
+						this.saveAttempt = 0;
+						this.AdditiveContainer.innerHTML = `<div style="color:forestgreen;border:forestgreen 1px solid; font-size: 125%;">${response.data[1]}</div>`;
+					}
+					saveButton.setAttribute('onclick' , 'generator.saveExercise()');
+					grade = undefined;
+					subject = undefined;
+					theme = undefined;
+					//Тут надо удалить инструкции!
+				});
+
 		}
 	}
 }
-
-
-//BX.ajax.runAction('proj:independent.Generator.getData')
-//BX.ajax.runAction('proj:independent.Контроллер.Действие')

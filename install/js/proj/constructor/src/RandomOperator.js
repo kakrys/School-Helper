@@ -16,10 +16,20 @@ export class RandomOperator extends Operator {
 		{
 			if (excludeArea.value !== null && excludeArea.value !== '')
 			{
-				let exclude = excludeArea.value.replace(' ', '').split(',');
+				let exclude = excludeArea.value.replace(/\s+/g, '');
+				if (exclude.includes(':') && exclude.includes('/'))
+				{
+					exclude = exclude.replace(/\//g, ':');
+				}
+				if (exclude.includes('N') && exclude.includes('root'))
+				{
+					exclude = exclude.replace(/root/g, 'N');
+				}
+				exclude = exclude.split(',');
+				exclude = [... new Set(exclude)];
 				for (let i = 0; i < exclude.length; i++)
 				{
-					if (!this.accessibleOperators.includes(exclude[i]))
+					if (!this.accessibleOperators.includes(`${exclude[i]}`))
 					{
 						this.Exclude = [];
 						return;
