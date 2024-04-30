@@ -53,4 +53,14 @@ class GeneratorRepository
 		}
 		return $data;
 	}
+
+	public static function getThemeIdFromName(string $name):int
+	{
+		$resultTheme = \Proj\Independent\Model\ThemesTable::getList([
+			'select' => ['ID'],
+			'filter' => [
+				'=NAME' => $name
+			]])->fetch();
+		return $resultTheme['ID'];
+	}
 }

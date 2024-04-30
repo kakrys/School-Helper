@@ -1,5 +1,6 @@
 <?php
 namespace Proj\Independent\Math\Objects;
+use Proj\Independent\Math\Math;
 use Proj\Independent\Math\Objects\Fraction;
 class Root
 {
@@ -35,7 +36,7 @@ class Root
 
 	public function __toString():string
 	{
-		return $this->value;
+		return "[$this->exponent]$this->number";
 	}
 
 	public function htmlRender():string
@@ -71,5 +72,37 @@ class Root
 		</div>
 		";
 		return $html;
+	}
+
+	public static function rand_root(int $min, int $max, string $mode = 'AnyType', int $exponent = 2):Root|bool
+	{
+		$min = $min**2;
+		$max = $max**2;
+		$number = mt_rand(abs($min), abs($max));
+		switch ($mode)
+		{
+			case 'Rational':
+				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Попали в рациональный\n", FILE_APPEND);
+				$number = pow(mt_rand((int)ceil(sqrt(abs($min))), (int)ceil(sqrt(abs($max)))),2);
+				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "$number!\n", FILE_APPEND);
+				return new Root($number);
+			case 'Irrational':
+				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Попали в иррациональный\n", FILE_APPEND);
+				$startTime = time();
+				$endTime = $startTime + 5;
+				while (!str_contains(sqrt($number),'.'))
+				{
+					$number = mt_rand($min, $max);
+					if (time() >= $endTime)
+					{
+						return false;
+					}
+					file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "$number,->", FILE_APPEND);
+				}
+				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "\n", FILE_APPEND);
+				return new Root($number);
+			default:
+				return new Root(mt_rand($min, $max));
+		}
 	}
 }
