@@ -13,6 +13,8 @@ export class RandNumberOperator extends RandNumberOption{
 		{
 			this.textView = '[X]';
 		}
+		this.parameters.id = this.id;
+		this.parameters.Type = this.type;
 		this.isOperator = false;
 		this.isDelitable = true;
 		this.isPair = false;

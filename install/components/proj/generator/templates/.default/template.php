@@ -15,9 +15,7 @@ $jsonData = json_encode($arResult['CST_DATA']);
 			<div id="mainGeneratorWindow" class="d-flex flex-column" style="width: 50%; max-height: 100%;">
 				<div id="topMenu" class="d-flex">
 					<div class="btn-group" style="width: 33%; max-width: 33%;">
-						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="gradeDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-							Выберите класс
-						</button>
+						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="gradeDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">Выберите класс</button>
 						<ul class="dropdown-menu" aria-labelledby="gradeDropdown" style="overflow-y: auto; max-height: 10vh;">
 						<?php foreach(array_keys($arResult['CST_DATA']) as $grade):?>
 							<li><a class="dropdown-item" data-value="<?=$grade?>" onclick="topMenu.changeGradeValue(this)"><?=$grade?> класс</a></li>
@@ -25,15 +23,11 @@ $jsonData = json_encode($arResult['CST_DATA']);
 						</ul>
 					</div>
 					<div id="subjectDropdownContainer" class="btn-group invisible" style="width: 33%; max-width: 33%;">
-						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="subjectDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-							Выберите предмет
-						</button>
+						<button class="btn btn-secondary dropdown-toggle" data-value="null" type="button" id="subjectDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">Выберите предмет</button>
 						<ul class="dropdown-menu" aria-labelledby="subjectDropdown" style="overflow-y: auto; max-height: 10vh;"></ul>
 					</div>
 					<div id="topicDropdownContainer" class="btn-group invisible" style="width: 33%; max-width: 33%;">
-						<button class="btn btn-secondary dropdown-toggle overflow-hidden" data-value="null" type="button" id="topicDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-							Выберите тему
-						</button>
+						<button class="btn btn-secondary dropdown-toggle overflow-hidden" data-value="null" type="button" id="topicDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">Выберите тему</button>
 						<ul class="dropdown-menu" aria-labelledby="topicDropdown" style="overflow-y: auto; max-height: 10vh;"></ul>
 					</div>
 				</div>
@@ -51,7 +45,7 @@ $jsonData = json_encode($arResult['CST_DATA']);
 					</div>
 				</div>
 				<div class="d-flex justify-content-end" style="margin: 1% 1% 0 0;">
-					<a class="btn btn-primary" role="button" href="#">Сохранить</a>
+					<a id="saveButton" class="btn btn-primary" role="button" onclick="generator.saveExercise()">Сохранить</a>
 				</div>
 			</div>
 			<div class="d-flex flex-column" style="width: 50%; max-height:100%;">
@@ -59,8 +53,12 @@ $jsonData = json_encode($arResult['CST_DATA']);
 				<div style="margin: 1%;">
 					<a class="btn btn-primary" style="margin 1%;" role="button" onclick="generator.generatePreview()">Сгенерировать предпросмотр!</a>
 				</div>
-				<div id="previewContainer" class="border bg-light d-flex" style="margin: 1% 1% 0 0; min-height:45%; max-height:45%;">
-					Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!
+				<div class="border bg-light d-flex flex-column" style="margin: 1% 1% 0 0; min-height:45%; max-height:45%; word-break: break-word;">
+					<div class="d-flex" id="previewContainer">
+						Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!
+					</div>
+					<div id="AdditiveContainer">
+					</div>
 				</div>
 			</div>
 		</div>

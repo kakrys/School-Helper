@@ -19,8 +19,34 @@ class Fraction
 	 *
 	 * Has 2 modes: SHORTENED for simplifying fraction by gcd and NOT_SHORTENED to avoid simplifying
 	 */
-	public function __construct(int|float|Fraction $numerator, int|float|Fraction $denominator = 1, int $mode = Fraction::SHORTENED)
+	public function __construct(int|float|Fraction|string $numerator, int|float|Fraction|string $denominator = 1, int $mode = Fraction::SHORTENED)
 	{
+		if (is_string($numerator) && !is_numeric($numerator))
+		{
+			if (str_contains($numerator,'/'))
+			{
+				str_replace(' ', '', $numerator);
+				$numerator = explode('/',$numerator);
+				$numerator = new Fraction($numerator[0], $numerator[1]);
+			}
+			else
+			{
+				throw new \Error("Wrong string on fraction's numerator");
+			}
+		}
+		if (is_string($denominator) && !is_numeric($denominator))
+		{
+			if (str_contains($denominator,'/'))
+			{
+				str_replace(' ', '', $denominator);
+				$denominator = explode('/',$denominator);
+				$denominator = new Fraction($denominator[0], $denominator[1]);
+			}
+			else
+			{
+				throw new \Error("Wrong string on fraction's denominator");
+			}
+		}
 		$this->mode = match($mode)
 		{
 			Fraction::NOT_SHORTENED => Fraction::NOT_SHORTENED,
@@ -98,7 +124,7 @@ class Fraction
 		$this->denominator = $result->denominator;
 	}
 
-	public static function divide(int|float|\Fraction $a, int|float|\Fraction $b):Fraction
+	public static function divide(int|float|Fraction $a, int|float|Fraction $b):Fraction
 	{
 		if($a instanceof Fraction && $b instanceof Fraction)
 		{
@@ -126,7 +152,7 @@ class Fraction
 		}
 		return new Fraction($a, $b);
 	}
-	public static function multiply(int|float|\Fraction $a, int|float|\Fraction $b):Fraction
+	public static function multiply(int|float|Fraction $a, int|float|Fraction $b):Fraction
 	{
 		if($a instanceof Fraction && $b instanceof Fraction)
 		{
@@ -176,11 +202,106 @@ class Fraction
 	}
 	public function __toString():string
 	{
-		if (!str_contains((string)$this->value,'.'))
+		return $this->numerator . "/$this->denominator";
+	}
+	public static function rand_fraction(int $min, int $max, array $fractionPropetries = ['AllTypes', 'AnyNumber', 'AnyShortedType']):Fraction|bool
+	{
+		$fractionShortType = $fractionPropetries[0];
+		$fractionNumberType = $fractionPropetries[1];
+		$fractionView = $fractionPropetries[2];
+		$numerator = mt_rand($min, $max);
+		$denominator = mt_rand($min,$max);
+		if ($min === $max)
 		{
-			return $this->value;
+			return new Fraction($numerator, 1, Fraction::NOT_SHORTENED);
 		}
-		return $this->numerator+$this->denominator*$this->integerPart . "/$this->denominator";
+		switch ($fractionView)
+		{
+			case 'Correct':
+				$startTime = microtime();
+				$endTime = $startTime + 5;
+				while ($numerator >= $denominator)
+				{
+					$numerator = mt_rand($min, $max);
+					$denominator = mt_rand($min,$max);
+					if (time()>=$endTime)
+					{
+						return false;
+					}
+				}
+				break;
+			case 'Incorrect':
+				$startTime = microtime();
+				$endTime = $startTime + 5;
+				while ($numerator <= $denominator)
+				{
+					$numerator = mt_rand($min, $max);
+					$denominator = mt_rand($min,$max);
+					if (time()>=$endTime)
+					{
+						return false;
+					}
+				}
+				break;
+			default:
+				$numerator = mt_rand($min, $max);
+				$denominator = mt_rand($min,$max);
+				break;
+		}
+		$rationalDenominator = [1, 2, 5];
+		switch ($fractionNumberType)
+		{
+			case 'Rational':
+				$startTime = time();
+				$endTime = $startTime + 5;
+				while (count(array_diff(Math::getDivisors($denominator), $rationalDenominator)) !== 0)
+				{
+					$denominator = mt_rand($min,$max);
+					if (time()>=$endTime)
+					{
+						return false;
+					}
+				}
+				if ($fractionView === 'Correct' && $numerator > $denominator)
+				{
+					$denominator = $denominator * 2;
+					$numerator = (int)($numerator / 2);
+				}
+				break;
+			case 'Irrational':
+				$startTime = microtime();
+				$endTime = $startTime + 5;
+				while (count(array_diff($rationalDenominator, Math::getDivisors($denominator))) === 0)
+				{
+					$denominator = mt_rand($min,$max);
+					if (time()>=$endTime)
+					{
+						return false;
+					}
+				}
+				if ($fractionView === 'Correct' && $numerator > $denominator)
+				{
+					$denominator = $denominator * 2;
+					$numerator = (int)($numerator / 2);
+				}
+				break;
+			default:
+				break;
+		}
+		if ($numerator === $denominator)
+		{
+			return Fraction::rand_fraction($min, $max, $fractionPropetries);
+		}
+		switch ($fractionShortType)
+		{
+			case 0:
+				return new Fraction($numerator, $denominator, Fraction::SHORTENED);
+			case 1:
+				return new Fraction($numerator, $denominator, Fraction::NOT_SHORTENED);
+			default:
+				$fractionType = array_rand([0,1]);
+				return new Fraction($numerator, $denominator, $fractionType);
+		}
 	}
 
 	public function htmlRender():string

@@ -31,6 +31,9 @@ return function (RoutingConfigurator $routes) {
 		LocalRedirect('/');
 	});
 	$routes->get('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
+	$routes->get('/addtheme/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/addtheme.php'));
+	$routes->post('/addtheme/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/addtheme.php'));
+
 	$routes->get('/exercises/{generator_code}', new PublicPageController('/local/modules/proj.independent/views/exercises.php'));
 	$routes->get('/themes/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/materials.php'));
 	$routes->get('/information', new PublicPageController('/local/modules/proj.independent/views/information.php'));

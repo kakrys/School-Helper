@@ -12,3 +12,4 @@ $MESS['Rand.Operation'] = 'Случайный оператор';
 $MESS['customEx'] = 'Выражение';
 $MESS['Answer'] = 'Ответ';
 $MESS['Equal'] = 'Знак равенства';
+$MESS['Polynom'] = 'Полином';

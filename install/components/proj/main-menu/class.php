@@ -11,10 +11,9 @@ class MainMenuComponent extends CBitrixComponent
 
 	protected function fetchSubjectList()
 	{
-		$result = \Proj\Independent\Model\SubjectTable::getList(['select' => ['SUBJECT_NAME','CLASS' => 'CLASSES.CLASS_NUMBER']]);
-		$selectionResult = $result->fetchAll();
+		$selectionResult = \Proj\Independent\Repository\SubjectRepository::getClassAndSubject();
 		$subjects = array();
-
+		global $USER;
 		foreach ($selectionResult as $item) {
 			$class = $item['CLASS'];
 			if (!isset($subjects[$class])) {
@@ -22,7 +21,6 @@ class MainMenuComponent extends CBitrixComponent
 			}
 			$subjects[$class][] = $item['SUBJECT_NAME'];
 		}
-
 		$this->arResult['SUBJECTS'] = $subjects;
 	}
 	protected function fetchGrades(): void

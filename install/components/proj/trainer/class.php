@@ -32,7 +32,7 @@ class TrainerComponent extends CBitrixComponent
 			$this->arResult['DATA'] = $themes;
 
 			$getData = $request->getQueryList()->toArray();
-			$generatorCode = md5(time());
+			$generatorCode = substr(md5(time()),0,16);
 			$classNumber = $getData['class'];
 			$subject = $getData['subject'];
 			$result = \Proj\Independent\Model\VariantTable::add(
