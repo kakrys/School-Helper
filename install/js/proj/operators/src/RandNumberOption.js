@@ -4,12 +4,21 @@ export class RandNumberOption extends Option{
 	constructor(options = {})
 	{
 		super(options);
-		this.parameters = {};
-		this.FloatDigits = '';
-		this.MinNumber = '';
-		this.MaxNumber = '';
-		this.Exclude = '';
-		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', '']];
+		this.FloatDigits = 2;
+		this.MinNumber = 1;
+		this.MaxNumber = 100;
+		this.Exclude = [];
+		this.parameters = {
+			MinNumber : 1,
+			MaxNumber : 100,
+			Exclude : [],
+			FloatDigits: ['false', 0],
+			Fraction: ['AllTypes', 'AnyNumber', 'AnyShortedType'],
+			Absolute: ['none'],
+			Root: ['none'],
+			integer: 'true',
+		};
+		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], 'checked="true"'];
 
 		this.FractionType = ['','','','checked="true"'];
 		this.FractionNumber = ['','','checked="true"'];
@@ -24,11 +33,16 @@ export class RandNumberOption extends Option{
 		this.excludeNumberContainer = document.querySelector(`[id^="textArea_${this.id}_3"]`);
 		this.floatCountContainer = document.querySelector(`[id^="textArea_${this.id}_4"]`);
 		this.parameters = {
-			OptionId: this.id,
+			id: this.id,
+			Type: this.type,
 			MinNumber: this.minNumberContainer.value,
 			MaxNumber: this.maxNumberContainer.value,
 			Exclude: this.excludeNumberContainer.value.split(/[,\s]+/),
-			FloatDigits: this.floatCountContainer.value,
+			FloatDigits: ['false', 0],
+			Fraction : ['none'],
+			Root : ['none'],
+			Absolute : ['none'],
+			integer : 'false',
 		};
 
 		this.checkButtonElements = document.querySelectorAll('.form-check-input[aria-expanded="true"]');
@@ -40,7 +54,7 @@ export class RandNumberOption extends Option{
 				checkButtons.forEach(button =>{
 					properties.push(button.getAttribute('value'))
 				});
-				if(properties !== [])
+				if(properties.length !== 0)
 				{
 					this.parameters.Fraction = properties;
 				}
@@ -52,7 +66,7 @@ export class RandNumberOption extends Option{
 				checkButtons.forEach(button =>{
 					properties.push(button.getAttribute('value'))
 				});
-				if(properties !== [])
+				if(properties.length !== 0)
 				{
 					this.parameters.Root = properties;
 				}
@@ -64,46 +78,58 @@ export class RandNumberOption extends Option{
 				checkButtons.forEach(button =>{
 					properties.push(button.getAttribute('value'))
 				});
-				if(properties !== [])
+				if(properties.length !== 0)
 				{
 					this.parameters.Absolute = properties;
 				}
 			}
+
 			if(element.getAttribute('aria-controls') === "FloatCollapse")
 			{
 				if (this.floatCountContainer.value !== null)
 				{
-					this.parameters.FloatDigits = this.floatCountContainer.value;
+					this.parameters.FloatDigits = ['true', this.floatCountContainer.value];
 				}
 			}
 		});
+		if (this.parameters.MinNumber.toString().includes('.') || this.parameters.MaxNumber.toString().includes('.'))
+		{
+			this.parameters.FloatDigits = ['true', 2];
+		}
+		let integerButton = document.getElementById("IntegerCheckDefault");
+		if (integerButton.getAttribute('checked') === 'true')
+		{
+			this.parameters.integer = 'true';
+		}
+		if (this.parameters.Fraction[0] === 'none' && this.parameters.Root[0] === 'none' && this.parameters.Absolute[0] === 'none' && this.parameters.FloatDigits[0] === 'false')
+		{
+			this.parameters.integer = 'true';
+		}
 		this.unregisterEvents();
 	}
 	updateParameters()
 	{
-		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', '']];
-		console.log(this.parameters);
+		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], ''];
 		if ('MinNumber' in this.parameters) {
 			this.MinNumber = this.parameters.MinNumber;
 		}
 		if ('MaxNumber' in this.parameters) {
 			this.MaxNumber = this.parameters.MaxNumber;
 		}
-		if ('FloatDigits' in this.parameters && this.parameters.FloatDigits !== '') {
+		if ('FloatDigits' in this.parameters && this.parameters.FloatDigits[0] === 'true') {
 			this.viewParameters[1] = ['', 'true', 'checked="true"', 'show'];
-			this.FloatDigits = this.parameters.FloatDigits;
+			this.FloatDigits = this.parameters.FloatDigits[1];
 		}
 		if ('Exclude' in this.parameters) {
 			this.Exclude = this.parameters.Exclude.join(',');
 		}
-		if ('Fraction' in this.parameters)
+		if ('Fraction' in this.parameters && this.parameters.Fraction[0] !== 'none')
 		{
 			this.viewParameters[0] = ['', 'true', 'checked="true"', 'show'];
 			this.FractionType = ['','','',''];
 			this.FractionNumber = ['','',''];
 			this.FractionView = ['','',''];
 			this.parameters.Fraction.forEach(param => {
-				console.log(param);
 				switch(param){
 					case 'Correct': this.FractionType[0] = 'checked="true"'; break;
 					case 'Incorrect': this.FractionType[1] = 'checked="true"'; break;
@@ -118,7 +144,7 @@ export class RandNumberOption extends Option{
 				}
 			});
 		}
-		if ('Root' in this.parameters) {
+		if ('Root' in this.parameters && this.parameters.Root[0] !== 'none') {
 			this.viewParameters[2] = ['', 'true', 'checked="true"', 'show'];
 			this.RootType = ['','',''];
 			this.parameters.Root.forEach(param => {
@@ -129,7 +155,7 @@ export class RandNumberOption extends Option{
 				}
 			});
 		}
-		if ('Absolute' in this.parameters) {
+		if ('Absolute' in this.parameters && this.parameters.Absolute[0] !== 'none') {
 			this.viewParameters[3] = ['', 'true', 'checked="true"', 'show'];
 			this.AbsoluteModule = ['','',''];
 			this.parameters.Absolute.forEach(param => {
@@ -140,6 +166,9 @@ export class RandNumberOption extends Option{
 				}
 			});
 		}
+		if ('integer' in this.parameters && this.parameters.integer === 'true') {
+			this.viewParameters[4] = 'checked="true"';
+		}
 	}
 	showOption()
 	{
@@ -148,14 +177,14 @@ export class RandNumberOption extends Option{
 		html += `
 		<p>Базовая настройка</p>
 		<div class="d-flex flex-column col-12">
-			<label>Указать диапазон генерации</label>
+			<label>Указать диапазон генерации. <i>По умолчанию от 1 до 100</i></label>
 			<div class="d-flex">
-				<input class="form-control" id="textArea_${this.id}_1" placeholder="Мин.Значение">
-				<input class="form-control" id="textArea_${this.id}_2" placeholder="Макс.Значение">
+				<input class="form-control" id="textArea_${this.id}_1" placeholder="Мин.Значение (не меньше -2147483647)">
+				<input class="form-control" id="textArea_${this.id}_2" placeholder="Макс.Значение (не больше 2147483647)">
 			</div>
 		</div>
 		<div class="d-flex flex-column col-12">
-			<label>Исключение чисел</label>
+			<label>Исключение чисел. <i>По умолчанию исключений нет</i></label>
 			<div class="d-flex">
 				<input class="form-control" id="textArea_${this.id}_3" placeholder="Перечислите через запятую">
 			</div>
@@ -163,6 +192,13 @@ export class RandNumberOption extends Option{
 		<a><i>По умолчанию генерируются положительные целые числа и дроби без исключённых значений и без корней</i></a>
 		<p>Гибкая настройка</p>
 		<a>Допустимые элементы к генерации</a>
+		<i>При отсутствии выбранных пунктов. По умолчанию выбираются целые числа!</i>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" value="Integer" id="IntegerCheckDefault" ${this.viewParameters[4]}>
+			<label class="form-check-label" for="IntegerCheckDefault">
+				Целые числа
+			</label>
+		</div>
 		<div class="form-check">
 			<input class="form-check-input ${this.viewParameters[0][0]}" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#FractionCollapse" role="button" aria-expanded="${this.viewParameters[0][1]}" aria-controls="FractionCollapse" ${this.viewParameters[0][2]}>
 			<label class="form-check-label" for="flexCheckDefault">
@@ -245,13 +281,13 @@ export class RandNumberOption extends Option{
 		<div class="form-check">
 			<input class="form-check-input ${this.viewParameters[1][0]}" type="checkbox" value="" id="flexCheckDefault" data-bs-toggle="collapse" href="#FloatCollapse" role="button" aria-expanded="${this.viewParameters[1][1]}" aria-controls="FloatCollapse" ${this.viewParameters[1][2]}>
 			<label class="form-check-label" for="flexCheckDefault">
-				Десятичные дроби (числа с запятой)
+				Десятичные дроби (числа с запятой). Применяется, если в диапазонах есть дроби.
 			</label>
 		</div>
 		<div class="collapse ${this.viewParameters[1][3]}" id="FloatCollapse" style="width:100%;">
 			<div class="d-flex border" style="width:100%;">
 				<div class="d-flex flex-column" style="margin-left:2%; width:100%;">
-					<a>Укажите количество знаков за запятой</a>
+					<a>Укажите количество знаков за запятой (Знаков за запятой будет меньше или равно выбранному количеству)</a>
 					<div class="d-flex flex-column col-12">
 						<div class="d-flex">
 							<input class="form-control" id="textArea_${this.id}_4" placeholder="Формат: 0<'целое число'<10">
@@ -351,6 +387,17 @@ export class RandNumberOption extends Option{
 					event.target.setAttribute('checked', "true")
 				});
 			});
+			let integerButton = document.getElementById("IntegerCheckDefault");
+			integerButton.addEventListener('click', function (event){
+				if (event.target.getAttribute('checked') === 'true')
+				{
+					event.target.setAttribute('checked', 'false');
+				}
+				else
+				{
+					event.target.setAttribute('checked', 'true');
+				}
+			});
 		}
 	}
 
@@ -363,6 +410,12 @@ export class RandNumberOption extends Option{
 			this.radioButtons.forEach(element => {
 				element.removeEventListener('click', function(event){});
 			});
+			let integerButton = document.getElementById("IntegerCheckDefault");
+			integerButton.removeEventListener('click', function (event){});
 		}
+	}
+	getGeneratorData()
+	{
+		return this.parameters;
 	}
 }

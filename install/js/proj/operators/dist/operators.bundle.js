@@ -8,6 +8,9 @@ this.BX.Proj = this.BX.Proj || {};
 	  function Option() {
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    babelHelpers.classCallCheck(this, Option);
+	    this.parameters = {};
+	    this.parameters.id = options.id;
+	    this.parameters.Type = options.type;
 	    this.id = options.id;
 	    this.type = options.type;
 	    this.color = options.color;
@@ -16,6 +19,9 @@ this.BX.Proj = this.BX.Proj || {};
 	    this.html = "<span id=\"instruction_".concat(this.id, "\" data-instruction=\"").concat(this.id, "\" onclick=\"generator.showOption(").concat(this.id, ")\" class=\"border btn\" style=\"padding: 1%; margin:1%; background:").concat(this.color, ";\">").concat(this.optionName, "</span>");
 	  }
 	  babelHelpers.createClass(Option, [{
+	    key: "updateParameters",
+	    value: function updateParameters() {}
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      return this.html;
@@ -34,12 +40,17 @@ this.BX.Proj = this.BX.Proj || {};
 	      this.areEventsRegistered = 1;
 	    }
 	  }, {
+	    key: "unregisterEvents",
+	    value: function unregisterEvents() {
+	      this.areEventsRegistered = 0;
+	    }
+	  }, {
 	    key: "postUpdate",
 	    value: function postUpdate() {}
 	  }, {
 	    key: "getGeneratorData",
 	    value: function getGeneratorData() {
-	      return {};
+	      return this.parameters;
 	    }
 	  }]);
 	  return Option;
@@ -89,12 +100,21 @@ this.BX.Proj = this.BX.Proj || {};
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    babelHelpers.classCallCheck(this, RandNumberOption);
 	    _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(RandNumberOption).call(this, options));
-	    _this.parameters = {};
-	    _this.FloatDigits = '';
-	    _this.MinNumber = '';
-	    _this.MaxNumber = '';
-	    _this.Exclude = '';
-	    _this.viewParameters = [['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', '']];
+	    _this.FloatDigits = 2;
+	    _this.MinNumber = 1;
+	    _this.MaxNumber = 100;
+	    _this.Exclude = [];
+	    _this.parameters = {
+	      MinNumber: 1,
+	      MaxNumber: 100,
+	      Exclude: [],
+	      FloatDigits: ['false', 0],
+	      Fraction: ['AllTypes', 'AnyNumber', 'AnyShortedType'],
+	      Absolute: ['none'],
+	      Root: ['none'],
+	      integer: 'true'
+	    };
+	    _this.viewParameters = [['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], 'checked="true"'];
 	    _this.FractionType = ['', '', '', 'checked="true"'];
 	    _this.FractionNumber = ['', '', 'checked="true"'];
 	    _this.FractionView = ['', '', 'checked="true"'];
@@ -111,11 +131,16 @@ this.BX.Proj = this.BX.Proj || {};
 	      this.excludeNumberContainer = document.querySelector("[id^=\"textArea_".concat(this.id, "_3\"]"));
 	      this.floatCountContainer = document.querySelector("[id^=\"textArea_".concat(this.id, "_4\"]"));
 	      this.parameters = {
-	        OptionId: this.id,
+	        id: this.id,
+	        Type: this.type,
 	        MinNumber: this.minNumberContainer.value,
 	        MaxNumber: this.maxNumberContainer.value,
 	        Exclude: this.excludeNumberContainer.value.split(/[,\s]+/),
-	        FloatDigits: this.floatCountContainer.value
+	        FloatDigits: ['false', 0],
+	        Fraction: ['none'],
+	        Root: ['none'],
+	        Absolute: ['none'],
+	        integer: 'false'
 	      };
 	      this.checkButtonElements = document.querySelectorAll('.form-check-input[aria-expanded="true"]');
 	      this.checkButtonElements.forEach(function (element) {
@@ -125,7 +150,7 @@ this.BX.Proj = this.BX.Proj || {};
 	          checkButtons.forEach(function (button) {
 	            properties.push(button.getAttribute('value'));
 	          });
-	          if (properties !== []) {
+	          if (properties.length !== 0) {
 	            _this2.parameters.Fraction = properties;
 	          }
 	        }
@@ -135,7 +160,7 @@ this.BX.Proj = this.BX.Proj || {};
 	          _checkButtons.forEach(function (button) {
 	            _properties.push(button.getAttribute('value'));
 	          });
-	          if (_properties !== []) {
+	          if (_properties.length !== 0) {
 	            _this2.parameters.Root = _properties;
 	          }
 	        }
@@ -145,44 +170,52 @@ this.BX.Proj = this.BX.Proj || {};
 	          _checkButtons2.forEach(function (button) {
 	            _properties2.push(button.getAttribute('value'));
 	          });
-	          if (_properties2 !== []) {
+	          if (_properties2.length !== 0) {
 	            _this2.parameters.Absolute = _properties2;
 	          }
 	        }
 	        if (element.getAttribute('aria-controls') === "FloatCollapse") {
 	          if (_this2.floatCountContainer.value !== null) {
-	            _this2.parameters.FloatDigits = _this2.floatCountContainer.value;
+	            _this2.parameters.FloatDigits = ['true', _this2.floatCountContainer.value];
 	          }
 	        }
 	      });
+	      if (this.parameters.MinNumber.toString().includes('.') || this.parameters.MaxNumber.toString().includes('.')) {
+	        this.parameters.FloatDigits = ['true', 2];
+	      }
+	      var integerButton = document.getElementById("IntegerCheckDefault");
+	      if (integerButton.getAttribute('checked') === 'true') {
+	        this.parameters.integer = 'true';
+	      }
+	      if (this.parameters.Fraction[0] === 'none' && this.parameters.Root[0] === 'none' && this.parameters.Absolute[0] === 'none' && this.parameters.FloatDigits[0] === 'false') {
+	        this.parameters.integer = 'true';
+	      }
 	      this.unregisterEvents();
 	    }
 	  }, {
 	    key: "updateParameters",
 	    value: function updateParameters() {
 	      var _this3 = this;
-	      this.viewParameters = [['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', '']];
-	      console.log(this.parameters);
+	      this.viewParameters = [['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ['collapsed', 'false', '', ''], ''];
 	      if ('MinNumber' in this.parameters) {
 	        this.MinNumber = this.parameters.MinNumber;
 	      }
 	      if ('MaxNumber' in this.parameters) {
 	        this.MaxNumber = this.parameters.MaxNumber;
 	      }
-	      if ('FloatDigits' in this.parameters && this.parameters.FloatDigits !== '') {
+	      if ('FloatDigits' in this.parameters && this.parameters.FloatDigits[0] === 'true') {
 	        this.viewParameters[1] = ['', 'true', 'checked="true"', 'show'];
-	        this.FloatDigits = this.parameters.FloatDigits;
+	        this.FloatDigits = this.parameters.FloatDigits[1];
 	      }
 	      if ('Exclude' in this.parameters) {
 	        this.Exclude = this.parameters.Exclude.join(',');
 	      }
-	      if ('Fraction' in this.parameters) {
+	      if ('Fraction' in this.parameters && this.parameters.Fraction[0] !== 'none') {
 	        this.viewParameters[0] = ['', 'true', 'checked="true"', 'show'];
 	        this.FractionType = ['', '', '', ''];
 	        this.FractionNumber = ['', '', ''];
 	        this.FractionView = ['', '', ''];
 	        this.parameters.Fraction.forEach(function (param) {
-	          console.log(param);
 	          switch (param) {
 	            case 'Correct':
 	              _this3.FractionType[0] = 'checked="true"';
@@ -217,7 +250,7 @@ this.BX.Proj = this.BX.Proj || {};
 	          }
 	        });
 	      }
-	      if ('Root' in this.parameters) {
+	      if ('Root' in this.parameters && this.parameters.Root[0] !== 'none') {
 	        this.viewParameters[2] = ['', 'true', 'checked="true"', 'show'];
 	        this.RootType = ['', '', ''];
 	        this.parameters.Root.forEach(function (param) {
@@ -234,7 +267,7 @@ this.BX.Proj = this.BX.Proj || {};
 	          }
 	        });
 	      }
-	      if ('Absolute' in this.parameters) {
+	      if ('Absolute' in this.parameters && this.parameters.Absolute[0] !== 'none') {
 	        this.viewParameters[3] = ['', 'true', 'checked="true"', 'show'];
 	        this.AbsoluteModule = ['', '', ''];
 	        this.parameters.Absolute.forEach(function (param) {
@@ -251,13 +284,16 @@ this.BX.Proj = this.BX.Proj || {};
 	          }
 	        });
 	      }
+	      if ('integer' in this.parameters && this.parameters.integer === 'true') {
+	        this.viewParameters[4] = 'checked="true"';
+	      }
 	    }
 	  }, {
 	    key: "showOption",
 	    value: function showOption() {
 	      this.updateParameters();
 	      var html = "<p class=\"d-flex\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u0443\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u2116".concat(this.id, " \u0422\u0438\u043F:[").concat(this.optionName, "]</p>");
-	      html += "\n\t\t<p>\u0411\u0430\u0437\u043E\u0432\u0430\u044F \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430</p>\n\t\t<div class=\"d-flex flex-column col-12\">\n\t\t\t<label>\u0423\u043A\u0430\u0437\u0430\u0442\u044C \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D \u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438</label>\n\t\t\t<div class=\"d-flex\">\n\t\t\t\t<input class=\"form-control\" id=\"textArea_".concat(this.id, "_1\" placeholder=\"\u041C\u0438\u043D.\u0417\u043D\u0430\u0447\u0435\u043D\u0438\u0435\">\n\t\t\t\t<input class=\"form-control\" id=\"textArea_").concat(this.id, "_2\" placeholder=\"\u041C\u0430\u043A\u0441.\u0417\u043D\u0430\u0447\u0435\u043D\u0438\u0435\">\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"d-flex flex-column col-12\">\n\t\t\t<label>\u0418\u0441\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435 \u0447\u0438\u0441\u0435\u043B</label>\n\t\t\t<div class=\"d-flex\">\n\t\t\t\t<input class=\"form-control\" id=\"textArea_").concat(this.id, "_3\" placeholder=\"\u041F\u0435\u0440\u0435\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0447\u0435\u0440\u0435\u0437 \u0437\u0430\u043F\u044F\u0442\u0443\u044E\">\n\t\t\t</div>\n\t\t</div>\n\t\t<a><i>\u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u0443\u044E\u0442\u0441\u044F \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0446\u0435\u043B\u044B\u0435 \u0447\u0438\u0441\u043B\u0430 \u0438 \u0434\u0440\u043E\u0431\u0438 \u0431\u0435\u0437 \u0438\u0441\u043A\u043B\u044E\u0447\u0451\u043D\u043D\u044B\u0445 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0439 \u0438 \u0431\u0435\u0437 \u043A\u043E\u0440\u043D\u0435\u0439</i></a>\n\t\t<p>\u0413\u0438\u0431\u043A\u0430\u044F \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430</p>\n\t\t<a>\u0414\u043E\u043F\u0443\u0441\u0442\u0438\u043C\u044B\u0435 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u043A \u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438</a>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[0][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\" data-bs-toggle=\"collapse\" href=\"#FractionCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[0][1], "\" aria-controls=\"FractionCollapse\" ").concat(this.viewParameters[0][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u0414\u0440\u043E\u0431\u0438 \n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[0][3], "\" id=\"FractionCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:33%;\">\n\t\t\t\t\t<a>\u0412\u0438\u0434 \u0434\u0440\u043E\u0431\u0438</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType1\" value=\"Correct\" ").concat(this.FractionType[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType1\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType2\" value=\"Incorrect\" ").concat(this.FractionType[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType2\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u043D\u0435\u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType3\" value=\"Complex\" ").concat(this.FractionType[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType3\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0441\u043C\u0435\u0448\u0430\u043D\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType4\" value=\"AllTypes\" ").concat(this.FractionType[3], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType4\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:33%;\">\n\t\t\t\t\t<a>\u0427\u0438\u0441\u043B\u043E\u0432\u044B\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionNumber\" id=\"RadioFractionNumber1\" value=\"Rational\" ").concat(this.FractionNumber[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionNumber1\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionNumber\" id=\"RadioFractionNumber2\" value=\"Irrational\" ").concat(this.FractionNumber[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionNumber2\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0438\u0440\u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionNumber\" id=\"RadioFractionNumber3\" value=\"AnyNumber\" ").concat(this.FractionNumber[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionNumber3\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:33%;\">\n\t\t\t\t\t<a>\u041F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0434\u0440\u043E\u0431\u0438</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionView\" id=\"RadioFractionView1\" value=\"Not-shortened\" ").concat(this.FractionView[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionView1\">\n\t\t\t\t\t\t\t\u0422\u0440\u0435\u0431\u0443\u0435\u0442 \u0441\u043E\u043A\u0440\u0430\u0449\u0435\u043D\u0438\u044F\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionView\" id=\"RadioFractionView2\" value=\"Shortened\" ").concat(this.FractionView[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionView2\">\n\t\t\t\t\t\t\t\u041D\u0435 \u0442\u0440\u0435\u0431\u0443\u0435\u0442 \u0441\u043E\u043A\u0440\u0430\u0449\u0435\u043D\u0438\u044F\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionView\" id=\"RadioFractionView3\" value=\"AnyShortedType\" ").concat(this.FractionView[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionView3\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[1][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\" data-bs-toggle=\"collapse\" href=\"#FloatCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[1][1], "\" aria-controls=\"FloatCollapse\" ").concat(this.viewParameters[1][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u0414\u0435\u0441\u044F\u0442\u0438\u0447\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438 (\u0447\u0438\u0441\u043B\u0430 \u0441 \u0437\u0430\u043F\u044F\u0442\u043E\u0439)\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[1][3], "\" id=\"FloatCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:100%;\">\n\t\t\t\t\t<a>\u0423\u043A\u0430\u0436\u0438\u0442\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0437\u043D\u0430\u043A\u043E\u0432 \u0437\u0430 \u0437\u0430\u043F\u044F\u0442\u043E\u0439</a>\n\t\t\t\t\t<div class=\"d-flex flex-column col-12\">\n\t\t\t\t\t\t<div class=\"d-flex\">\n\t\t\t\t\t\t\t<input class=\"form-control\" id=\"textArea_").concat(this.id, "_4\" placeholder=\"\u0424\u043E\u0440\u043C\u0430\u0442: 0<'\u0446\u0435\u043B\u043E\u0435 \u0447\u0438\u0441\u043B\u043E'<10\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[2][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\" data-bs-toggle=\"collapse\" href=\"#RootCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[2][1], "\" aria-controls=\"RootCollapse\" ").concat(this.viewParameters[2][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u041A\u043E\u0440\u043D\u0438\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[2][3], "\" id=\"RootCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:100%;\">\n\t\t\t\t\t<a>\u0412\u0438\u0434 \u043A\u043E\u0440\u043D\u0435\u0439</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioRootType\" id=\"RadioRootType1\" value=\"Irrational\" ").concat(this.RootType[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioRootType1\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0438\u0440\u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u043A\u043E\u0440\u043D\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioRootType\" id=\"RadioRootType2\" value=\"Rational\" ").concat(this.RootType[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioRootType2\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u043A\u043E\u0440\u043D\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioRootType\" id=\"RadioRootType3\" value=\"AnyType\" ").concat(this.RootType[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioRootType3\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u043A\u043E\u0440\u043D\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[3][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\"  data-bs-toggle=\"collapse\" href=\"#AbsCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[3][1], "\" aria-controls=\"AbsCollapse\" ").concat(this.viewParameters[3][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u041E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0447\u0438\u0441\u043B\u0430 (\u0438\u0433\u043D\u043E\u0440\u0438\u0440\u0443\u0435\u0442\u0441\u044F, \u0435\u0441\u043B\u0438 \u0443\u043A\u0430\u0437\u0430\u043D \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D)\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[3][3], "\" id=\"AbsCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:100%;\">\n\t\t\t\t\t<a>\u041F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0445 \u0447\u0438\u0441\u0435\u043B</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"AbsVar\" id=\"AbsVar1\" value=\"UseModule\" ").concat(this.AbsoluteModule[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"AbsVar1\">\n\t\t\t\t\t\t\t\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043C\u043E\u0434\u0443\u043B\u044C\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"AbsVar\" id=\"AbsVar2\" value=\"DontUseModule\" ").concat(this.AbsoluteModule[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"AbsVar2\">\n\t\t\t\t\t\t\t\u041D\u0435 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043C\u043E\u0434\u0443\u043B\u044C\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"AbsVar\" id=\"AbsVar3\" value=\"BothUsingModule\" ").concat(this.AbsoluteModule[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"AbsVar3\">\n\t\t\t\t\t\t\t\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0432\u0441\u0435 \u0441\u043B\u0443\u0447\u0430\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t");
+	      html += "\n\t\t<p>\u0411\u0430\u0437\u043E\u0432\u0430\u044F \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430</p>\n\t\t<div class=\"d-flex flex-column col-12\">\n\t\t\t<label>\u0423\u043A\u0430\u0437\u0430\u0442\u044C \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D \u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438. <i>\u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u043E\u0442 1 \u0434\u043E 100</i></label>\n\t\t\t<div class=\"d-flex\">\n\t\t\t\t<input class=\"form-control\" id=\"textArea_".concat(this.id, "_1\" placeholder=\"\u041C\u0438\u043D.\u0417\u043D\u0430\u0447\u0435\u043D\u0438\u0435 (\u043D\u0435 \u043C\u0435\u043D\u044C\u0448\u0435 -2147483647)\">\n\t\t\t\t<input class=\"form-control\" id=\"textArea_").concat(this.id, "_2\" placeholder=\"\u041C\u0430\u043A\u0441.\u0417\u043D\u0430\u0447\u0435\u043D\u0438\u0435 (\u043D\u0435 \u0431\u043E\u043B\u044C\u0448\u0435 2147483647)\">\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"d-flex flex-column col-12\">\n\t\t\t<label>\u0418\u0441\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435 \u0447\u0438\u0441\u0435\u043B. <i>\u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u0438\u0441\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0439 \u043D\u0435\u0442</i></label>\n\t\t\t<div class=\"d-flex\">\n\t\t\t\t<input class=\"form-control\" id=\"textArea_").concat(this.id, "_3\" placeholder=\"\u041F\u0435\u0440\u0435\u0447\u0438\u0441\u043B\u0438\u0442\u0435 \u0447\u0435\u0440\u0435\u0437 \u0437\u0430\u043F\u044F\u0442\u0443\u044E\">\n\t\t\t</div>\n\t\t</div>\n\t\t<a><i>\u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u0443\u044E\u0442\u0441\u044F \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0446\u0435\u043B\u044B\u0435 \u0447\u0438\u0441\u043B\u0430 \u0438 \u0434\u0440\u043E\u0431\u0438 \u0431\u0435\u0437 \u0438\u0441\u043A\u043B\u044E\u0447\u0451\u043D\u043D\u044B\u0445 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0439 \u0438 \u0431\u0435\u0437 \u043A\u043E\u0440\u043D\u0435\u0439</i></a>\n\t\t<p>\u0413\u0438\u0431\u043A\u0430\u044F \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430</p>\n\t\t<a>\u0414\u043E\u043F\u0443\u0441\u0442\u0438\u043C\u044B\u0435 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u043A \u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438</a>\n\t\t<i>\u041F\u0440\u0438 \u043E\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0438 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u043F\u0443\u043D\u043A\u0442\u043E\u0432. \u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u0432\u044B\u0431\u0438\u0440\u0430\u044E\u0442\u0441\u044F \u0446\u0435\u043B\u044B\u0435 \u0447\u0438\u0441\u043B\u0430!</i>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input\" type=\"checkbox\" value=\"Integer\" id=\"IntegerCheckDefault\" ").concat(this.viewParameters[4], ">\n\t\t\t<label class=\"form-check-label\" for=\"IntegerCheckDefault\">\n\t\t\t\t\u0426\u0435\u043B\u044B\u0435 \u0447\u0438\u0441\u043B\u0430\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[0][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\" data-bs-toggle=\"collapse\" href=\"#FractionCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[0][1], "\" aria-controls=\"FractionCollapse\" ").concat(this.viewParameters[0][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u0414\u0440\u043E\u0431\u0438 \n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[0][3], "\" id=\"FractionCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:33%;\">\n\t\t\t\t\t<a>\u0412\u0438\u0434 \u0434\u0440\u043E\u0431\u0438</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType1\" value=\"Correct\" ").concat(this.FractionType[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType1\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType2\" value=\"Incorrect\" ").concat(this.FractionType[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType2\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u043D\u0435\u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType3\" value=\"Complex\" ").concat(this.FractionType[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType3\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0441\u043C\u0435\u0448\u0430\u043D\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionType\" id=\"RadioFractionType4\" value=\"AllTypes\" ").concat(this.FractionType[3], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionType4\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:33%;\">\n\t\t\t\t\t<a>\u0427\u0438\u0441\u043B\u043E\u0432\u044B\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionNumber\" id=\"RadioFractionNumber1\" value=\"Rational\" ").concat(this.FractionNumber[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionNumber1\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionNumber\" id=\"RadioFractionNumber2\" value=\"Irrational\" ").concat(this.FractionNumber[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionNumber2\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0438\u0440\u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionNumber\" id=\"RadioFractionNumber3\" value=\"AnyNumber\" ").concat(this.FractionNumber[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionNumber3\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:33%;\">\n\t\t\t\t\t<a>\u041F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0434\u0440\u043E\u0431\u0438</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionView\" id=\"RadioFractionView1\" value=\"Not-shortened\" ").concat(this.FractionView[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionView1\">\n\t\t\t\t\t\t\t\u0422\u0440\u0435\u0431\u0443\u0435\u0442 \u0441\u043E\u043A\u0440\u0430\u0449\u0435\u043D\u0438\u044F\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionView\" id=\"RadioFractionView2\" value=\"Shortened\" ").concat(this.FractionView[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionView2\">\n\t\t\t\t\t\t\t\u041D\u0435 \u0442\u0440\u0435\u0431\u0443\u0435\u0442 \u0441\u043E\u043A\u0440\u0430\u0449\u0435\u043D\u0438\u044F\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioFractionView\" id=\"RadioFractionView3\" value=\"AnyShortedType\" ").concat(this.FractionView[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioFractionView3\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u0434\u0440\u043E\u0431\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[1][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\" data-bs-toggle=\"collapse\" href=\"#FloatCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[1][1], "\" aria-controls=\"FloatCollapse\" ").concat(this.viewParameters[1][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u0414\u0435\u0441\u044F\u0442\u0438\u0447\u043D\u044B\u0435 \u0434\u0440\u043E\u0431\u0438 (\u0447\u0438\u0441\u043B\u0430 \u0441 \u0437\u0430\u043F\u044F\u0442\u043E\u0439). \u041F\u0440\u0438\u043C\u0435\u043D\u044F\u0435\u0442\u0441\u044F, \u0435\u0441\u043B\u0438 \u0432 \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D\u0430\u0445 \u0435\u0441\u0442\u044C \u0434\u0440\u043E\u0431\u0438.\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[1][3], "\" id=\"FloatCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:100%;\">\n\t\t\t\t\t<a>\u0423\u043A\u0430\u0436\u0438\u0442\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0437\u043D\u0430\u043A\u043E\u0432 \u0437\u0430 \u0437\u0430\u043F\u044F\u0442\u043E\u0439 (\u0417\u043D\u0430\u043A\u043E\u0432 \u0437\u0430 \u0437\u0430\u043F\u044F\u0442\u043E\u0439 \u0431\u0443\u0434\u0435\u0442 \u043C\u0435\u043D\u044C\u0448\u0435 \u0438\u043B\u0438 \u0440\u0430\u0432\u043D\u043E \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u043E\u043C\u0443 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0443)</a>\n\t\t\t\t\t<div class=\"d-flex flex-column col-12\">\n\t\t\t\t\t\t<div class=\"d-flex\">\n\t\t\t\t\t\t\t<input class=\"form-control\" id=\"textArea_").concat(this.id, "_4\" placeholder=\"\u0424\u043E\u0440\u043C\u0430\u0442: 0<'\u0446\u0435\u043B\u043E\u0435 \u0447\u0438\u0441\u043B\u043E'<10\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[2][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\" data-bs-toggle=\"collapse\" href=\"#RootCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[2][1], "\" aria-controls=\"RootCollapse\" ").concat(this.viewParameters[2][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u041A\u043E\u0440\u043D\u0438\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[2][3], "\" id=\"RootCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:100%;\">\n\t\t\t\t\t<a>\u0412\u0438\u0434 \u043A\u043E\u0440\u043D\u0435\u0439</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioRootType\" id=\"RadioRootType1\" value=\"Irrational\" ").concat(this.RootType[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioRootType1\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0438\u0440\u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u043A\u043E\u0440\u043D\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioRootType\" id=\"RadioRootType2\" value=\"Rational\" ").concat(this.RootType[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioRootType2\">\n\t\t\t\t\t\t\t\u0422\u043E\u043B\u044C\u043A\u043E \u0440\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u043A\u043E\u0440\u043D\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"RadioRootType\" id=\"RadioRootType3\" value=\"AnyType\" ").concat(this.RootType[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"RadioRootType3\">\n\t\t\t\t\t\t\t\u041B\u044E\u0431\u044B\u0435 \u043A\u043E\u0440\u043D\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"form-check\">\n\t\t\t<input class=\"form-check-input ").concat(this.viewParameters[3][0], "\" type=\"checkbox\" value=\"\" id=\"flexCheckDefault\"  data-bs-toggle=\"collapse\" href=\"#AbsCollapse\" role=\"button\" aria-expanded=\"").concat(this.viewParameters[3][1], "\" aria-controls=\"AbsCollapse\" ").concat(this.viewParameters[3][2], ">\n\t\t\t<label class=\"form-check-label\" for=\"flexCheckDefault\">\n\t\t\t\t\u041E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0447\u0438\u0441\u043B\u0430 (\u0438\u0433\u043D\u043E\u0440\u0438\u0440\u0443\u0435\u0442\u0441\u044F, \u0435\u0441\u043B\u0438 \u0443\u043A\u0430\u0437\u0430\u043D \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D)\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"collapse ").concat(this.viewParameters[3][3], "\" id=\"AbsCollapse\" style=\"width:100%;\">\n\t\t\t<div class=\"d-flex border\" style=\"width:100%;\">\n\t\t\t\t<div class=\"d-flex flex-column\" style=\"margin-left:2%; width:100%;\">\n\t\t\t\t\t<a>\u041F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0445 \u0447\u0438\u0441\u0435\u043B</a>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"AbsVar\" id=\"AbsVar1\" value=\"UseModule\" ").concat(this.AbsoluteModule[0], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"AbsVar1\">\n\t\t\t\t\t\t\t\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043C\u043E\u0434\u0443\u043B\u044C\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"AbsVar\" id=\"AbsVar2\" value=\"DontUseModule\" ").concat(this.AbsoluteModule[1], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"AbsVar2\">\n\t\t\t\t\t\t\t\u041D\u0435 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043C\u043E\u0434\u0443\u043B\u044C\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-check\">\n\t\t\t\t\t\t<input class=\"form-check-input\" type=\"radio\" name=\"AbsVar\" id=\"AbsVar3\" value=\"BothUsingModule\" ").concat(this.AbsoluteModule[2], ">\n\t\t\t\t\t\t<label class=\"form-check-label\" for=\"AbsVar3\">\n\t\t\t\t\t\t\t\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0432\u0441\u0435 \u0441\u043B\u0443\u0447\u0430\u0438\n\t\t\t\t\t\t</label>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t");
 	      return html;
 	    }
 	  }, {
@@ -285,6 +321,14 @@ this.BX.Proj = this.BX.Proj || {};
 	            event.target.setAttribute('checked', "true");
 	          });
 	        });
+	        var integerButton = document.getElementById("IntegerCheckDefault");
+	        integerButton.addEventListener('click', function (event) {
+	          if (event.target.getAttribute('checked') === 'true') {
+	            event.target.setAttribute('checked', 'false');
+	          } else {
+	            event.target.setAttribute('checked', 'true');
+	          }
+	        });
 	      }
 	    }
 	  }, {
@@ -296,7 +340,14 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.radioButtons.forEach(function (element) {
 	          element.removeEventListener('click', function (event) {});
 	        });
+	        var integerButton = document.getElementById("IntegerCheckDefault");
+	        integerButton.removeEventListener('click', function (event) {});
 	      }
+	    }
+	  }, {
+	    key: "getGeneratorData",
+	    value: function getGeneratorData() {
+	      return this.parameters;
 	    }
 	  }]);
 	  return RandNumberOption;

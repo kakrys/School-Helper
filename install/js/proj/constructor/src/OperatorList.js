@@ -13,6 +13,7 @@ import {PowerOperator} from "./PowerOperator";
 import {RootOperator} from "./RootOperator";
 import {RandNumberOperator} from "./RandNumberOperator";
 import {AnswerOperator} from "./AnswerOperator";
+import {PolynomOperator} from "./PolynomOperator";
 const OptionList = BX.Proj.Independent.OptionList;
 
 export class OperatorList extends OptionList{
@@ -87,6 +88,9 @@ export class OperatorList extends OptionList{
 			case 'Answer':
 				newOperator = new AnswerOperator({id: this.idCounter, type: type, color: color, textView: '<==>'});
 				break;
+			case 'Polynom':
+				newOperator = new PolynomOperator({id: this.idCounter, type: type, color: color, textView: '{xyz}'});
+				break;
 			default:
 				newOperator = new Operator({id: this.idCounter, type: type, color: color, textView: 'null'});
 				break;
@@ -98,6 +102,7 @@ export class OperatorList extends OptionList{
 			this.movePointer('left');
 		}
 	}
+
 	deleteLastInstruction(container)
 	{
 		if (this.pointerPosition === 0 || this.addedInstructions === 1)
@@ -215,6 +220,7 @@ export class OperatorList extends OptionList{
 
 	saveAllData()
 	{
+		this.saveOpenedInstructionData();
 		let symbolicExpression = '';
 		let generatorInstruction = [];
 		this.list.forEach(operator => {
@@ -222,7 +228,7 @@ export class OperatorList extends OptionList{
 			symbolicExpression += operator.textView;
 			generatorInstruction.push(operator.getGeneratorData());
 		});
-		generatorInstruction.push(symbolicExpression);
+		generatorInstruction.preview = symbolicExpression;
 		return generatorInstruction;
 	}
 }
