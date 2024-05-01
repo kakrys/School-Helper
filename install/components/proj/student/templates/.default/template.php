@@ -21,6 +21,7 @@ global $USER;
 				</span>
 				<a href ='#' class="btn align-self-center" data-target="#changeData"> Смена личной информации</a>
 				<a href ='#' class="btn align-self-center" data-target="#statistics"> Статистика</a>
+				<a type="button" class="btn btn-danger" href="/deleteaccount">Удалить аккаунт</a>
 			</div>
 			<div style="flex-grow: 1;"></div>
 		</div>

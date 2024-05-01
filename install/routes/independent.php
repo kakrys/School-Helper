@@ -41,6 +41,14 @@ return function (RoutingConfigurator $routes) {
 		\Proj\Independent\Repository\ThemesRepository::deleteThemeById($id);
 		LocalRedirect('/');
 	});
+	$routes->get('/deleteaccount',function() {
+		global $USER;
+		if ($USER->IsAuthorized())
+		{
+			CUser::Delete($USER->GetID());
+		}
+		LocalRedirect('/');
+	});
 	$routes->get('/deletebug/{ID}',function() {
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 		$id = $request->getQueryList()->toArray()['ID'];
