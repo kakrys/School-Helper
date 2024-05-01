@@ -1,5 +1,6 @@
 <?php
 
+use Bitrix\Main\Config\Configuration;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
 
@@ -39,6 +40,7 @@ class proj_independent extends CModule
 		global $DB;
 
 		$DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/db/install.sql');
+		$DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/db/testData.sql');
 
 		ModuleManager::registerModule($this->MODULE_ID);
 	}
@@ -80,6 +82,19 @@ class proj_independent extends CModule
 			true,
 			true
 		);
+
+		CopyDirFiles(
+			$_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/js',
+			$_SERVER['DOCUMENT_ROOT'] . '/local/js/',
+			true,
+			true
+		);
+
+		copy($_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/.htaccess',$_SERVER['DOCUMENT_ROOT']);
+		$file = fopen($_SERVER['DOCUMENT_ROOT'] . '/index.php', 'w');
+		fwrite($file, `<?php
+require_once __DIR__ . '/bitrix/routing_index.php';`);
+		fclose($file);
 	}
 
 	public function uninstallFiles(): void
@@ -93,6 +108,12 @@ class proj_independent extends CModule
 		DeleteDirFiles(
 			$_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/routes/',
 			$_SERVER['DOCUMENT_ROOT'] . '/local/routes/');
+		DeleteDirFiles(
+			$_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/php_interface/',
+			$_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/');
+		DeleteDirFiles(
+			$_SERVER['DOCUMENT_ROOT'] . '/local/modules/proj.independent/install/js/',
+			$_SERVER['DOCUMENT_ROOT'] . '/local/js/');
 	}
 
 	public function installEvents(): void
@@ -116,6 +137,10 @@ class proj_independent extends CModule
 		$this->installFiles();
 		$this->installEvents();
 
+		$settings = Configuration::getInstance()->get('routing');
+		$settings['value']['config'][] = 'independent.php';
+		Configuration::getInstance()->add('routing', $settings);
+		Configuration::getInstance()->saveConfiguration();
 		$APPLICATION->IncludeAdminFile(
 			Loc::getMessage('PROJ_INDEPENDENT_INSTALL_TITLE'),
 			$_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/step.php'
