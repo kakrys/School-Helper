@@ -105,12 +105,14 @@ export class OperatorList extends OptionList{
 
 	deleteLastInstruction(container)
 	{
+		let check = false;
 		if (this.pointerPosition === 0 || this.addedInstructions === 1)
 		{
 			return;
 		}
 		if(this.list[this.pointerPosition - 1].isPair)
 		{
+			check = this.openedInstruction === this.list[this.pointerPosition - 1].id;
 			let deletedId = this.list[this.pointerPosition - 1].id;
 			let listPart = Array.from(this.list);
 			this.list.splice(this.pointerPosition - 1);
@@ -136,6 +138,7 @@ export class OperatorList extends OptionList{
 		}
 		else
 		{
+			check = this.openedInstruction === this.list[this.pointerPosition - 1].id;
 			let listPart = Array.from(this.list);
 			this.list.splice(this.pointerPosition - 1);
 			listPart = listPart.splice(this.pointerPosition);
@@ -143,8 +146,9 @@ export class OperatorList extends OptionList{
 			this.pointerPosition -= 1;
 			this.addedInstructions -= 1;
 		}
-		if(this.list.length === 1)
+		if(this.list.length === 1 || check)
 		{
+			this.openedInstruction = -1;
 			container.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
 		}
 	}

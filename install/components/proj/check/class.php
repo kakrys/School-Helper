@@ -13,15 +13,26 @@ class Check extends CBitrixComponent
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 		$generatorCode = $request->getQueryList()->toArray()['generator_code'];
 		$studentAnswers = $request->getPostList()->toArray();
-		$result = \Proj\Independent\Model\ExerciseTable::getList(['select' => [
+		$result = \Proj\Independent\Model\ExerciseTable::getList(['select' => ['EXERCISE_GENERATOR_RULES',
 																				'ANSWER'],
 																  'filter' => [
 																	  			'=VARIANTS.GENERATOR_CODE' => $generatorCode,
 																  				]]);
 		$selectionResult = $result->fetchAll();
+
+		mt_srand(abs(intval(hexdec($generatorCode))));
 		foreach ($selectionResult as $item)
 		{
-			$correctAnswers[] = $item['ANSWER'];
+			if ($item['EXERCISE_GENERATOR_RULES'] === null)
+			{
+				$correctAnswers[] = $item['ANSWER'];
+			}
+			else
+			{
+				$exerciseManager = unserialize(gzuncompress($item['EXERCISE_GENERATOR_RULES']));
+				$exerciseManager->constructExercise($generatorCode);
+				$correctAnswers[] = $exerciseManager->solve();
+			}
 		}
 		$this->arResult['CORRECT_ANSWERS'] = $correctAnswers;
 		$this->arResult['EXERCISES'] = $selectionResult;

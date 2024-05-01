@@ -1,6 +1,6 @@
 <?php
 
-namespace Proj\Independent\Math;
+namespace Proj\Independent\Math\Exercise;
 
 class ExerciseChecker
 {
@@ -24,21 +24,27 @@ class ExerciseChecker
 		];
 		$operators = ['N', ':', '+', '-', '*', '^', '?'];
 		$exerciseStringRepresentation = $this->exerciseStringRepresentation;
-		if (substr_count($exerciseStringRepresentation,'[X]') < 2)
-		{
-			$this->error = "Выражение, имеющее меньше двух чисел не имеет смысла к рассчётам.";
-			return false;
-		}
 		$exerciseToCheck = $exerciseStringRepresentation;
 		foreach ($operatorsReplacement as $opRep)
 		{
 			$exerciseToCheck = str_replace($opRep[0],$opRep[1],$exerciseToCheck);
 		}
 		$splittedExercise = str_split($exerciseToCheck);
+		if (substr_count($exerciseStringRepresentation,'[X]') < 2)
+		{
+			if (count(array_diff(['N', '^'],$splittedExercise)) === 2)
+			{
+				$this->error = "Выражение, имеющее меньше двух чисел не имеет смысла к рассчётам.";
+				return false;
+			}
+		}
 		if (count($splittedExercise) < 3)
 		{
-			$this->error = "Выражение, имеющее меньше трёх элементов не имеет смысла к рассчётам.";
-			return false;
+			if (count(array_diff(['N', '^'],$splittedExercise)) === 2)
+			{
+				$this->error = "Выражение, имеющее меньше трёх элементов (без корня или степени) не имеет смысла к рассчётам.";
+				return false;
+			}
 		}
 		if (in_array($splittedExercise[0], $operators) && $splittedExercise[0] !== 'N')
 		{
@@ -86,14 +92,15 @@ class ExerciseChecker
 					return false;
 				}
 			}
-			if ($this->rulesArray[$i]['RootType'][0] === 'Precision' && !in_array($splittedExercise[$i-1], $operators))
+			$nonOperatorElemenets = ['(',')','|'];
+			if ($this->rulesArray[$i]['RootType'][0] === 'Precision' && (!in_array($splittedExercise[$i-1], $operators) && !in_array($splittedExercise[$i-1], $nonOperatorElemenets)))
 			{
-				$this->error = "Настройки генератора для корня требуют оператор слева";
+				$this->error = "Настройки генератора для корня требуют оператор или скобку(модуль) слева";
 				return false;
 			}
-			if ($this->rulesArray[$i-1]['DegType'][0] === 'Precision' && !in_array($splittedExercise[$i], $operators))
+			if ($this->rulesArray[$i-1]['DegType'][0] === 'Precision' && (!in_array($splittedExercise[$i], $operators) && !in_array($splittedExercise[$i], $nonOperatorElemenets)))
 			{
-				$this->error = "Настройки генератора для степени требуют оператор справа";
+				$this->error = "Настройки генератора для степени требуют оператор или скобку(модуль) справа";
 				return false;
 			}
 		}
@@ -110,12 +117,60 @@ class ExerciseChecker
 			['/[+-:*^N?]\|/', 'Оператор перед "закрывающим" модулем'],
 			['/\|[+-:*^?]/', 'Оператор после "открывающего" модуля'],
 		];
+		$matches = [];
 		foreach ($regExpArray as $check)
 		{
-			if(preg_match_all($check[0],$exerciseToCheck))
+			if(preg_match_all($check[0],$exerciseToCheck,$matches))
 			{
-				$this->error = $check[1];
-				return false;
+				if($check[1] === 'Оператор перед "закрывающим" модулем' || $check[1] === 'Оператор после "открывающего" модуля')
+				{
+					$newPreview = '';
+					$splittedExercise = str_split($exerciseToCheck);
+					$absCheck = 0;
+					for ($i = 1; $i < count($splittedExercise) ; $i++)
+					{
+						if ($splittedExercise[$i] === '|')
+						{
+							if ($absCheck === 0)
+							{
+								$absCheck = 1;
+							}
+							else if ($absCheck === 1)
+							{
+								$absCheck = 2;
+								$newPreview.= 'X';
+								$newRules[] = [
+									'MinNumber' => 1,
+									'MaxNumber' => 100,
+									'FloatDigits' => ['false', 0],
+									'Fraction' => ['none'],
+									'Absolute' => ['none'],
+									'Root' => ['none'],
+									'integer' => 'true',
+									'id' => 9,
+									'Type' => 'rand.Number'
+								];
+							}
+						}
+						if ($absCheck === 0 || ($absCheck===2 && $splittedExercise[$i] !== '|'))
+						{
+							$newPreview.= $splittedExercise[$i];
+							$newRules[] = $this->rulesArray[$i];
+						}
+					}
+					$newRules['preview'] = str_replace('X', '[X]', $newPreview);
+					$test = new ExerciseChecker($newRules);
+					if (!$test->checkExercisePreBuild())
+					{
+						$this->error = $check[1];
+						return false;
+					}
+				}
+				else
+				{
+					$this->error = $check[1];
+					return false;
+				}
 			}
 		}
 		return true;
