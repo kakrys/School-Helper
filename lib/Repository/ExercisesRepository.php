@@ -2,7 +2,7 @@
 
 namespace Proj\Independent\Repository;
 
-use Proj\Independent\Math\Exercise;
+use Proj\Independent\Math\Exercise\ExercisePreBuilder;
 use Proj\Independent\Model\ExerciseTable;
 use function Sodium\add;
 
@@ -38,14 +38,15 @@ class ExercisesRepository
 		unset($exercise['mode']);
 		if ($mode === 'exercise')
 		{
-			$exercise = new Exercise($exercise);
+			$exercise = new ExercisePreBuilder($exercise);
+			$exerciseInstance = $exercise->getExerciseInstance();
 			ExerciseTable::add(
 				[
 					'EXERCISE_DESCRIPTION' => 'Вычислите значение выражения',
 					'GENERATOR_CODE' => $exercisePreview,
-					'EXERCISE_GENERATOR_RULES' => gzcompress(serialize($exercise)),
+					'EXERCISE_GENERATOR_RULES' => gzcompress(serialize($exerciseInstance)),
 					'THEME_ID' => GeneratorRepository::getThemeIdFromName($themeName),
-					'ANSWER' => '0',
+					'ANSWER' => 'GeneratorProvided',
 				]
 			);
 		}
