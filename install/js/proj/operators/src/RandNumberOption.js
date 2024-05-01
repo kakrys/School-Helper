@@ -17,8 +17,9 @@ export class RandNumberOption extends Option{
 			Absolute: ['none'],
 			Root: ['none'],
 			integer: 'true',
+			Combination: 'false',
 		};
-		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], 'checked="true"'];
+		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], 'checked="true"', ''];
 
 		this.FractionType = ['','','','checked="true"'];
 		this.FractionNumber = ['','','checked="true"'];
@@ -32,17 +33,24 @@ export class RandNumberOption extends Option{
 		this.maxNumberContainer = document.querySelector(`[id^="textArea_${this.id}_2"]`);
 		this.excludeNumberContainer = document.querySelector(`[id^="textArea_${this.id}_3"]`);
 		this.floatCountContainer = document.querySelector(`[id^="textArea_${this.id}_4"]`);
+		let minNumber = this.minNumberContainer.value;
+		let maxNumber = this.maxNumberContainer.value;
+		if (Number(minNumber) > Number(maxNumber))
+		{
+			[minNumber, maxNumber] = [maxNumber, minNumber]
+		}
 		this.parameters = {
 			id: this.id,
 			Type: this.type,
-			MinNumber: this.minNumberContainer.value,
-			MaxNumber: this.maxNumberContainer.value,
+			MinNumber: minNumber,
+			MaxNumber: maxNumber,
 			Exclude: this.excludeNumberContainer.value.split(/[,\s]+/),
 			FloatDigits: ['false', 0],
 			Fraction : ['none'],
 			Root : ['none'],
 			Absolute : ['none'],
 			integer : 'false',
+			Combination : 'false',
 		};
 
 		this.checkButtonElements = document.querySelectorAll('.form-check-input[aria-expanded="true"]');
@@ -78,7 +86,7 @@ export class RandNumberOption extends Option{
 				checkButtons.forEach(button =>{
 					properties.push(button.getAttribute('value'))
 				});
-				if(properties.length !== 0)
+				if(properties.length !== 0 && this.parameters.MinNumber > 0)
 				{
 					this.parameters.Absolute = properties;
 				}
@@ -94,22 +102,47 @@ export class RandNumberOption extends Option{
 		});
 		if (this.parameters.MinNumber.toString().includes('.') || this.parameters.MaxNumber.toString().includes('.'))
 		{
-			this.parameters.FloatDigits = ['true', 2];
+			let minNumber = 0;
+			let maxNumber = 0;
+			if (this.parameters.MinNumber.toString().includes('.'))
+			{
+				minNumber = this.parameters.MinNumber.toString().split('.')[1].length;
+			}
+			if (this.parameters.MaxNumber.toString().includes('.'))
+			{
+				maxNumber = this.parameters.MaxNumber.toString().split('.')[1].length;
+			}
+			this.parameters.FloatDigits = ['true', Math.max(minNumber, maxNumber)];
 		}
 		let integerButton = document.getElementById("IntegerCheckDefault");
 		if (integerButton.getAttribute('checked') === 'true')
 		{
 			this.parameters.integer = 'true';
 		}
-		if (this.parameters.Fraction[0] === 'none' && this.parameters.Root[0] === 'none' && this.parameters.Absolute[0] === 'none' && this.parameters.FloatDigits[0] === 'false')
+		let typesCount = 0;
+		if (this.parameters.Fraction[0] !== 'none') {typesCount++;}
+		if (this.parameters.Root[0] !== 'none') {typesCount++;}
+		if (this.parameters.Absolute[0] !== 'none') {typesCount++;}
+		if (this.parameters.FloatDigits[0] !== 'false') {typesCount++;}
+		if (this.parameters.integer !== 'false') {typesCount++;}
+		if (typesCount === 0)
 		{
 			this.parameters.integer = 'true';
+		}
+		let combinationButton = document.getElementById("CombinationCheckDefault");
+		if (combinationButton.getAttribute('checked') === 'true')
+		{
+			this.parameters.Combination = 'true';
+		}
+		if (typesCount < 2)
+		{
+			this.parameters.Combination = 'false';
 		}
 		this.unregisterEvents();
 	}
 	updateParameters()
 	{
-		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], ''];
+		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], '',''];
 		if ('MinNumber' in this.parameters) {
 			this.MinNumber = this.parameters.MinNumber;
 		}
@@ -169,6 +202,9 @@ export class RandNumberOption extends Option{
 		if ('integer' in this.parameters && this.parameters.integer === 'true') {
 			this.viewParameters[4] = 'checked="true"';
 		}
+		if ('Combination' in this.parameters && this.parameters.Combination === 'true') {
+			this.viewParameters[5] = 'checked="true"';
+		}
 	}
 	showOption()
 	{
@@ -177,7 +213,8 @@ export class RandNumberOption extends Option{
 		html += `
 		<p>Базовая настройка</p>
 		<div class="d-flex flex-column col-12">
-			<label>Указать диапазон генерации. <i>По умолчанию от 1 до 100</i></label>
+			<label>Указать диапазон генерации. <i>По умолчанию от 1 до 100.</i></label>
+			<span>Укажите одинаковые значения, чтобы получить конкретное число</span>
 			<div class="d-flex">
 				<input class="form-control" id="textArea_${this.id}_1" placeholder="Мин.Значение (не меньше -2147483647)">
 				<input class="form-control" id="textArea_${this.id}_2" placeholder="Макс.Значение (не больше 2147483647)">
@@ -188,6 +225,7 @@ export class RandNumberOption extends Option{
 			<div class="d-flex">
 				<input class="form-control" id="textArea_${this.id}_3" placeholder="Перечислите через запятую">
 			</div>
+			<i>Исключение работает для целых чисел, отрицательных чисел и десятичных дробей</i>
 		</div>
 		<a><i>По умолчанию генерируются положительные целые числа и дроби без исключённых значений и без корней</i></a>
 		<p>Гибкая настройка</p>
@@ -205,8 +243,8 @@ export class RandNumberOption extends Option{
 				Дроби 
 			</label>
 		</div>
-		<div class="collapse ${this.viewParameters[0][3]}" id="FractionCollapse" style="width:100%;">
-			<div class="d-flex border" style="width:100%;">
+		<div class="border collapse ${this.viewParameters[0][3]}" id="FractionCollapse" style="width:100%;">
+			<div class="d-flex" style="width:100%;">
 				<div class="d-flex flex-column" style="margin-left:2%; width:33%;">
 					<a>Вид дроби</a>
 					<div class="form-check">
@@ -358,6 +396,12 @@ export class RandNumberOption extends Option{
 				</div>
 			</div>
 		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" value="Combination" id="CombinationCheckDefault" ${this.viewParameters[5]}>
+			<label class="form-check-label" for="CombinationCheckDefault">
+				Позволять комбинацию типов ("дробь под корнем", "десятичная дробь в модуле" и так далее)
+			</label>
+		</div>
 		`;
 		return html;
 	}
@@ -398,6 +442,17 @@ export class RandNumberOption extends Option{
 					event.target.setAttribute('checked', 'true');
 				}
 			});
+			let combinationButton = document.getElementById("CombinationCheckDefault");
+			combinationButton.addEventListener('click', function (event){
+				if (event.target.getAttribute('checked') === 'true')
+				{
+					event.target.setAttribute('checked', 'false');
+				}
+				else
+				{
+					event.target.setAttribute('checked', 'true');
+				}
+			});
 		}
 	}
 
@@ -412,6 +467,8 @@ export class RandNumberOption extends Option{
 			});
 			let integerButton = document.getElementById("IntegerCheckDefault");
 			integerButton.removeEventListener('click', function (event){});
+			let combinationButton = document.getElementById("CombinationCheckDefault");
+			combinationButton.removeEventListener('click', function (event){});
 		}
 	}
 	getGeneratorData()

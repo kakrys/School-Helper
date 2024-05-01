@@ -1,9 +1,8 @@
 <?php
 
 namespace Proj\Independent\Controller;
-use Proj\Independent\Math\Exercise;
-use Proj\Independent\Math\ExerciseChecker;
-use Proj\Independent\Model\ExerciseTable;
+use Proj\Independent\Math\Exercise\ExercisePreBuilder;
+use Proj\Independent\Math\Exercise\ExerciseChecker;
 use Proj\Independent\Repository\ExercisesRepository;
 
 class Generator extends \Bitrix\Main\Engine\Controller
@@ -25,8 +24,9 @@ class Generator extends \Bitrix\Main\Engine\Controller
 			return $math->getErrorMessage();
 		}
 		unset($genSett['mode']);
-		$exrc = new Exercise($genSett);
-		return $exrc->renderExercise;
+		$exrc = new ExercisePreBuilder($genSett);
+		$renderExercise = $exrc->getExerciseInstance();
+		return $renderExercise->constructExercise(substr(md5(microtime()),0,16));
 	}
 
 	public function saveExerciseAction(array $exercise, int $attempt = 0):array
