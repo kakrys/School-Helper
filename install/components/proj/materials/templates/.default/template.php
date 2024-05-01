@@ -9,6 +9,7 @@ if (empty($arResult['THEMES']))
 {
 	LocalRedirect('/404');
 }
+global $USER;
 ?>
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 		<div class="main-content d-flex" style="width: 100%;">
@@ -40,12 +41,11 @@ if (empty($arResult['THEMES']))
 										<a>
 											<?=$theme['DESCRIPTION'];?>
 										</a>
+										<?php if ($USER->GetID() === '1'): ?>
 										<p style="align-self: center;">
-											Тренажёр
+											<a href="/edittheme/<?=$theme['ID']?>" type="button" class="btn btn-primary">Редактировать тему</a>
 										</p>
-										<a href="/exercises">
-											Ссылка на тренажёр по <strong>этой</strong> теме
-										</a>
+										<?php endif; ?>
 										<p style="align-self: center;">
 											Материалы
 										</p>
