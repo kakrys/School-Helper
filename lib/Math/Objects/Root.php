@@ -36,7 +36,7 @@ class Root
 
 	public function __toString():string
 	{
-		return "[$this->exponent]$this->number";
+		return "Root{"."$this->exponent" . "N" . "$this->number}";
 	}
 
 	public function htmlRender():string

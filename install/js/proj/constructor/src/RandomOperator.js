@@ -4,13 +4,16 @@ export class RandomOperator extends Operator {
 	constructor(options = {}) {
 		super(options);
 		this.parameters.OperatorsExclude = ['none'];
+		this.parameters.StandartSymbol = '+';
 		this.Exclude = [];
 		this.ExcludeStyle = ['', 'false', '', '',];
 		this.accessibleOperators = ['+', '-', '*', '/', ':', 'root', 'N', '^'];
+		this.additionalOperators = ['+', '-', '*', ':'];
 	}
 
 	save() {
 		let excludeArea = document.querySelector(`[id^="textArea_${this.id}"]`);
+		let standartOperator = document.querySelector(`[id^="textArea_${this.id}_2"]`);
 		let excludeButton = document.querySelector(`.form-check-input[id="RandomOperator"]`);
 		if (excludeButton.getAttribute('checked') === 'true')
 		{
@@ -48,11 +51,16 @@ export class RandomOperator extends Operator {
 		{
 			this.parameters.OperatorsExclude = ['none'];
 		}
+		if (this.additionalOperators.includes(standartOperator.value))
+		{
+			this.parameters.StandartSymbol = standartOperator.value;
+		}
 		this.unregisterEvents();
 	}
 
 	postUpdate() {
-		document.querySelector(`[id^="textArea_${this.id}"]`).value = this.Exclude.join(', ');
+		document.querySelector(`[id="textArea_${this.id}"]`).value = this.Exclude.join(', ');
+		document.querySelector(`[id="textArea_${this.id}_2"]`).value = this.parameters.StandartSymbol;
 	}
 	updateParameters()
 	{
@@ -132,6 +140,11 @@ export class RandomOperator extends Operator {
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="d-flex flex-column">
+						<label>Укажите стандартный символ для операторов степени и корня (этот символ применится слева от корня или справа от степени в зависимости от того, какой оператор попадётся)</label>
+						<input class="form-control" id="textArea_${this.id}_2" placeholder="Допустимые операторы: +, -, *, :">
+						<span>Стандартно берётся сложение</span>
 					</div>
 				</div>`
 		return html;
