@@ -58,6 +58,7 @@ class EditThemeComponent extends CBitrixComponent
 				&& $literatureLinkNotEmpty
 				&& $usefulLinkNotEmpty
 				&& $summaryLinkNotEmpty
+				&& check_bitrix_sessid()
 			)
 			{
 				\Proj\Independent\Repository\ThemesRepository::updateThemeInfo($themeID,$themeName,$themeDescription,$videoLink,$literatureLink,$usefulLink,$summaryLink);
