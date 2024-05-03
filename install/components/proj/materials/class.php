@@ -19,32 +19,11 @@ class MaterialsComponent extends CBitrixComponent
 		$subject = $data['subject'];
 		$this->arResult['CLASS'] = $class;
 		$this->arResult['SUBJECT'] = $subject;
-		$this->arResult['THEMES'] = MaterialsRepository::getThemesByClassAndSubject($class,$subject);
-	}
-
-	protected function checkValidUrl()
-	{
-		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
-		$data = $request->getQueryList()->toArray();
-		$class = $data['class'];
-		$subject = $data['subject'];
-		$result = \Proj\Independent\Model\ClassTable::getList([
-																   'select' => ['ID'],
-																   'filter' => [
-																	   '=CLASS_NUMBER' => $class,
-																   ]]);
-		$classIsset = !empty($result->fetchAll());
-
-		$result = \Proj\Independent\Model\SubjectTable::getList([
-																  'select' => ['ID'],
-																  'filter' => [
-																	  '=SUBJECT_NAME' => $subject,
-																  ]]);
-		$subjectIsset = !empty($result->fetchAll());
-
-		if (!$subjectIsset || !$classIsset)
+		$themes = MaterialsRepository::getThemesByClassAndSubject($class,$subject);
+		if (empty($themes))
 		{
-			LocalRedirect('/');
+			LocalRedirect('/404');
 		}
+		$this->arResult['THEMES'] = $themes;
 	}
 }

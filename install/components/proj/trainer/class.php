@@ -32,50 +32,62 @@ class TrainerComponent extends CBitrixComponent
 			$this->arResult['DATA'] = $themes;
 
 			$getData = $request->getQueryList()->toArray();
-			$generatorCode = substr(md5(time()),0,16);
+			$generatorCode = substr(md5(time()), 0, 16);
 			$classNumber = $getData['class'];
 			$subject = $getData['subject'];
-			$result = \Proj\Independent\Model\VariantTable::add(
-				[
-					'GENERATOR_CODE' => $generatorCode,
-					'CLASS_NUMBER' => $classNumber,
-					'SUBJECT_NAME' => $subject,
-				]
-			);
-			//REFACTOR THIS!!!!!!!!!!!!!!!!
-			if ($result->isSuccess())
+			$variantNotEmpty = false;
+			foreach ($themes as $themeID => $numberOfExercise)
 			{
-				$variantID = $result->getId();
-				foreach ($themes as $themeID => $numberOfExercise)
+				if (is_numeric($numberOfExercise) && (int)$numberOfExercise > 0)
 				{
-					if ($numberOfExercise !== '')
+					$variantNotEmpty = true;
+					break;
+				}
+			}
+			if ($variantNotEmpty)
+			{
+				$result = \Proj\Independent\Model\VariantTable::add(
+					[
+						'GENERATOR_CODE' => $generatorCode,
+						'CLASS_NUMBER' => $classNumber,
+						'SUBJECT_NAME' => $subject,
+					]
+				);
+				//REFACTOR THIS!!!!!!!!!!!!!!!!
+				if ($result->isSuccess())
+				{
+					$variantID = $result->getId();
+					foreach ($themes as $themeID => $numberOfExercise)
 					{
-						$exercises = ExerciseTable::getList([
-																'select' => ['ID','ANSWER'],
-																'filter' => ['THEME_ID' => $themeID],
-																'runtime' => [
-																	'RAND' => [
-																		'data_type' => 'float',
-																		'expression' => ['RAND()'],
-																	],
-																],
-																'order' => ['RAND' => 'ASC'],
-																'limit' => $numberOfExercise,
-															]);
-						foreach ($exercises as $exercise)
+						if ($numberOfExercise !== '')
 						{
-							\Proj\Independent\Model\ExerciseVariantTable::add(
-								[
-									'EXERCISE_ID' => $exercise['ID'],
-									'VARIANT_ID' => $variantID,
-								]
-							);
-							$this->arResult['STUDENT_ANSWERS'][$exercise['ID']] = $exercise['ANSWER'];
+							$exercises = ExerciseTable::getList([
+																	'select' => ['ID', 'ANSWER'],
+																	'filter' => ['THEME_ID' => $themeID],
+																	'runtime' => [
+																		'RAND' => [
+																			'data_type' => 'float',
+																			'expression' => ['RAND()'],
+																		],
+																	],
+																	'order' => ['RAND' => 'ASC'],
+																	'limit' => $numberOfExercise,
+																]);
+							foreach ($exercises as $exercise)
+							{
+								\Proj\Independent\Model\ExerciseVariantTable::add(
+									[
+										'EXERCISE_ID' => $exercise['ID'],
+										'VARIANT_ID' => $variantID,
+									]
+								);
+								$this->arResult['STUDENT_ANSWERS'][$exercise['ID']] = $exercise['ANSWER'];
+							}
 						}
 					}
 				}
+				LocalRedirect("/exercises/{$generatorCode}");
 			}
-			LocalRedirect("/exercises/{$generatorCode}");
 		}
 	}
 }
