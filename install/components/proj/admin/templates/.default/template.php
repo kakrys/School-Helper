@@ -22,6 +22,10 @@ global $USER;
 				<a href ='/generator' class="btn align-self-center"> Генератор</a>
 				<a href ='#' class="btn align-self-center" data-target="#bugs"> Сообщения о багах</a>
 				<a href ='#' class="btn align-self-center" data-target="#addThemes"> Добавить тему </a>
+				<a href ='#' class="btn align-self-center" data-target="#addClass"> Добавить класс </a>
+				<a href ='#' class="btn align-self-center" data-target="#addSubject"> Добавить предмет </a>
+
+
 			</div>
 			<div style="flex-grow: 1;"></div>
 		</div>
@@ -68,6 +72,76 @@ global $USER;
 										<td><?=$subject['CLASS']?></td>
 										<td><?=$subject['SUBJECT_NAME']?></td>
 										<td><a href="/addtheme/<?=$subject['CLASS'] . '/' . $subject['SUBJECT_NAME']?>" type="button" class="btn btn-primary">Добавить</a></td>
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex flex-column" style="margin-left: 1%;">
+				<div class="border bg-light">
+					<div id="addClass" class="collapse">
+						<div class="d-flex flex-column">
+							<form method="post" action="/admin">
+								<div class="mb-3">
+									<label for="exampleInputPassword1" class="form-label">Название</label>
+									<input type="text" name = 'CLASS_NUMBER' class="form-control" id="exampleInputPassword1" pattern="[а-яёА-ЯЁa-zA-Z0-9]+">
+								</div>
+								<?=bitrix_sessid_post()?>
+								<button type="submit" class="btn btn-primary">Добавить</button>
+							</form>
+						</div>
+					</div>
+					<div id="addThemes" class="collapse">
+						<div class="d-flex flex-column">
+							<table class="table">
+								<thead>
+								<tr>
+									<th scope="col">Класс</th>
+									<th scope="col">Дисциплина</th>
+									<th></th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($arResult['SUBJECTS'] as $subject): ?>
+									<tr>
+										<td><?=$subject['CLASS']?></td>
+										<td><?=$subject['SUBJECT_NAME']?></td>
+										<td><a href="/addtheme/<?=$subject['CLASS'] . '/' . $subject['SUBJECT_NAME']?>" type="button" class="btn btn-primary">Добавить</a></td>
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div id="addSubject" class="collapse">
+						<div class="d-flex flex-column">
+							<table class="table">
+								<thead>
+								<tr>
+									<th scope="col">Класс</th>
+									<th scope="col">Название предмета</th>
+									<th></th>
+								</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($arResult['CLASSES'] as $class):?>
+									<tr>
+										<td><?=$class['CLASS_NUMBER']?></td>
+										<form method="post" action="/admin">
+											<td>
+												<div class="mb-3">
+													<input type="text" name = 'SUBJECT_NAME' class="form-control" id="exampleInputPassword1" pattern="[а-яёА-ЯЁa-zA-Z]+">
+													<input type="hidden" name="CLASS_ID" value="<?=$class['ID']?>">
+												</div>
+											</td>
+											<td>
+												<?=bitrix_sessid_post()?>
+												<button type="submit" class="btn btn-primary">Добавить</button>
+											</td>
+										</form>
 									</tr>
 								<?php endforeach; ?>
 								</tbody>

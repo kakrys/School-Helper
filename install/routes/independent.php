@@ -13,6 +13,7 @@ return function (RoutingConfigurator $routes) {
 	$routes->get('/register', new PublicPageController('/local/modules/proj.independent/views/register.php'));
 	$routes->post('/student', new PublicPageController('/local/modules/proj.independent/views/student.php'));
 	$routes->get('/admin', new PublicPageController('/local/modules/proj.independent/views/admin.php'));
+	$routes->post('/admin', new PublicPageController('/local/modules/proj.independent/views/admin.php'));
 	$routes->post('/login', new PublicPageController('/local/modules/proj.independent/views/login.php'));
 	$routes->get('/success', new PublicPageController('/local/modules/proj.independent/views/success.php'));
 	$routes->post('/register', new PublicPageController('/local/modules/proj.independent/views/register.php'));
