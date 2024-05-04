@@ -65,7 +65,7 @@ class AdminComponent extends CBitrixComponent
 		$classID = $data['CLASS_ID'];
 		if (isset($subjectName) && check_bitrix_sessid())
 		{
-			$pattern = '/[а-яёА-ЯЁa-zA-Z]+/u';
+			$pattern = '/[а-яёА-ЯЁa-zA-Z]+\s*[а-яёА-ЯЁa-zA-Z]+/u';
 			preg_match($pattern, $subjectName, $matches);
 			$subjectID = \Proj\Independent\Repository\SubjectRepository::getSubjectIdBySubjectName($subjectName);
 			if ($matches[0] === $subjectName)
@@ -80,7 +80,6 @@ class AdminComponent extends CBitrixComponent
 				}
 				else
 				{
-					//Предмета нет вообще -> Добавить предмет и добавить связь
 					$subjectID = \Proj\Independent\Repository\SubjectRepository::addSubject($subjectName);
 					\Proj\Independent\Repository\ClassRepository::addSubjectToClass($classID,$subjectID);
 				}
