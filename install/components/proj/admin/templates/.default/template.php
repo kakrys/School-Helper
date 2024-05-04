@@ -133,7 +133,7 @@ global $USER;
 										<form method="post" action="/admin">
 											<td>
 												<div class="mb-3">
-													<input type="text" name = 'SUBJECT_NAME' class="form-control" id="exampleInputPassword1" pattern="[а-яёА-ЯЁa-zA-Z]+">
+													<input type="text" name = 'SUBJECT_NAME' class="form-control" id="exampleInputPassword1" >
 													<input type="hidden" name="CLASS_ID" value="<?=$class['ID']?>">
 												</div>
 											</td>
