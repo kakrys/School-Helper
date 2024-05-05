@@ -74,12 +74,13 @@ class Exercise
 			}
 			$exercise = $this::stringReplaceOneSymbolByAString($matches[0][0],$newOperator,$exercise);
 			$innerExercise = $this::stringReplaceOneSymbolByAString($matches[0][0],$newOperator,$innerExercise);
-			$this->exerciseHtmlPattern = ExercisePreBuilder::prepareHtmlPattern($exercise);
+			$this->exerciseHtmlPattern = ExerciseParser::prepareHtmlPattern($exercise);
 			$exercise = $this->exerciseHtmlPattern;
 			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Закончили итерацию рандомных операторов\n", FILE_APPEND);
 		}
 		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Ща попадём в цикл генерации чисел\n", FILE_APPEND);
 		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Тем временем вот наше задание: $exercise\n", FILE_APPEND);
+		$numbers = [];
 		while (preg_match_all('/X/',$exercise,$matches))
 		{
 			$rule = $rules[0];
@@ -135,15 +136,17 @@ class Exercise
 			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", print_r($generatorVariants, true), FILE_APPEND);
 			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "\n", FILE_APPEND);
 			$number = $this->generateNumber($rule['MinNumber'],$rule['MaxNumber'],$rule,$generatorVariants);
+			$numbers[] = $number;
 			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Сгенерили $number\n", FILE_APPEND);
 			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Было $exercise\n", FILE_APPEND);
 			$exercise = $this::stringReplaceOneSymbolByAString($matches[0][0], $number, $exercise);
 			$innerExercise = $this::stringReplaceOneSymbolByAString($matches[0][0], $number, $innerExercise);
 			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Стало $exercise\n", FILE_APPEND);
 		}
+		$renderObject = new ExerciseRender($this->exerciseHtmlPattern);
 		$this->exerciseHtmlPattern = $exercise;
 		$this->renderExercise = $innerExercise;
-		return $exercise;
+		return $renderObject->getHtmlView($numbers);
 	}
 	private static function stringReplaceOneSymbolByAString(string $search, string $replace, string $subject):string
 	{

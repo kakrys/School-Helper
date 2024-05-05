@@ -21,6 +21,7 @@ global $USER;
 				</span>
 				<a href ='#' class="btn align-self-center" data-target="#changeData"> Смена личной информации</a>
 				<a href ='#' class="btn align-self-center" data-target="#statistics"> Статистика</a>
+				<a type="button" class="btn btn-danger" href="/deleteaccount">Удалить аккаунт</a>
 			</div>
 			<div style="flex-grow: 1;"></div>
 		</div>
@@ -35,6 +36,7 @@ global $USER;
 											<label for="exampleInputNewLastName" class="form-label">Фамилия</label>
 											<input type="text" class="form-control" id="exampleInputLastName" name="Surname" aria-describedby="SurnameHelp">
 										</div>
+										<?=bitrix_sessid_post()?>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form>
 									<form style="margin-bottom: 10px" method="post" action="/student">
@@ -42,6 +44,7 @@ global $USER;
 											<label for="exampleInputNewLastName" class="form-label">Имя</label>
 											<input type="text" class="form-control" id="exampleInputName" name="Name" aria-describedby="LNameHelp">
 										</div>
+										<?=bitrix_sessid_post()?>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form >
 									<form style="margin-bottom: 10px" method="post" action="/student">
@@ -50,6 +53,7 @@ global $USER;
 											<input type="text" class="form-control" id="exampleInputLogin" name="Login" aria-describedby="LoginHelp">
 											<div id="LastNameHelp" class="form-text">Введите новый логин,длиной не менее 3 символов</div>
 										</div>
+										<?=bitrix_sessid_post()?>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form>
 									<form method="post" action="/student">
@@ -58,6 +62,7 @@ global $USER;
 											<input type="text" class="form-control" id="exampleInputPassword" name="Password" aria-describedby="PasswordHelp">
 											<div id="LastNameHelp" class="form-text">Введите новый пароль,длиной не менее 6 символов</div>
 										</div>
+										<?=bitrix_sessid_post()?>
 										<button type="submit" class="btn btn-primary">Изменить</button>
 									</form>
 								</div>

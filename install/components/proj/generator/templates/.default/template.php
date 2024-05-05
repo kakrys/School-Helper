@@ -53,8 +53,8 @@ $jsonData = json_encode($arResult['CST_DATA']);
 				<div style="margin: 1%;">
 					<a class="btn btn-primary" style="margin 1%;" role="button" onclick="generator.generatePreview()">Сгенерировать предпросмотр!</a>
 				</div>
-				<div class="border bg-light d-flex flex-column" style="margin: 1% 1% 0 0; min-height:45%; max-height:45%; word-break: break-word;">
-					<div class="d-flex" id="previewContainer">
+				<div class="border bg-light d-flex flex-column justify-content-center" style="margin: 1% 1% 0 0; min-height:45%; max-height:45%; word-break: break-word;">
+					<div class="d-flex justify-content-center align-items-center align-content-center align-self-center" id="previewContainer">
 						Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!
 					</div>
 					<div id="AdditiveContainer">

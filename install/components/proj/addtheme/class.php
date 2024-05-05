@@ -57,6 +57,7 @@ class AddThemeComponent extends CBitrixComponent
 			&& $literatureLinkNotEmpty
 			&& $usefulLinkNotEmpty
 			&& $summaryLinkNotEmpty
+			&& check_bitrix_sessid()
 		)
 		{
 			\Proj\Independent\Repository\ThemesRepository::addTheme(

@@ -2,6 +2,7 @@
 namespace Proj\Independent\Model;
 
 
+use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Localization\Loc,
 	Bitrix\Main\ORM\Data\DataManager,
 	Bitrix\Main\ORM\Fields\IntegerField;
@@ -46,7 +47,7 @@ class ClassTable extends DataManager
 					'autocomplete' => true,
 				]
 			),
-			new IntegerField(
+			new StringField(
 				'CLASS_NUMBER',
 				[
 					'required' => true,

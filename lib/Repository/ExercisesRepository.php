@@ -2,7 +2,7 @@
 
 namespace Proj\Independent\Repository;
 
-use Proj\Independent\Math\Exercise\ExercisePreBuilder;
+use Proj\Independent\Math\Exercise\ExerciseParser;
 use Proj\Independent\Model\ExerciseTable;
 use function Sodium\add;
 
@@ -38,7 +38,7 @@ class ExercisesRepository
 		unset($exercise['mode']);
 		if ($mode === 'exercise')
 		{
-			$exercise = new ExercisePreBuilder($exercise);
+			$exercise = new ExerciseParser($exercise);
 			$exerciseInstance = $exercise->getExerciseInstance();
 			ExerciseTable::add(
 				[

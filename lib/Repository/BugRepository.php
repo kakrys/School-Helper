@@ -10,16 +10,19 @@ class BugRepository
 	{
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 		$data = $request->getPostList()->toArray();
-		$categoryID = $data['CATEGORY_ID'];
-		$description = $data['DESCRIPTION'];
-		$page = $data['PAGE'];
-		BugReportTable::add(
-			[
-				'CATEGORY_ID' => $categoryID,
-				'PAGE' => $page,
-				'DESCRIPTION' => $description,
-			]
-		);
+		if (!empty($data))
+		{
+			$categoryID = $data['CATEGORY_ID'];
+			$description = $data['DESCRIPTION'];
+			$page = $data['PAGE'];
+			BugReportTable::add(
+				[
+					'CATEGORY_ID' => $categoryID,
+					'PAGE' => $page,
+					'DESCRIPTION' => $description,
+				]
+			);
+		}
 	}
 
 	public static function getBugListForAdmin(): array

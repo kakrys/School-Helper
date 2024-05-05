@@ -28,10 +28,9 @@ CREATE TABLE IF NOT EXISTS proj_class
 
 CREATE TABLE IF NOT EXISTS proj_class_subject
 (
-	ID int auto_increment not null,
 	CLASS_ID int not null,
 	SUBJECT_ID int not null,
-	PRIMARY KEY (ID)
+	PRIMARY KEY (CLASS_ID,SUBJECT_ID)
 );
 
 CREATE TABLE IF NOT EXISTS proj_variant

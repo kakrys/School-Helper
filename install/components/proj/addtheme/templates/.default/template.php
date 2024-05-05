@@ -12,6 +12,7 @@ $APPLICATION->SetTitle("Independent");
 ?>
 <div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 	<form method="post" action="/addtheme/<?=$arResult['CLASS'] . '/' . $arResult['SUBJECT']?>">
+		<?=bitrix_sessid_post()?>
 		<input type="hidden" name="CLASS_NUMBER" value="<?=$arResult['CLASS']?>">
 		<input type="hidden" name="SUBJECT_NAME" value="<?=$arResult['SUBJECT']?>">
 

@@ -5,10 +5,7 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
-if (empty($arResult['THEMES']))
-{
-	LocalRedirect('/404');
-}
+
 global $USER;
 ?>
 	<div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">

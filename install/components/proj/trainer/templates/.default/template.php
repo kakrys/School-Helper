@@ -45,8 +45,13 @@ $APPLICATION->SetTitle("Independent");
 										<label for="inputNumberOfExercise" class="col-form-label"><?= $theme['NAME'] ?></label>
 									</div>
 									<div class="col-auto">
-										<input type="text" name="<?= $theme['ID'] ?>" id="inputNumberOfExercise" class="form-control" aria-describedby="exerciseHelpInline">
+										<input type="text" name="<?= $theme['ID'] ?>" id="inputNumberOfExercise" class="form-control" aria-describedby="exerciseHelpInline" pattern="[0-9]+">
 									</div>
+<!--									<div class="col-auto">-->
+<!--									<span id="exerciseHelpInline" class="form-text">-->
+<!--      									Максимум Х заданий-->
+<!--    								</span>-->
+<!--									</div>-->
 								</div>
 							<?php
 							endforeach; ?>

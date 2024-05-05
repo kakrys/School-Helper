@@ -23,12 +23,12 @@ $APPLICATION->SetTitle("Independent");
 					</tr>
 					</thead>
 					<tbody>
-					<?php for($i=0, $iMax = count($arResult['CORRECT_ANSWERS']);$i< $iMax;$i++)
-					{
-						echo "<tr>";
-						echo "<td style='border: 1px solid #dee2e6'>".$i+1 ."</td>";
-						echo "<td style='border: 1px solid #dee2e6'>{$arResult['STUDENT_ANSWERS'][$i]}</td>";
-						echo "<td style='border: 1px solid #dee2e6'>{$arResult['CORRECT_ANSWERS'][$i]}</td>";
+					<?php for($i=0, $iMax = count($arResult['CORRECT_ANSWERS']);$i< $iMax;$i++):?>
+						<tr>
+						<td style='border: 1px solid #dee2e6'> <?= $i+1 ?></td>
+						<td style='border: 1px solid #dee2e6'><?=htmlspecialcharsbx($arResult['STUDENT_ANSWERS'][$i])?></td>
+						<td style='border: 1px solid #dee2e6'><?=$arResult['CORRECT_ANSWERS'][$i]?></td>
+							<?php
 						if($arResult['STUDENT_ANSWERS'][$i] === $arResult['CORRECT_ANSWERS'][$i])
 						{
 							echo "<td style='border: 1px solid #dee2e6; background: lightgreen;'>Верно</td>";
@@ -39,8 +39,8 @@ $APPLICATION->SetTitle("Independent");
 						}
 						echo "<td style='border: 1px solid #dee2e6'><a href='/answers' target='_blank'>Решение</a></td>";
 						echo "</tr>";
-					}
-					?>
+						?>
+					<?php endfor;?>
 					</tbody>
 				</table>
 			</div>

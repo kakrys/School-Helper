@@ -27,7 +27,7 @@ class StudentComponent extends CBitrixComponent
 		$request = Context::getCurrent()->getRequest();
 		$isPost  = $request->isPost();
 		$isAuthorized = $USER->IsAuthorized();
-		if ($isPost && $isAuthorized)
+		if ($isPost && $isAuthorized && check_bitrix_sessid())
 		{
 			$data = $request->getPostList()->toArray();
 			$updateField = array_key_first($data);
