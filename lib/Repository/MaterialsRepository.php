@@ -26,7 +26,7 @@ class MaterialsRepository
 		}
 
 		$result = \Proj\Independent\Model\ThemesTable::getList([
-																   'select' => ['*'],
+																   'select' => ['NAME','ID'],
 																   'filter' => [
 																	   '=CLASS_NUMBER' => $class,
 																	   '=SUBJECT_NAME' => $subject,

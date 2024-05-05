@@ -19,6 +19,10 @@ class Check extends CBitrixComponent
 																	  			'=VARIANTS.GENERATOR_CODE' => $generatorCode,
 																  				]]);
 		$selectionResult = $result->fetchAll();
+		if (empty($selectionResult))
+		{
+			LocalRedirect('/');
+		}
 
 		mt_srand(abs(intval(hexdec($generatorCode))));
 		foreach ($selectionResult as $item)

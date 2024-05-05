@@ -12,6 +12,7 @@ $APPLICATION->SetTitle("Independent");
 ?>
 <div class="container-fluid mt-1" style="margin-top: 1%; flex-grow: 1;">
 	<form method="post" action="/edittheme/<?=$arResult['THEME_ID']?>">
+		<?=bitrix_sessid_post()?>
 		<div class="mb-3">
 			<input type="hidden" value="<?=$arResult['THEME_ID']?>" class="form-control" name="ID" required>
 

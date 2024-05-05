@@ -40,6 +40,13 @@ class ClassSubjectTable extends DataManager
 	{
 		return [
 			new IntegerField(
+				'ID',
+				[
+					'primary' => true,
+					'autocomplete' => true,
+				]
+			),
+			new IntegerField(
 				'CLASS_ID',
 				[
 					'primary' => true,

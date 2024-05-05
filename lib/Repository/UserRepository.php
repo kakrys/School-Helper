@@ -45,6 +45,7 @@ class UserRepository
 																  ]
 																 ])->fetchAll());
 
+
 			$result = VariantTable::getList(['select' => ['CLASS_NUMBER', 'SUBJECT_NAME'],
 											 'filter' => [
 												 '=GENERATOR_CODE' => $generatorCode,
@@ -57,6 +58,7 @@ class UserRepository
 												'filter' => [
 													'=CLASS_NUMBER' => $classNumber,
 													'=SUBJECT_NAME' => $subjectName,
+													'=USER_ID' => $userID
 												],
 											   ])->fetchAll();
 

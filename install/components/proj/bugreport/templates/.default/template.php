@@ -33,11 +33,11 @@ $APPLICATION->SetTitle("Independent");
 									<div style="padding: 0 1% 0 1%;">
 										<div class="form-floating mb-3">
 											<input type="hidden" name="CATEGORY_ID" value="<?=$category['ID']?>">
-											<textarea id="floatingInput<?=$category['ID']?>_0"  name="DESCRIPTION" class="form-control" placeholder="#"></textarea>
+											<textarea id="floatingInput<?=$category['ID']?>_0"  name="DESCRIPTION" class="form-control" placeholder="#" required></textarea>
 											<label for="floatingInput<?=$category['ID']?>_0"><i>Опишите возникшую проблему</i></label>
 										</div>
 										<div class="form-floating">
-											<input id="floatingInput<?=$category['ID']?>_1" name="PAGE" class="form-control" placeholder="#">
+											<input id="floatingInput<?=$category['ID']?>_1" name="PAGE" class="form-control" placeholder="#" required>
 											<label for="floatingInput<?=$category['ID']?>_1"><i>Скопируйте адрес страницы, на которой возникла проблема</i></label>
 										</div>
 									</div>
