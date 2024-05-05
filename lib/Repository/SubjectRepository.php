@@ -20,7 +20,7 @@ class SubjectRepository
 											'filter' => [
 												'=SUBJECT_NAME' => $subjectName,
 											]]);
-		return $result->fetchAll();
+		return $result->fetchAll()[0]['ID'];
 	}
 
 	public static function addSubject($subjectName)

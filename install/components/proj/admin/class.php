@@ -61,9 +61,9 @@ class AdminComponent extends CBitrixComponent
 		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 		$data = $request->getPostList()->toArray();
 		$subjectName = $data['SUBJECT_NAME'];
-		$subjectName = ucfirst(strtolower($subjectName));
+		$subjectName = ucfirst(mb_convert_case($subjectName,MB_CASE_LOWER));
 		$classID = $data['CLASS_ID'];
-		if (isset($subjectName) && check_bitrix_sessid())
+		if ($subjectName!=='' && check_bitrix_sessid())
 		{
 			$pattern = '/[а-яёА-ЯЁa-zA-Z]+\s*[а-яёА-ЯЁa-zA-Z]+/u';
 			preg_match($pattern, $subjectName, $matches);

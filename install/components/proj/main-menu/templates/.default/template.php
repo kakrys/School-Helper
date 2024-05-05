@@ -21,7 +21,7 @@ $APPLICATION->SetTitle("Independent");
 								<div class="accordion-body p-0">
 									<?php foreach ($arResult['SUBJECTS'][$grade] as $subject):?>
 										<div class="subject">
-											<a data-bs-toggle="collapse" href="#collapseClass<?=$grade?>Subject<?=$subject?>" role="button" aria-expanded="false" aria-controls="collapseClass<?=$grade?>Subject<?=$subject?>">
+											<a data-bs-toggle="collapse" href="#collapseClass<?=$grade?>Subject<?=implode(explode(' ',$subject))?>" role="button" aria-expanded="false" aria-controls="collapseClass<?=$grade?>Subject<?=$subject?>">
 												<?=$subject?>
 											</a>
 										</div>
@@ -36,16 +36,15 @@ $APPLICATION->SetTitle("Independent");
 			<div class="content border bg-light" style="width: 90%; height: 100%; margin-left: 1%;">
 				<?php foreach ($arResult['GRADES'] as $grade):?>
 					<?php foreach ($arResult['SUBJECTS'][$grade] as $subject):?>
-						<div class="collapse" id="collapseClass<?=$grade?>Subject<?=$subject?>">
+						<div class="collapse" id="collapseClass<?=$grade?>Subject<?=implode(explode(' ',$subject))?>">
 							<div class="card card-body">
 								<p>
-									Какая-то рандомная информация по предмету, быть может статистика или количество тем.
-									Кстати, это блок для <?=$grade?> класса и по предмету <?=$subject?>
+									 <?=$grade?> класс: <?=$subject?>
 								</p>
-								Здесь текст с возможностью перехода
+								Проверить знания
 								<a href="/trainer/<?=$grade.'/'.$subject?>">к тренажёру</a>
-								Ну и, конечно же, текст с переходом к
-								<a href="/themes/<?=$grade?>/<?=$subject?>">материалам по предмету и спискам тем</a>
+								Полезные
+								<a href="/themes/<?=$grade?>/<?=$subject?>">материалы по предмету и спискам тем</a>
 							</div>
 						</div>
 					<?php endforeach;?>
