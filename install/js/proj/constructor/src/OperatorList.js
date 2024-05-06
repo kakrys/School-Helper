@@ -150,6 +150,8 @@ export class OperatorList extends OptionList{
 		{
 			this.openedInstruction = -1;
 			container.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+			container.style.borderColor = "#dee2e6";
+			container.style.borderWidth = "1px";
 		}
 	}
 	showOption(id, container)

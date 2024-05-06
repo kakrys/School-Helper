@@ -64,7 +64,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    babelHelpers.classCallCheck(this, Pointer);
 	    _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Pointer).call(this));
 	    _this.optionName = '↑';
-	    _this.type = 'pointer';
+	    _this.Type = 'pointer';
 	    _this.html = _this.html = "<span id=\"instruction_".concat(_this.id, "\" data-instruction=\"").concat(_this.id, "\" onclick=\"generator.showOption(").concat(_this.id, ")\" \n\t\t\t\t\t\t\t\tstyle=\"color: blue; \n\t\t\t\t\t\t\t\tmax-height: 5%;\n\t\t\t\t\t\t\t\tmargin-top: 25px; \n\t\t\t\t\t\t\t\ttext-decoration: overline blue; \n\t\t\t\t\t\t\t\tpadding: 1%;\n\t\t\t\t\t\t\t\ttext-align: start; \n\t\t\t\t\t\t\t\tbackground:").concat(_this.color, ";\">").concat(_this.optionName, "</span>");
 	    _this.isDelitable = false;
 	    _this.id = -1;
@@ -614,7 +614,7 @@ this.BX.Proj = this.BX.Proj || {};
 	      _this.textView = '[X]';
 	    }
 	    _this.parameters.id = _this.id;
-	    _this.parameters.Type = _this.type;
+	    _this.parameters.Type = _this.Type;
 	    _this.isOperator = false;
 	    _this.isDelitable = true;
 	    _this.isPair = false;
@@ -945,6 +945,8 @@ this.BX.Proj = this.BX.Proj || {};
 	      if (this.list.length === 1 || check) {
 	        this.openedInstruction = -1;
 	        container.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+	        container.style.borderColor = "#dee2e6";
+	        container.style.borderWidth = "1px";
 	      }
 	    }
 	  }, {
