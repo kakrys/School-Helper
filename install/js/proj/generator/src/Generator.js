@@ -1,7 +1,7 @@
 import {Type, Loc} from 'main.core';
+import {Controls} from "./Controls";
 import {OptionList as OL} from 'proj.operators';
 import {OperatorList as OpL} from 'proj.constructor';
-import {Controls} from "./Controls";
 const OptionList = BX.Proj.Independent.OptionList;
 const OperatorList = BX.Proj.Independent.OperatorList;
 export class Generator {
@@ -41,14 +41,41 @@ export class Generator {
 	}
 	backToGenerator()
 	{
+		if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>')
+		{
+			this.showOption(this.currentGeneratorWindow.openedInstruction);
+			if (!this.currentGeneratorWindow.saveOpenedInstructionData())
+			{
+				this.showOption(this.currentGeneratorWindow.openedInstruction);
+				this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока инструкция содержит ошибки</div>`;
+				return;
+			}
+		}
+		let data = this.expressionList[this.instructions.openedInstruction].saveAllData();
+		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 		document.getElementById('ExpressionType').innerHTML='задача';
 		this.generatorWindowType = 'task';
+		if (data.preview !=='')
+		{
+			this.instructions.exercisesPreviewList[this.instructions.openedInstruction] = data.preview;
+		}
 		this.currentGeneratorWindow = this.instructions;
 		this.controlsContainer.innerHTML = Controls.showTaskControls();
-		this.renderInstructions();
+		this.renderInstructions(this.instructions.openedInstruction);
 	}
 	openExerciseMenu(id)
 	{
+		if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>')
+		{
+			this.showOption(this.currentGeneratorWindow.openedInstruction);
+			if (!this.currentGeneratorWindow.saveOpenedInstructionData())
+			{
+				this.showOption(this.currentGeneratorWindow.openedInstruction);
+				this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока инструкция содержит ошибки</div>`;
+				return;
+			}
+		}
+		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 		if (this.expressionList[id] === undefined)
 		{
 			this.expressionList[id] = new OperatorList();
@@ -59,10 +86,21 @@ export class Generator {
 		element.innerHTML = `[объект:Выражение_№${id}]`;
 		this.controlsContainer.innerHTML = Controls.showCurrentExerciseControls(id);
 		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
-		this.renderInstructions();
+		this.renderInstructions(this.currentGeneratorWindow.openedInstruction);
 	}
 	changeExpressionType()
 	{
+		if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>')
+		{
+			this.showOption(this.currentGeneratorWindow.openedInstruction);
+			if (!this.currentGeneratorWindow.saveOpenedInstructionData())
+			{
+				this.showOption(this.currentGeneratorWindow.openedInstruction);
+				this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока инструкция содержит ошибки</div>`;
+				return;
+			}
+		}
+		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 		let element = document.getElementById('ExpressionType');
 		switch(element.innerHTML)
 		{
@@ -84,18 +122,44 @@ export class Generator {
 				break;
 		}
 	}
-	dumpInstructions()
+	dumpAllInstructions()
 	{
-		console.log(this.instructions);
+		console.log('------Task-------');
+		console.log(this.instructions)
 		this.instructions.list.forEach(instruction => {
 			console.log(instruction);
-		})
+		});
+		console.log('------Exercise-------');
+		console.log(this.expressionInstruction)
+		this.expressionInstruction.list.forEach(instruction => {
+			console.log(instruction);
+		});
+		console.log('------ExerciseList-------');
+		console.log(this.expressionList)
+		this.expressionList.forEach(expression =>{
+			console.log('--ex1--')
+			expression.list.forEach(instruction => {
+				console.log(instruction);
+			});
+		});
+	}
+	dumpSavedData()
+	{
+		let data = this.currentGeneratorWindow.saveAllData();
+		for(let operator in data)
+		{
+			if (data[operator].Type === 'customEx')
+			{
+				data[operator].exerciseSettings = this.expressionList[data[operator].id].saveAllData('outside');
+			}
+		}
+		console.log(data)
 	}
 	showOption(id)
 	{
 		this.currentGeneratorWindow.showOption(id, this.parametersContainer);
 	}
-	renderInstructions()
+	renderInstructions(lastOpenedId = -1)
 	{
 		this.AdditiveContainer.innerHTML = ``;
 		this.arePreviewGenerated = 0;
@@ -112,6 +176,10 @@ export class Generator {
 		else
 		{
 			this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderInstructions();
+		}
+		if (lastOpenedId !== -1)
+		{
+			this.showOption(lastOpenedId);
 		}
 	}
 	addInstruction(type, color)
@@ -213,10 +281,22 @@ export class Generator {
 	{
 		this.AdditiveContainer.innerHTML = '';
 		let data = this.currentGeneratorWindow.saveAllData();
+		for(let operator in data)
+		{
+			if (data[operator].Type === 'customEx')
+			{
+				data[operator].exerciseSettings = this.expressionList[data[operator].id].saveAllData();
+			}
+		}
+		if (data === false)
+		{
+			this.previewContainer.innerHTML = `Ошибка отображения: Инструкция содержит ошибки!`;
+			this.arePreviewGenerated = 0;
+			return;
+		}
 		if (data.preview === '')
 		{
 			this.previewContainer.innerHTML = `<i>Нечего отображать: вы не выбрали инструкции!</i>`;
-			return;
 		}
 		else
 		{
@@ -248,6 +328,12 @@ export class Generator {
 		let theme = document.getElementById('topicDropdown').innerText;
 		let saveButton = document.getElementById("saveButton");
 		let data = this.currentGeneratorWindow.saveAllData();
+		if (data === false)
+		{
+			this.AdditiveContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка сохранения: Инструкции операторов содержат ошибки!</div>`;;
+			this.arePreviewGenerated = 0;
+			return;
+		}
 		data.mode = this.generatorWindowType;
 		data.theme = theme;
 		data.attempt = this.saveAttempt;

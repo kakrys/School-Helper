@@ -1,4 +1,6 @@
 import {Operator} from "./Operator";
+import {Validator as V} from "proj.operators";
+const Validator = BX.Proj.Independent.Validator;
 
 export class PowerOperator extends Operator{
 	constructor(options = {}) {
@@ -6,6 +8,10 @@ export class PowerOperator extends Operator{
 		this.DegStyle = ['collapsed', 'true', 'checked="true"', 'show', ''];
 		this.parameters.DegType = ['Precision', 2];
 		this.DegExp = 2;
+		this.errorRender = [''];
+		this.errors = {
+			degValue: false,
+		};
 	}
 
 	save()
@@ -44,7 +50,14 @@ export class PowerOperator extends Operator{
 				this.parameters.DegType = [buttonWithText.getAttribute('value'), 2];
 			}
 		}
+		this.errors['degValue'] = Validator.isInteger(this.DegExp);
+		if (this.errors['degValue'] === false)
+		{
+			this.errors['degValue'] = Validator.numberBetween(this.DegExp,0,10);
+		}
+
 		this.unregisterEvents();
+		return this.errorHandler();
 	}
 	postUpdate()
 	{
@@ -100,6 +113,7 @@ export class PowerOperator extends Operator{
 									<div class="d-flex">
 										<input class="form-control" id="textArea_${this.id}" placeholder="Формат: 0<'целое число'<10">
 									</div>
+									<span style="color:orangered">${this.errorRender[0]}</span>
 								</div>
 							</div>
 						</div>

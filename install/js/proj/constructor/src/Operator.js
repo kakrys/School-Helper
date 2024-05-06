@@ -44,6 +44,6 @@ export class Operator extends Option
 	}
 	save()
 	{
-
+		return true;
 	}
 }

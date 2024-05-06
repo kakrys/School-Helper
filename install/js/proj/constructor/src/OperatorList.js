@@ -158,8 +158,33 @@ export class OperatorList extends OptionList{
 		{
 			this.openedInstruction = -1;
 		}
-		if (id === this.openedInstruction) return;
-		this.saveOpenedInstructionData();
+		if (id === this.openedInstruction)
+		{
+			this.saveOpenedInstructionData();
+			this.list.forEach(operator => {
+				if (operator.id === id)
+				{
+					container.innerHTML = operator.showOption();
+					this.list[this.list.indexOf(operator)].registerEvents();
+					this.list[this.list.indexOf(operator)].postUpdate();
+				}
+			});
+			if (this.saveOpenedInstructionData())
+			{
+				container.style.borderColor = "#dee2e6";
+				container.style.borderWidth = "1px";
+			}
+			return;
+		}
+		if (!this.saveOpenedInstructionData())
+		{
+			container.style.borderColor = "red";
+			container.style.borderWidth = "3px";
+			this.showOption(this.openedInstruction, container);
+			return;
+		}
+		container.style.borderColor = "#dee2e6";
+		container.style.borderWidth = "1px";
 		this.openedInstruction = id;
 		this.list.forEach(operator => {
 			if (operator.id === id)
@@ -172,16 +197,18 @@ export class OperatorList extends OptionList{
 	}
 	saveOpenedInstructionData()
 	{
-		if (this.openedInstruction === -1)
+		if (this.openedInstruction !== -1)
 		{
-			return;
+			let operatorToSave;
+			this.list.forEach(operator => {
+				if(this.openedInstruction === operator.id)
+				{
+					operatorToSave = operator;
+				}
+			});
+			return operatorToSave.save();
 		}
-		this.list.forEach(operator => {
-			if(this.openedInstruction === operator.id)
-			{
-				operator.save();
-			}
-		});
+		return true;
 	}
 
 
@@ -222,9 +249,12 @@ export class OperatorList extends OptionList{
 		return html;
 	}
 
-	saveAllData()
+	saveAllData(mode = 'inside')
 	{
-		this.saveOpenedInstructionData();
+		if(mode === "inside" && !this.saveOpenedInstructionData())
+		{
+			return false;
+		}
 		let symbolicExpression = '';
 		let generatorInstruction = [];
 		this.list.forEach(operator => {
