@@ -47,6 +47,7 @@ class AdminComponent extends CBitrixComponent
 			{
 				\Proj\Independent\Repository\ClassRepository::addClass($classNumber);
 			}
+			LocalRedirect('/admin');
 		}
 	}
 
@@ -84,6 +85,7 @@ class AdminComponent extends CBitrixComponent
 					\Proj\Independent\Repository\ClassRepository::addSubjectToClass($classID,$subjectID);
 				}
 			}
+			LocalRedirect('/admin');
 		}
 	}
 
