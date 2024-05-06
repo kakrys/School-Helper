@@ -17,7 +17,7 @@ export class OptionList{
 
 	checkIfExerciseEdited(id)
 	{
-		if (this.list[id].type === 'customEx' && this.exercisesPreviewList[id] !== '')
+		if (this.list[id].Type === 'customEx' && this.exercisesPreviewList[id] !== '')
 		{
 			this.list[id].preview = this.exercisesPreviewList[id];
 		}
@@ -109,7 +109,7 @@ export class OptionList{
 		let symbolicExpression = [];
 		let generatorInstruction = [];
 		this.list.forEach(option => {
-			symbolicExpression.push(`${option.type}`);
+			symbolicExpression.push(`${option.Type}`);
 			generatorInstruction.push(option.getGeneratorData());
 		});
 		symbolicExpression = symbolicExpression.join('->');
@@ -120,9 +120,9 @@ export class OptionList{
 	{
 		if (this.addedInstructions > 0)
 		{
-			if (this.list[this.addedInstructions].Type === 'customEx')
+			if (this.list[this.addedInstructions - 1].Type === 'customEx')
 			{
-				delete(this.exercisesPreviewList[this.addedInstructions]);
+				delete(this.exercisesPreviewList[this.addedInstructions -1]);
 			}
 			this.list.pop();
 			this.addedInstructions -= 1;

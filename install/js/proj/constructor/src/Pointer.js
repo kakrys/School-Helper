@@ -5,7 +5,7 @@ export class Pointer extends Operator
 	constructor() {
 		super();
 		this.optionName = '↑';
-		this.type = 'pointer';
+		this.Type = 'pointer';
 		this.html =this.html = `<span id="instruction_${this.id}" data-instruction="${this.id}" onclick="generator.showOption(${this.id})" 
 								style="color: blue; 
 								max-height: 5%;

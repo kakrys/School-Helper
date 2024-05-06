@@ -11,7 +11,7 @@ export class RandNumberOption extends Option{
 		this.Exclude = [];
 		this.parameters = {
 			id: this.id,
-			Type: this.type,
+			Type: this.Type,
 			MinNumber : 1,
 			MaxNumber : 100,
 			Exclude : [],
@@ -59,7 +59,7 @@ export class RandNumberOption extends Option{
 		}
 		this.parameters = {
 			id: this.id,
-			Type: this.type,
+			Type: this.Type,
 			MinNumber: minNumber,
 			MaxNumber: maxNumber,
 			Exclude: this.excludeNumberContainer.value.split(/[,\s]+/),

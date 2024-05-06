@@ -88,6 +88,7 @@ export class DivOperator extends Operator{
 			this.parameters.DivStyle = 'Non-fraction-style';
 		}
 		this.unregisterEvents();
+		return true;
 	}
 
 	registerEvents()

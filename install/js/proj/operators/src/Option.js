@@ -7,7 +7,7 @@ export class Option{
 		this.parameters.id = options.id;
 		this.parameters.Type = options.type;
 		this.id = options.id;
-		this.type = options.type;
+		this.Type = options.type;
 		this.color = options.color;
 		this.areEventsRegistered = 0;
 		this.errors = {};

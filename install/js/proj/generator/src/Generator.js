@@ -46,6 +46,8 @@ export class Generator {
 			this.showOption(this.currentGeneratorWindow.openedInstruction);
 			if (!this.currentGeneratorWindow.saveOpenedInstructionData())
 			{
+				this.parametersContainer.style.borderColor = "red";
+				this.parametersContainer.style.borderWidth = "3px";
 				this.showOption(this.currentGeneratorWindow.openedInstruction);
 				this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока инструкция содержит ошибки</div>`;
 				return;
@@ -70,6 +72,8 @@ export class Generator {
 			this.showOption(this.currentGeneratorWindow.openedInstruction);
 			if (!this.currentGeneratorWindow.saveOpenedInstructionData())
 			{
+				this.parametersContainer.style.borderColor = "red";
+				this.parametersContainer.style.borderWidth = "3px";
 				this.showOption(this.currentGeneratorWindow.openedInstruction);
 				this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока инструкция содержит ошибки</div>`;
 				return;
@@ -95,6 +99,8 @@ export class Generator {
 			this.showOption(this.currentGeneratorWindow.openedInstruction);
 			if (!this.currentGeneratorWindow.saveOpenedInstructionData())
 			{
+				this.parametersContainer.style.borderColor = "red";
+				this.parametersContainer.style.borderWidth = "3px";
 				this.showOption(this.currentGeneratorWindow.openedInstruction);
 				this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока инструкция содержит ошибки</div>`;
 				return;
@@ -192,6 +198,8 @@ export class Generator {
 		this.AdditiveContainer.innerHTML = ``;
 		this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+		this.parametersContainer.style.borderColor = "#dee2e6";
+		this.parametersContainer.style.borderWidth = "1px";
 		if (id === undefined)
 		{
 			if (this.generatorWindowType === 'exercise')
@@ -221,10 +229,12 @@ export class Generator {
 		{
 			if (this.currentGeneratorWindow.openedInstruction === this.currentGeneratorWindow.addedInstructions - 1)
 			{
+				this.parametersContainer.style.borderColor = "#dee2e6";
+				this.parametersContainer.style.borderWidth = "1px";
 				this.currentGeneratorWindow.openedInstruction = -1;
 				this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
 			}
-			if (this.currentGeneratorWindow.list[this.currentGeneratorWindow.addedInstructions - 1].type === 'customEx')
+			if (this.currentGeneratorWindow.list[this.currentGeneratorWindow.addedInstructions - 1].Type === 'customEx')
 			{
 				this.expressionList[this.currentGeneratorWindow.addedInstructions - 1] = undefined;
 			}
@@ -250,7 +260,7 @@ export class Generator {
 			this.currentGeneratorWindow = this.expressionList[id];
 		}
 		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
-		this.renderInstructions(this.parametersContainer);
+		this.renderInstructions();
 	}
 
 	movePointer(direction)
@@ -279,7 +289,10 @@ export class Generator {
 	}
 	generatePreview()
 	{
+		this.parametersContainer.style.borderColor = "#dee2e6";
+		this.parametersContainer.style.borderWidth = "1px";
 		this.AdditiveContainer.innerHTML = '';
+		this.previewContainer.innerHTML = '';
 		let data = this.currentGeneratorWindow.saveAllData();
 		for(let operator in data)
 		{
@@ -290,10 +303,14 @@ export class Generator {
 		}
 		if (data === false)
 		{
-			this.previewContainer.innerHTML = `Ошибка отображения: Инструкция содержит ошибки!`;
+			this.parametersContainer.style.borderColor = "red";
+			this.parametersContainer.style.borderWidth = "3px";
+			this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка отображения: Инструкция содержит ошибки!</div>`;
 			this.arePreviewGenerated = 0;
+			this.currentGeneratorWindow.showOption(this.currentGeneratorWindow.openedInstruction, this.parametersContainer)
 			return;
 		}
+		this.currentGeneratorWindow.showOption(this.currentGeneratorWindow.openedInstruction, this.parametersContainer)
 		if (data.preview === '')
 		{
 			this.previewContainer.innerHTML = `<i>Нечего отображать: вы не выбрали инструкции!</i>`;
@@ -330,7 +347,7 @@ export class Generator {
 		let data = this.currentGeneratorWindow.saveAllData();
 		if (data === false)
 		{
-			this.AdditiveContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка сохранения: Инструкции операторов содержат ошибки!</div>`;;
+			this.AdditiveContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка сохранения: Инструкции операторов содержат ошибки!</div>`;
 			this.arePreviewGenerated = 0;
 			return;
 		}
