@@ -236,15 +236,37 @@ this.BX.Proj = this.BX.Proj || {};
 	  babelHelpers.createClass(Generator, [{
 	    key: "backToGenerator",
 	    value: function backToGenerator() {
+	      if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
+	        this.showOption(this.currentGeneratorWindow.openedInstruction);
+	        if (!this.currentGeneratorWindow.saveOpenedInstructionData()) {
+	          this.showOption(this.currentGeneratorWindow.openedInstruction);
+	          this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438</div>";
+	          return;
+	        }
+	      }
+	      var data = this.expressionList[this.instructions.openedInstruction].saveAllData();
+	      this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 	      document.getElementById('ExpressionType').innerHTML = 'задача';
 	      this.generatorWindowType = 'task';
+	      if (data.preview !== '') {
+	        this.instructions.exercisesPreviewList[this.instructions.openedInstruction] = data.preview;
+	      }
 	      this.currentGeneratorWindow = this.instructions;
 	      this.controlsContainer.innerHTML = Controls.showTaskControls();
-	      this.renderInstructions();
+	      this.renderInstructions(this.instructions.openedInstruction);
 	    }
 	  }, {
 	    key: "openExerciseMenu",
 	    value: function openExerciseMenu(id) {
+	      if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
+	        this.showOption(this.currentGeneratorWindow.openedInstruction);
+	        if (!this.currentGeneratorWindow.saveOpenedInstructionData()) {
+	          this.showOption(this.currentGeneratorWindow.openedInstruction);
+	          this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438</div>";
+	          return;
+	        }
+	      }
+	      this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 	      if (this.expressionList[id] === undefined) {
 	        this.expressionList[id] = new OperatorList();
 	      }
@@ -254,11 +276,20 @@ this.BX.Proj = this.BX.Proj || {};
 	      element.innerHTML = "[\u043E\u0431\u044A\u0435\u043A\u0442:\u0412\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435_\u2116".concat(id, "]");
 	      this.controlsContainer.innerHTML = Controls.showCurrentExerciseControls(id);
 	      this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
-	      this.renderInstructions();
+	      this.renderInstructions(this.currentGeneratorWindow.openedInstruction);
 	    }
 	  }, {
 	    key: "changeExpressionType",
 	    value: function changeExpressionType() {
+	      if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
+	        this.showOption(this.currentGeneratorWindow.openedInstruction);
+	        if (!this.currentGeneratorWindow.saveOpenedInstructionData()) {
+	          this.showOption(this.currentGeneratorWindow.openedInstruction);
+	          this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438</div>";
+	          return;
+	        }
+	      }
+	      this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 	      var element = document.getElementById('ExpressionType');
 	      switch (element.innerHTML) {
 	        case 'задача':
@@ -280,12 +311,37 @@ this.BX.Proj = this.BX.Proj || {};
 	      }
 	    }
 	  }, {
-	    key: "dumpInstructions",
-	    value: function dumpInstructions() {
+	    key: "dumpAllInstructions",
+	    value: function dumpAllInstructions() {
+	      console.log('------Task-------');
 	      console.log(this.instructions);
 	      this.instructions.list.forEach(function (instruction) {
 	        console.log(instruction);
 	      });
+	      console.log('------Exercise-------');
+	      console.log(this.expressionInstruction);
+	      this.expressionInstruction.list.forEach(function (instruction) {
+	        console.log(instruction);
+	      });
+	      console.log('------ExerciseList-------');
+	      console.log(this.expressionList);
+	      this.expressionList.forEach(function (expression) {
+	        console.log('--ex1--');
+	        expression.list.forEach(function (instruction) {
+	          console.log(instruction);
+	        });
+	      });
+	    }
+	  }, {
+	    key: "dumpSavedData",
+	    value: function dumpSavedData() {
+	      var data = this.currentGeneratorWindow.saveAllData();
+	      for (var operator in data) {
+	        if (data[operator].Type === 'customEx') {
+	          data[operator].exerciseSettings = this.expressionList[data[operator].id].saveAllData('outside');
+	        }
+	      }
+	      console.log(data);
 	    }
 	  }, {
 	    key: "showOption",
@@ -295,6 +351,7 @@ this.BX.Proj = this.BX.Proj || {};
 	  }, {
 	    key: "renderInstructions",
 	    value: function renderInstructions() {
+	      var lastOpenedId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 	      this.AdditiveContainer.innerHTML = "";
 	      this.arePreviewGenerated = 0;
 	      if (this.currentGeneratorWindow instanceof OperatorList && this.expressionViewType === 'text') {
@@ -306,6 +363,9 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 	      } else {
 	        this.instructionsContainer.innerHTML = this.currentGeneratorWindow.renderInstructions();
+	      }
+	      if (lastOpenedId !== -1) {
+	        this.showOption(lastOpenedId);
 	      }
 	    }
 	  }, {
@@ -391,9 +451,18 @@ this.BX.Proj = this.BX.Proj || {};
 	      var _this = this;
 	      this.AdditiveContainer.innerHTML = '';
 	      var data = this.currentGeneratorWindow.saveAllData();
+	      for (var operator in data) {
+	        if (data[operator].Type === 'customEx') {
+	          data[operator].exerciseSettings = this.expressionList[data[operator].id].saveAllData();
+	        }
+	      }
+	      if (data === false) {
+	        this.previewContainer.innerHTML = "\u041E\u0448\u0438\u0431\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F: \u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438!";
+	        this.arePreviewGenerated = 0;
+	        return;
+	      }
 	      if (data.preview === '') {
 	        this.previewContainer.innerHTML = "<i>\u041D\u0435\u0447\u0435\u0433\u043E \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0430\u0442\u044C: \u0432\u044B \u043D\u0435 \u0432\u044B\u0431\u0440\u0430\u043B\u0438 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438!</i>";
-	        return;
 	      } else {
 	        this.previewContainer.innerHTML = "";
 	        BX.ajax.runAction('proj:independent.Generator.getData', {
@@ -420,6 +489,11 @@ this.BX.Proj = this.BX.Proj || {};
 	      var theme = document.getElementById('topicDropdown').innerText;
 	      var saveButton = document.getElementById("saveButton");
 	      var data = this.currentGeneratorWindow.saveAllData();
+	      if (data === false) {
+	        this.AdditiveContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F: \u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u0441\u043E\u0434\u0435\u0440\u0436\u0430\u0442 \u043E\u0448\u0438\u0431\u043A\u0438!</div>";
+	        this.arePreviewGenerated = 0;
+	        return;
+	      }
 	      data.mode = this.generatorWindowType;
 	      data.theme = theme;
 	      data.attempt = this.saveAttempt;
@@ -441,7 +515,6 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.AdditiveContainer.innerHTML = "<div style=\"color:darkorange;border:darkorange 1px solid; font-size: 125%;\">\u041F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u0435: \u0423 \u0432\u0430\u0441 \u0435\u0441\u0442\u044C \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F, \u043D\u0430\u0431\u0440\u0430\u043D\u043D\u0430\u044F \u0432 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0435 \u0437\u0430\u0434\u0430\u0447\u0438. \u041F\u043E\u0432\u0442\u043E\u0440\u043D\u043E\u0435 \u043D\u0430\u0436\u0430\u0442\u0438\u0435 \u043D\u0430 \u043A\u043D\u043E\u043F\u043A\u0443 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u0437\u0430\u0442\u0440\u0451\u0442 \u044D\u0442\u0443 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0443</div>";
 	      } else if (this.expressionInstruction.list.length === 1 || this.instructions.list.length === 0 || this.saveAttemptExercise === 1 || this.saveAttemptTask === 1) {
 	        saveButton.removeAttribute('onclick');
-	        this.AdditiveContainer.innerHTML = "\u0418\u0434\u0451\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u0435";
 	        BX.ajax.runAction('proj:independent.Generator.saveExercise', {
 	          data: {
 	            exercise: data

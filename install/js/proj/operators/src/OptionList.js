@@ -10,8 +10,18 @@ export class OptionList{
 	constructor()
 	{
 		this.list = [];
+		this.exercisesPreviewList = {};
 		this.addedInstructions = 0;
 		this.openedInstruction = -1;
+	}
+
+	checkIfExerciseEdited(id)
+	{
+		if (this.list[id].type === 'customEx' && this.exercisesPreviewList[id] !== '')
+		{
+			this.list[id].preview = this.exercisesPreviewList[id];
+		}
+		return false;
 	}
 	addInstruction(type, color)
 	{
@@ -38,6 +48,7 @@ export class OptionList{
 				break;
 			case 'customEx':
 				this.list.push(new ExerciseOption({id: this.addedInstructions, type: type, color: color}));
+				this.exercisesPreviewList[this.addedInstructions] = '';
 				this.addedInstructions += 1;
 				break;
 			default:
@@ -48,12 +59,33 @@ export class OptionList{
 	}
 	showOption(id, container)
 	{
+		this.checkIfExerciseEdited(id);
 		if (container.innerHTML === '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>')
 		{
 			this.openedInstruction = -1;
 		}
-		if (id === this.openedInstruction) return;
-		this.saveOpenedInstructionData();
+		if (id === this.openedInstruction)
+		{
+			this.saveOpenedInstructionData();
+			container.innerHTML = this.list[id].showOption();
+			this.list[id].registerEvents();
+			this.list[id].postUpdate();
+			if (this.saveOpenedInstructionData())
+			{
+				container.style.borderColor = "#dee2e6";
+				container.style.borderWidth = "1px";
+			}
+			return;
+		}
+		if (!this.saveOpenedInstructionData())
+		{
+			container.style.borderColor = "red";
+			container.style.borderWidth = "3px";
+			this.showOption(this.openedInstruction, container);
+			return;
+		}
+		container.style.borderColor = "#dee2e6";
+		container.style.borderWidth = "1px";
 		this.openedInstruction = id;
 		container.innerHTML = this.list[id].showOption();
 		this.list[id].registerEvents();
@@ -63,18 +95,35 @@ export class OptionList{
 	{
 		if (this.openedInstruction !==-1)
 		{
-			this.list[this.openedInstruction].save();
+			return this.list[this.openedInstruction].save();
 		}
+		return true;
 	}
 
 	saveAllData()
 	{
-
+		if(!this.saveOpenedInstructionData())
+		{
+			return false;
+		}
+		let symbolicExpression = [];
+		let generatorInstruction = [];
+		this.list.forEach(option => {
+			symbolicExpression.push(`${option.type}`);
+			generatorInstruction.push(option.getGeneratorData());
+		});
+		symbolicExpression = symbolicExpression.join('->');
+		generatorInstruction.preview = symbolicExpression;
+		return generatorInstruction;
 	}
 	deleteLastInstruction(container = undefined)
 	{
 		if (this.addedInstructions > 0)
 		{
+			if (this.list[this.addedInstructions].Type === 'customEx')
+			{
+				delete(this.exercisesPreviewList[this.addedInstructions]);
+			}
 			this.list.pop();
 			this.addedInstructions -= 1;
 		}
