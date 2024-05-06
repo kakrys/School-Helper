@@ -24,8 +24,7 @@ class Exercises extends CBitrixComponent
 			{
 				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "-------\n", FILE_APPEND);
 				$exerciseManager = unserialize(gzuncompress($exercise['EXERCISE_GENERATOR_RULES']));
-				$exerciseManager->constructExercise($generatorCode);
-				$exercise['EXERCISE_CONDITION'] = $exerciseManager->renderExercise;
+				$exercise['EXERCISE_CONDITION'] = $exerciseManager->constructExercise($generatorCode);
 				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "ВОТ МЫ НАДЕЛАЛИ ДЕЛОВ".$exercise['EXERCISE_CONDITION']."\n", FILE_APPEND);
 				$exercise['ANSWER'] = $exerciseManager->solve();
 				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "А такой типа ответ".print_r($exerciseManager->solve(), true)."\n", FILE_APPEND);

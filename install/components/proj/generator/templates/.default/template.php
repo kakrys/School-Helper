@@ -49,12 +49,12 @@ $jsonData = json_encode($arResult['CST_DATA']);
 				</div>
 			</div>
 			<div class="d-flex flex-column" style="width: 50%; max-height:100%;">
-				<div id="parametersContainer" class="border bg-light d-flex flex-column align-items-start" style="margin: 1% 1% 0 0;padding: 1%; flex-wrap: nowrap; overflow-y: auto; align-content: flex-start; max-height:45vh;"><i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i></div>
+				<div id="parametersContainer" class="bg-light d-flex flex-column align-items-start" style="margin: 1% 1% 0 0;padding: 1%; flex-wrap: nowrap; overflow-y: auto; align-content: flex-start; max-height:45vh; border: 1px solid #dee2e6;"><i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i></div>
 				<div style="margin: 1%;">
 					<a class="btn btn-primary" style="margin 1%;" role="button" onclick="generator.generatePreview()">Сгенерировать предпросмотр!</a>
 				</div>
-				<div class="border bg-light d-flex flex-column" style="margin: 1% 1% 0 0; min-height:45%; max-height:45%; word-break: break-word;">
-					<div class="d-flex" id="previewContainer">
+				<div class="border bg-light d-flex flex-column justify-content-center" style="margin: 1% 1% 0 0; min-height:45%; max-height:45%; word-break: break-word;">
+					<div class="d-flex justify-content-center align-items-center align-content-center align-self-center" id="previewContainer">
 						Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!
 					</div>
 					<div id="AdditiveContainer">

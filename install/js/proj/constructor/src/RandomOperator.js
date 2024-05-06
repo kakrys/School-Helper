@@ -1,4 +1,6 @@
 import {Operator} from "./Operator";
+import {Validator as V} from "proj.operators";
+const Validator = BX.Proj.Independent.Validator;
 
 export class RandomOperator extends Operator {
 	constructor(options = {}) {
@@ -9,6 +11,11 @@ export class RandomOperator extends Operator {
 		this.ExcludeStyle = ['', 'false', '', '',];
 		this.accessibleOperators = ['+', '-', '*', '/', ':', 'root', 'N', '^'];
 		this.additionalOperators = ['+', '-', '*', ':'];
+		this.errors = {
+			OperatorBlackList: false,
+			StandartSymbol: false,
+		};
+		this.errorRender = ['', ''];
 	}
 
 	save() {
@@ -30,16 +37,9 @@ export class RandomOperator extends Operator {
 				}
 				exclude = exclude.split(',');
 				exclude = [... new Set(exclude)];
-				for (let i = 0; i < exclude.length; i++)
-				{
-					if (!this.accessibleOperators.includes(`${exclude[i]}`))
-					{
-						this.Exclude = [];
-						return;
-					}
-				}
 				this.Exclude = exclude;
 				this.parameters.OperatorsExclude = exclude;
+				this.errors['OperatorBlackList'] = Validator.regExpMatch(this.Exclude.join(),/(-|\+|\*|\/|:|root|\^|N)+/,'Только символы операторов')
 			}
 			else
 			{
@@ -51,11 +51,10 @@ export class RandomOperator extends Operator {
 		{
 			this.parameters.OperatorsExclude = ['none'];
 		}
-		if (this.additionalOperators.includes(standartOperator.value))
-		{
-			this.parameters.StandartSymbol = standartOperator.value;
-		}
+		this.parameters.StandartSymbol = standartOperator.value;
+		this.errors['StandartSymbol'] = Validator.regExpMatch(this.parameters.StandartSymbol,/^[-+*:]$/, 'Только одиночный символ из: +,-,*,:');
 		this.unregisterEvents();
+		return this.errorHandler();
 	}
 
 	postUpdate() {
@@ -122,6 +121,7 @@ export class RandomOperator extends Operator {
 									<div class="d-flex">
 										<input class="form-control" id="textArea_${this.id}" placeholder="Перечислите через запятую">
 									</div>
+									<span style="color:orangered">${this.errorRender[0]}</span>
 									<span>
 										Доступные операнды:
 									</span>
@@ -144,6 +144,7 @@ export class RandomOperator extends Operator {
 					<div class="d-flex flex-column">
 						<label>Укажите стандартный символ для операторов степени и корня (этот символ применится слева от корня или справа от степени в зависимости от того, какой оператор попадётся)</label>
 						<input class="form-control" id="textArea_${this.id}_2" placeholder="Допустимые операторы: +, -, *, :">
+						<span style="color:orangered">${this.errorRender[1]}</span>
 						<span>Стандартно берётся сложение</span>
 					</div>
 				</div>`

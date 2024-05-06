@@ -4,7 +4,7 @@ export class ExerciseOption extends Option{
 	constructor(options = {})
 	{
 		super(options);
-		this.text = '';
+		this.preview = '';
 	}
 	showOption()
 	{
@@ -13,41 +13,23 @@ export class ExerciseOption extends Option{
 		<p>
 			Настроить это выражение
 		</p>
-		<div class="col d-flex justify-content-center" style="padding: 1%;">
+		<div class="col d-flex justify-content-center" style="padding: 1%; width: 95%;">
 			<a class="btn btn-secondary" onclick="generator.openExerciseMenu(${this.id})" style="width: 100%; margin: 1%;">Редактировать выражение</a>
-		</div>
-		<p>Подбор ответа</p>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="true" id="RadioAnswer" data-bs-toggle="collapse" href="#AnswerCollapse" role="button" aria-expanded="false" aria-controls="AnswerCollapse">
-			<label class="form-check-label" for="RadioAnswer">
-				Указать ответ вручную 
-			</label>
-		</div>
-		<div class="collapse" id="AnswerCollapse" style="width:100%;">
-			<input class="form-control" id="textArea_${this.id}_3" placeholder="Значение">
-		</div>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" name="RadioAnswer" id="RadioAnswer2" checked>
-			<label class="form-check-label" for="RadioAnswer2">
-				Попытаться сгенерировать ответ автоматически (в случае неудачи решение и ответ не будут доступны)
-			</label>
-		</div>
-		<a>Если выбраны оба варианта подбора ответа - приоритет отдаётся автоматическому подбору.</a>`;
-		return html;
-	}
-	save()
-	{
-		this.textElement = document.getElementById(`textArea_${this.id}`);
-		let self = this;
-		if (this.textElement !== null)
+		</div>`;
+		if (this.preview !== '')
 		{
-			this.textElement.addEventListener('input', function() {
-				if (self.textElement.value !== null)
-				{
-					self.text = self.textElement.value;
-				}
-			});
-			this.textElement.removeEventListener('input', function(){});
+			html += `
+		<p>Это выражение ранее редактировалось</p>
+		<a>Схема набранной инструкции:</a>
+		<a>${this.preview}</a>`
 		}
+		else
+		{
+			html += `<a><i>Это выражение ранее не редактировалось</i></a>
+					<a>Настройте, чтобы увидеть схему выражения</a>`
+		}
+		html +=`<p>Подбор ответа</p>
+		<a>Внимание: подбор ответа для генерируемого выражения происходит в автоматическом режиме!</a>`;
+		return html;
 	}
 }

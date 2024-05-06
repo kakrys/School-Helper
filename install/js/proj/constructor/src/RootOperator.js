@@ -1,4 +1,6 @@
 import {Operator} from "./Operator";
+import {Validator as V} from "proj.operators";
+const Validator = BX.Proj.Independent.Validator;
 
 export class RootOperator extends Operator{
 	constructor(options = {}) {
@@ -6,6 +8,10 @@ export class RootOperator extends Operator{
 		this.RootStyle = ['collapsed', 'true', 'checked="true"', 'show', ''];
 		this.parameters.RootType = ['Precision', 2];
 		this.RootExp = 2;
+		this.errors = {
+			RootExp: false,
+		};
+		this.errorRender = [''];
 	}
 	save()
 	{
@@ -43,7 +49,13 @@ export class RootOperator extends Operator{
 				this.parameters.RootType = [buttonWithText.getAttribute('value'), 2];
 			}
 		}
+		this.errors['RootExp'] = Validator.isInteger(this.RootExp);
+		if (this.errors['RootExp'] === false)
+		{
+			this.errors['RootExp'] = Validator.numberBetween(this.RootExp,0,10);
+		}
 		this.unregisterEvents();
+		return this.errorHandler();
 	}
 	postUpdate()
 	{
@@ -98,6 +110,7 @@ export class RootOperator extends Operator{
 									<div class="d-flex">
 										<input class="form-control" id="textArea_${this.id}" placeholder="Формат: 0<'целое число'<10">
 									</div>
+									<span style="color:orangered">${this.errorRender[0]}</span>
 								</div>
 							</div>
 						</div>
