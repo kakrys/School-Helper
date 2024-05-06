@@ -166,6 +166,7 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.parameters.DivStyle = 'Non-fraction-style';
 	      }
 	      this.unregisterEvents();
+	      return true;
 	    }
 	  }, {
 	    key: "registerEvents",

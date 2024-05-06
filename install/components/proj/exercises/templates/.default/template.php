@@ -36,10 +36,7 @@ global $USER;
 				<?php $count++;?>
 				<?php endforeach;?>
 			</div>
-			<p>
-				Отправить на проверку
-			</p>
-			<button class="btn btn-link" type="submit">Отправить</button>
+			<button class="btn btn-link" type="submit" style="font-size:20px;">Отправить на проверку</button>
 			</form>
 		</div>
 	</div>
