@@ -1,4 +1,5 @@
 import {Option} from "./Option";
+import {Validator} from "./Validator";
 
 export class RandNumberOption extends Option{
 	constructor(options = {})
@@ -9,6 +10,8 @@ export class RandNumberOption extends Option{
 		this.MaxNumber = 100;
 		this.Exclude = [];
 		this.parameters = {
+			id: this.id,
+			Type: this.type,
 			MinNumber : 1,
 			MaxNumber : 100,
 			Exclude : [],
@@ -19,7 +22,14 @@ export class RandNumberOption extends Option{
 			integer: 'true',
 			Combination: 'false',
 		};
+		this.errors = {
+			minNumber: false,
+			maxNumber: false,
+			Exclude: false,
+			FloatDigits: false,
+		};
 		this.viewParameters = [['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''],['collapsed', 'false', '', ''], 'checked="true"', ''];
+		this.errorRender = ['', '', '', ''];
 
 		this.FractionType = ['','','','checked="true"'];
 		this.FractionNumber = ['','','checked="true"'];
@@ -27,6 +37,7 @@ export class RandNumberOption extends Option{
 		this.RootType = ['','','checked="true"'];
 		this.AbsoluteModule = ['','','checked="true"'];
 	}
+
 	save()
 	{
 		this.minNumberContainer = document.querySelector(`[id^="textArea_${this.id}_1"]`);
@@ -35,7 +46,14 @@ export class RandNumberOption extends Option{
 		this.floatCountContainer = document.querySelector(`[id^="textArea_${this.id}_4"]`);
 		let minNumber = this.minNumberContainer.value;
 		let maxNumber = this.maxNumberContainer.value;
-		if (Number(minNumber) > Number(maxNumber))
+		this.errors['minNumber'] = Validator.numberBetween(minNumber, -1000000, 1000000);
+		this.errors['maxNumber'] = Validator.numberBetween(maxNumber, -1000000, 1000000);
+		let workString = this.excludeNumberContainer.value.replace(/\s/g, '');
+		if (workString !=='')
+		{
+			this.errors['Exclude'] = Validator.regExpMatch(workString,/^\d+(\.\d+)?(,\d+(\.\d+)?)*$/,'[только числа и запятые с пробелами]');
+		}
+		if (!Validator.isNumeric(minNumber) && !Validator.isNumeric(maxNumber) && Number(minNumber) > Number(maxNumber))
 		{
 			[minNumber, maxNumber] = [maxNumber, minNumber]
 		}
@@ -94,7 +112,7 @@ export class RandNumberOption extends Option{
 
 			if(element.getAttribute('aria-controls') === "FloatCollapse")
 			{
-				if (this.floatCountContainer.value !== null)
+				if (this.floatCountContainer.value !== null && this.floatCountContainer.value !== '0')
 				{
 					this.parameters.FloatDigits = ['true', this.floatCountContainer.value];
 				}
@@ -138,7 +156,13 @@ export class RandNumberOption extends Option{
 		{
 			this.parameters.Combination = 'false';
 		}
+		this.errors['FloatDigits'] = Validator.numberBetween(this.parameters.FloatDigits[1],0,6)
+		if (!Validator.isInteger(this.parameters.FloatDigits[1]))
+		{
+			this.errors['FloatDigits'] = Validator.isInteger(this.parameters.FloatDigits[1]);
+		}
 		this.unregisterEvents();
+		return this.errorHandler();
 	}
 	updateParameters()
 	{
@@ -215,9 +239,15 @@ export class RandNumberOption extends Option{
 		<div class="d-flex flex-column col-12">
 			<label>Указать диапазон генерации. <i>По умолчанию от 1 до 100.</i></label>
 			<span>Укажите одинаковые значения, чтобы получить конкретное число</span>
-			<div class="d-flex">
-				<input class="form-control" id="textArea_${this.id}_1" placeholder="Мин.Значение (не меньше -2147483647)">
-				<input class="form-control" id="textArea_${this.id}_2" placeholder="Макс.Значение (не больше 2147483647)">
+			<div class="d-flex col-12">
+				<div class="d-flex flex-column col-6">
+					<input class="form-control" id="textArea_${this.id}_1" placeholder="Мин.Значение (не меньше -1000000)">
+					<span style="color:orangered">${this.errorRender[0]}</span>
+				</div>
+				<div class="d-flex flex-column col-6">
+					<input class="form-control" id="textArea_${this.id}_2" placeholder="Макс.Значение (не больше 1000000)">
+					<span style="color:orangered">${this.errorRender[1]}</span>
+				</div>
 			</div>
 		</div>
 		<div class="d-flex flex-column col-12">
@@ -225,6 +255,7 @@ export class RandNumberOption extends Option{
 			<div class="d-flex">
 				<input class="form-control" id="textArea_${this.id}_3" placeholder="Перечислите через запятую">
 			</div>
+			<span style="color:orangered">${this.errorRender[2]}</span>
 			<i>Исключение работает для целых чисел, отрицательных чисел и десятичных дробей</i>
 		</div>
 		<a><i>По умолчанию генерируются положительные целые числа и дроби без исключённых значений и без корней</i></a>
@@ -328,8 +359,9 @@ export class RandNumberOption extends Option{
 					<a>Укажите количество знаков за запятой (Знаков за запятой будет меньше или равно выбранному количеству)</a>
 					<div class="d-flex flex-column col-12">
 						<div class="d-flex">
-							<input class="form-control" id="textArea_${this.id}_4" placeholder="Формат: 0<'целое число'<10">
+							<input class="form-control" id="textArea_${this.id}_4" placeholder="Формат: 0<'целое число'<6">
 						</div>
+						<span style="color:orangered">${this.errorRender[3]}</span>
 					</div>
 				</div>
 			</div>
