@@ -14,7 +14,7 @@ export class RandNumberOperator extends RandNumberOption{
 			this.textView = '[X]';
 		}
 		this.parameters.id = this.id;
-		this.parameters.Type = this.type;
+		this.parameters.Type = this.Type;
 		this.isOperator = false;
 		this.isDelitable = true;
 		this.isPair = false;

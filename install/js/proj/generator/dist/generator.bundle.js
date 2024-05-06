@@ -239,6 +239,8 @@ this.BX.Proj = this.BX.Proj || {};
 	      if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
 	        this.showOption(this.currentGeneratorWindow.openedInstruction);
 	        if (!this.currentGeneratorWindow.saveOpenedInstructionData()) {
+	          this.parametersContainer.style.borderColor = "red";
+	          this.parametersContainer.style.borderWidth = "3px";
 	          this.showOption(this.currentGeneratorWindow.openedInstruction);
 	          this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438</div>";
 	          return;
@@ -261,6 +263,8 @@ this.BX.Proj = this.BX.Proj || {};
 	      if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
 	        this.showOption(this.currentGeneratorWindow.openedInstruction);
 	        if (!this.currentGeneratorWindow.saveOpenedInstructionData()) {
+	          this.parametersContainer.style.borderColor = "red";
+	          this.parametersContainer.style.borderWidth = "3px";
 	          this.showOption(this.currentGeneratorWindow.openedInstruction);
 	          this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438</div>";
 	          return;
@@ -284,6 +288,8 @@ this.BX.Proj = this.BX.Proj || {};
 	      if (this.parametersContainer.innerHTML !== '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
 	        this.showOption(this.currentGeneratorWindow.openedInstruction);
 	        if (!this.currentGeneratorWindow.saveOpenedInstructionData()) {
+	          this.parametersContainer.style.borderColor = "red";
+	          this.parametersContainer.style.borderWidth = "3px";
 	          this.showOption(this.currentGeneratorWindow.openedInstruction);
 	          this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438</div>";
 	          return;
@@ -380,6 +386,8 @@ this.BX.Proj = this.BX.Proj || {};
 	      this.AdditiveContainer.innerHTML = "";
 	      this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 	      this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+	      this.parametersContainer.style.borderColor = "#dee2e6";
+	      this.parametersContainer.style.borderWidth = "1px";
 	      if (id === undefined) {
 	        if (this.generatorWindowType === 'exercise') {
 	          this.expressionInstruction = new OperatorList();
@@ -401,10 +409,12 @@ this.BX.Proj = this.BX.Proj || {};
 	      this.AdditiveContainer.innerHTML = "";
 	      if (this.currentGeneratorWindow.addedInstructions > 0) {
 	        if (this.currentGeneratorWindow.openedInstruction === this.currentGeneratorWindow.addedInstructions - 1) {
+	          this.parametersContainer.style.borderColor = "#dee2e6";
+	          this.parametersContainer.style.borderWidth = "1px";
 	          this.currentGeneratorWindow.openedInstruction = -1;
 	          this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
 	        }
-	        if (this.currentGeneratorWindow.list[this.currentGeneratorWindow.addedInstructions - 1].type === 'customEx') {
+	        if (this.currentGeneratorWindow.list[this.currentGeneratorWindow.addedInstructions - 1].Type === 'customEx') {
 	          this.expressionList[this.currentGeneratorWindow.addedInstructions - 1] = undefined;
 	        }
 	        this.currentGeneratorWindow.deleteLastInstruction(this.parametersContainer);
@@ -422,7 +432,7 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.currentGeneratorWindow = this.expressionList[id];
 	      }
 	      this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
-	      this.renderInstructions(this.parametersContainer);
+	      this.renderInstructions();
 	    }
 	  }, {
 	    key: "movePointer",
@@ -449,7 +459,10 @@ this.BX.Proj = this.BX.Proj || {};
 	    key: "generatePreview",
 	    value: function generatePreview() {
 	      var _this = this;
+	      this.parametersContainer.style.borderColor = "#dee2e6";
+	      this.parametersContainer.style.borderWidth = "1px";
 	      this.AdditiveContainer.innerHTML = '';
+	      this.previewContainer.innerHTML = '';
 	      var data = this.currentGeneratorWindow.saveAllData();
 	      for (var operator in data) {
 	        if (data[operator].Type === 'customEx') {
@@ -457,10 +470,14 @@ this.BX.Proj = this.BX.Proj || {};
 	        }
 	      }
 	      if (data === false) {
-	        this.previewContainer.innerHTML = "\u041E\u0448\u0438\u0431\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F: \u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438!";
+	        this.parametersContainer.style.borderColor = "red";
+	        this.parametersContainer.style.borderWidth = "3px";
+	        this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041E\u0448\u0438\u0431\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F: \u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u043E\u0448\u0438\u0431\u043A\u0438!</div>";
 	        this.arePreviewGenerated = 0;
+	        this.currentGeneratorWindow.showOption(this.currentGeneratorWindow.openedInstruction, this.parametersContainer);
 	        return;
 	      }
+	      this.currentGeneratorWindow.showOption(this.currentGeneratorWindow.openedInstruction, this.parametersContainer);
 	      if (data.preview === '') {
 	        this.previewContainer.innerHTML = "<i>\u041D\u0435\u0447\u0435\u0433\u043E \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0430\u0442\u044C: \u0432\u044B \u043D\u0435 \u0432\u044B\u0431\u0440\u0430\u043B\u0438 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438!</i>";
 	      } else {

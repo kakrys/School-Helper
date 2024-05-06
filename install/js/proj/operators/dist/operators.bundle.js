@@ -12,7 +12,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    this.parameters.id = options.id;
 	    this.parameters.Type = options.type;
 	    this.id = options.id;
-	    this.type = options.type;
+	    this.Type = options.type;
 	    this.color = options.color;
 	    this.areEventsRegistered = 0;
 	    this.errors = {};
@@ -229,7 +229,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    _this.Exclude = [];
 	    _this.parameters = {
 	      id: _this.id,
-	      Type: _this.type,
+	      Type: _this.Type,
 	      MinNumber: 1,
 	      MaxNumber: 100,
 	      Exclude: [],
@@ -278,7 +278,7 @@ this.BX.Proj = this.BX.Proj || {};
 	      }
 	      this.parameters = {
 	        id: this.id,
-	        Type: this.type,
+	        Type: this.Type,
 	        MinNumber: minNumber,
 	        MaxNumber: maxNumber,
 	        Exclude: this.excludeNumberContainer.value.split(/[,\s]+/),
@@ -1031,7 +1031,7 @@ this.BX.Proj = this.BX.Proj || {};
 	  babelHelpers.createClass(OptionList, [{
 	    key: "checkIfExerciseEdited",
 	    value: function checkIfExerciseEdited(id) {
-	      if (this.list[id].type === 'customEx' && this.exercisesPreviewList[id] !== '') {
+	      if (this.list[id].Type === 'customEx' && this.exercisesPreviewList[id] !== '') {
 	        this.list[id].preview = this.exercisesPreviewList[id];
 	      }
 	      return false;
@@ -1147,7 +1147,7 @@ this.BX.Proj = this.BX.Proj || {};
 	      var symbolicExpression = [];
 	      var generatorInstruction = [];
 	      this.list.forEach(function (option) {
-	        symbolicExpression.push("".concat(option.type));
+	        symbolicExpression.push("".concat(option.Type));
 	        generatorInstruction.push(option.getGeneratorData());
 	      });
 	      symbolicExpression = symbolicExpression.join('->');
@@ -1158,8 +1158,8 @@ this.BX.Proj = this.BX.Proj || {};
 	    key: "deleteLastInstruction",
 	    value: function deleteLastInstruction() {
 	      if (this.addedInstructions > 0) {
-	        if (this.list[this.addedInstructions].Type === 'customEx') {
-	          delete this.exercisesPreviewList[this.addedInstructions];
+	        if (this.list[this.addedInstructions - 1].Type === 'customEx') {
+	          delete this.exercisesPreviewList[this.addedInstructions - 1];
 	        }
 	        this.list.pop();
 	        this.addedInstructions -= 1;
