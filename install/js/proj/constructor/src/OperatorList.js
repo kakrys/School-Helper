@@ -23,6 +23,7 @@ export class OperatorList extends OptionList{
 		this.addedInstructions = 1;
 		this.idCounter = 0;
 		this.pointerPosition = 0;
+		this.arePreviewGenerated = false;
 	}
 
 	checkPointerPosition(newOperator)
@@ -156,6 +157,13 @@ export class OperatorList extends OptionList{
 	}
 	showOption(id, container)
 	{
+		if (id===-1)
+		{
+			container.innerHTML === '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+			container.style.borderColor = "#dee2e6";
+			container.style.borderWidth = "1px";
+			return;
+		}
 		if (container.innerHTML === '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>')
 		{
 			this.openedInstruction = -1;

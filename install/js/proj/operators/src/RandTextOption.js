@@ -8,6 +8,7 @@ export class RandTextOption extends Option{
 		this.text = '';
 		this.inputCounter = 0;
 		this.parameters.areWeightUnlocked = false;
+		this.parameters.phrases = [];
 		this.innerContainer = [];
 		this.errorRender = [];
 		this.errors = [];
@@ -15,7 +16,7 @@ export class RandTextOption extends Option{
 	postUpdate()
 	{
 		let inputs = document.querySelectorAll(`[id^="form_${this.id}_"]`);
-		inputs.forEach(element =>{
+		inputs.forEach(element => {
 			element.querySelector(`[id^="textArea_${this.id}_1_"]`).value = this.innerContainer[element.id][0];
 			element.querySelector(`[id^="textArea_${this.id}_2_"]`).value = this.innerContainer[element.id][1];
 		});

@@ -17,7 +17,7 @@ export class OptionList{
 
 	checkIfExerciseEdited(id)
 	{
-		if (this.list[id].Type === 'customEx' && this.exercisesPreviewList[id] !== '')
+		if (this.list[id].Type === 'customEx')
 		{
 			this.list[id].preview = this.exercisesPreviewList[id];
 		}
@@ -59,11 +59,18 @@ export class OptionList{
 	}
 	showOption(id, container)
 	{
-		this.checkIfExerciseEdited(id);
+		if (id===-1)
+		{
+			container.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+			container.style.borderColor = "#dee2e6";
+			container.style.borderWidth = "1px";
+			return;
+		}
 		if (container.innerHTML === '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>')
 		{
 			this.openedInstruction = -1;
 		}
+		this.checkIfExerciseEdited(id);
 		if (id === this.openedInstruction)
 		{
 			this.saveOpenedInstructionData();

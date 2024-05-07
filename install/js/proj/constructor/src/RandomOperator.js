@@ -27,19 +27,24 @@ export class RandomOperator extends Operator {
 			if (excludeArea.value !== null && excludeArea.value !== '')
 			{
 				let exclude = excludeArea.value.replace(/\s+/g, '');
-				if (exclude.includes(':') && exclude.includes('/'))
+				exclude = exclude.replace(/,*/g, ',');
+				if (exclude.includes(':') || exclude.includes('/'))
 				{
 					exclude = exclude.replace(/\//g, ':');
 				}
-				if (exclude.includes('N') && exclude.includes('root'))
+				if (exclude.includes('N') || exclude.includes('root'))
 				{
 					exclude = exclude.replace(/root/g, 'N');
 				}
 				exclude = exclude.split(',');
+				if (exclude[exclude.length-1]=== '')
+				{
+					exclude.pop();
+				}
 				exclude = [... new Set(exclude)];
 				this.Exclude = exclude;
 				this.parameters.OperatorsExclude = exclude;
-				this.errors['OperatorBlackList'] = Validator.regExpMatch(this.Exclude.join(),/(-|\+|\*|\/|:|root|\^|N)+/,'Только символы операторов')
+				this.errors['OperatorBlackList'] = Validator.regExpMatch(this.Exclude.join(''),/^[-+*:^N?]+$/,'Только символы операторов')
 			}
 			else
 			{

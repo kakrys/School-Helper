@@ -64,7 +64,7 @@ class AdminComponent extends CBitrixComponent
 		$subjectName = $data['SUBJECT_NAME'];
 		$subjectName = ucfirst(mb_convert_case($subjectName,MB_CASE_LOWER));
 		$classID = $data['CLASS_ID'];
-		if ($subjectName!=='' && check_bitrix_sessid())
+		if ($subjectName!=='' && check_bitrix_sessid() && mb_strlen($subjectName)<400)
 		{
 			$pattern = '/[а-яёА-ЯЁa-zA-Z]+\s*[а-яёА-ЯЁa-zA-Z]+/u';
 			preg_match($pattern, $subjectName, $matches);

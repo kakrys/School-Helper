@@ -8,6 +8,7 @@ export class CheckOption extends Option {
 		this.text = '';
 		this.parameters.correctAnswers = 1;
 		this.parameters.usedPhrases = 4;
+		this.parameters.phrases = [];
 		this.inputCounter = 0;
 		this.innerContainer = [];
 		this.errorRender = [];

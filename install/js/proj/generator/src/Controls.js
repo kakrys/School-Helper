@@ -34,7 +34,7 @@ export class Controls
 				<a class="btn btn-secondary" onclick="generator.changeExpressionType()" style="width: 100%; margin: 1%; background:lightcoral;">Смена режима</a>
 			</div>
 			<div class="col d-flex justify-content-center" style="padding: 1%;">
-				<a class="btn btn-secondary" onclick="generator.addInstruction('Answer' , 'lightsalmon')" style="width: 100%; margin: 1%;">Генерация ответа</a>
+				<a class="btn btn-secondary" onclick="" style="width: 100%; margin: 1%;" disabled>Генерация ответа</a>
 			</div>
 		</div>`;
 	}
