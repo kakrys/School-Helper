@@ -232,17 +232,21 @@ this.BX.Proj = this.BX.Proj || {};
 	      if (excludeButton.getAttribute('checked') === 'true') {
 	        if (excludeArea.value !== null && excludeArea.value !== '') {
 	          var exclude = excludeArea.value.replace(/\s+/g, '');
-	          if (exclude.includes(':') && exclude.includes('/')) {
+	          exclude = exclude.replace(/,*/g, ',');
+	          if (exclude.includes(':') || exclude.includes('/')) {
 	            exclude = exclude.replace(/\//g, ':');
 	          }
-	          if (exclude.includes('N') && exclude.includes('root')) {
+	          if (exclude.includes('N') || exclude.includes('root')) {
 	            exclude = exclude.replace(/root/g, 'N');
 	          }
 	          exclude = exclude.split(',');
+	          if (exclude[exclude.length - 1] === '') {
+	            exclude.pop();
+	          }
 	          exclude = babelHelpers.toConsumableArray(new Set(exclude));
 	          this.Exclude = exclude;
 	          this.parameters.OperatorsExclude = exclude;
-	          this.errors['OperatorBlackList'] = Validator.regExpMatch(this.Exclude.join(), /(-|\+|\*|\/|:|root|\^|N)+/, 'Только символы операторов');
+	          this.errors['OperatorBlackList'] = Validator.regExpMatch(this.Exclude.join(''), /^[-+*:^N?]+$/, 'Только символы операторов');
 	        } else {
 	          this.parameters.OperatorsExclude = ['none'];
 	          this.Exclude = [];
@@ -627,7 +631,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    key: "showOption",
 	    value: function showOption() {
 	      var html = babelHelpers.get(babelHelpers.getPrototypeOf(RandNumberOperator.prototype), "showOption", this).call(this);
-	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0437\u0430\u0434\u0430\u0442\u044C \u0432\u044B\u0431\u043E\u0440 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u0434\u043B\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u0431\u044A\u0435\u043A\u0442, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0432\u044B\u0447\u0438\u0441\u043B\u044F\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 (\u0447\u0438\u0441\u043B\u043E) \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u0442\u0430\u043A\u0438\u0445 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u043F\u0440\u043E\u0441\u0442\u0430\u0432\u0438\u0442 \u043C\u0435\u0436\u0434\u0443 \u043D\u0438\u043C\u0438 \u0437\u043D\u0430\u043A \u0443\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u044F!\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u041E\u0442\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u043E\u0432 \u0441\u043B\u0435\u0432\u0430 \u0438\u043B\u0438 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u044D\u0442\u043E\u0433\u043E \u044D\u0435\u043C\u0435\u043D\u0442\u0430 - \u043F\u043E\u0441\u0442\u0430\u0432\u0438\u0442 \u0432 \u0442\u043E\u043C \u043C\u0435\u0441\u0442\u0435 \u0437\u043D\u0430\u043A \u0443\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u044F!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
+	      html += "\n\t\t\t\t<div id=\"description_".concat(this.id, "\" class=\"d-flex flex-column\">\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043E\u043F\u0435\u0440\u0430\u0442\u043E\u0440\u0430 '").concat(this.optionName, "'\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E - \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0437\u0430\u0434\u0430\u0442\u044C \u0432\u044B\u0431\u043E\u0440 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u0434\u043B\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u042D\u0442\u043E - \u043E\u0431\u044A\u0435\u043A\u0442, \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u044E\u0449\u0438\u0439 \u0432\u044B\u0447\u0438\u0441\u043B\u044F\u0435\u043C\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 (\u0447\u0438\u0441\u043B\u043E) \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044E.\n\t\t\t\t\t</span>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0432\u043D\u0443\u0442\u0440\u0438 \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430\n\t\t\t\t\t</p>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E - \u043E\u0434\u0438\u043D\u043E\u0447\u043D\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442.\n\t\t\t\t\t</span>\n\t\t\t\t\t<span>\n\t\t\t\t\t\t\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435: \u0420\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435 \u0434\u0432\u0443\u0445 \u0442\u0430\u043A\u0438\u0445 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432 \u043F\u043E\u0434\u0440\u044F\u0434 - \u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u043F\u0440\u043E\u0441\u0442\u0430\u0432\u0438\u0442 \u043C\u0435\u0436\u0434\u0443 \u043D\u0438\u043C\u0438 \u0437\u043D\u0430\u043A \u0443\u043C\u043D\u043E\u0436\u0435\u043D\u0438\u044F!\n\t\t\t\t\t</span>\n\t\t\t\t</div>");
 	      return html;
 	    }
 	  }, {
@@ -738,6 +742,7 @@ this.BX.Proj = this.BX.Proj || {};
 	    _this.addedInstructions = 1;
 	    _this.idCounter = 0;
 	    _this.pointerPosition = 0;
+	    _this.arePreviewGenerated = false;
 	    return _this;
 	  }
 	  babelHelpers.createClass(OperatorList, [{
@@ -954,6 +959,12 @@ this.BX.Proj = this.BX.Proj || {};
 	    key: "showOption",
 	    value: function showOption(id, container) {
 	      var _this3 = this;
+	      if (id === -1) {
+	        container.innerHTML === '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
+	        container.style.borderColor = "#dee2e6";
+	        container.style.borderWidth = "1px";
+	        return;
+	      }
 	      if (container.innerHTML === '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>') {
 	        this.openedInstruction = -1;
 	      }
