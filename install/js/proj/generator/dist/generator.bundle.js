@@ -184,7 +184,7 @@ this.BX.Proj = this.BX.Proj || {};
 	  babelHelpers.createClass(Controls, null, [{
 	    key: "showTaskControls",
 	    value: function showTaskControls() {
-	      return "\n\t\t<div class=\"row row-cols-4\" style=\"width: 100%;\">\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('text', 'lightgreen')\" style=\"width: 100%; margin: 1%;\">\u0422\u0435\u043A\u0441\u0442</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('rand.Number' , 'lightblue')\" style=\"width: 100%; margin: 1%;\">\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('image' , 'lightcoral')\" style=\"width: 100%; margin: 1%;\">\u041A\u0430\u0440\u0442\u0438\u043D\u043A\u0430</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('rand.Text' , 'lightcyan')\" style=\"width: 100%; margin: 1%;\">\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u044B\u0439 \u0442\u0435\u043A\u0441\u0442</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('check' , 'lightsalmon')\" style=\"width: 100%; margin: 1%;\">\u0412\u044B\u0431\u043E\u0440 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u0430</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('customEx' , 'lightsalmon')\" style=\"width: 100%; margin: 1%;\">\u0412\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435</a>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row row-cols-4\" style=\"width: 100%;\">\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.deleteLastInstruction()\" style=\"width: 100%; margin: 1%;\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.clearInstructions()\" style=\"width: 100%; margin: 1%;\">\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u043F\u043E\u043B\u0435 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0439</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.changeExpressionType()\" style=\"width: 100%; margin: 1%; background:lightcoral;\">\u0421\u043C\u0435\u043D\u0430 \u0440\u0435\u0436\u0438\u043C\u0430</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('Answer' , 'lightsalmon')\" style=\"width: 100%; margin: 1%;\">\u0413\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043E\u0442\u0432\u0435\u0442\u0430</a>\n\t\t\t</div>\n\t\t</div>";
+	      return "\n\t\t<div class=\"row row-cols-4\" style=\"width: 100%;\">\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('text', 'lightgreen')\" style=\"width: 100%; margin: 1%;\">\u0422\u0435\u043A\u0441\u0442</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('rand.Number' , 'lightblue')\" style=\"width: 100%; margin: 1%;\">\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0435 \u0447\u0438\u0441\u043B\u043E</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('image' , 'lightcoral')\" style=\"width: 100%; margin: 1%;\">\u041A\u0430\u0440\u0442\u0438\u043D\u043A\u0430</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('rand.Text' , 'lightcyan')\" style=\"width: 100%; margin: 1%;\">\u0421\u043B\u0443\u0447\u0430\u0439\u043D\u044B\u0439 \u0442\u0435\u043A\u0441\u0442</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('check' , 'lightsalmon')\" style=\"width: 100%; margin: 1%;\">\u0412\u044B\u0431\u043E\u0440 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u0430</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.addInstruction('customEx' , 'lightsalmon')\" style=\"width: 100%; margin: 1%;\">\u0412\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u0435</a>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row row-cols-4\" style=\"width: 100%;\">\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.deleteLastInstruction()\" style=\"width: 100%; margin: 1%;\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.clearInstructions()\" style=\"width: 100%; margin: 1%;\">\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u043F\u043E\u043B\u0435 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0439</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"generator.changeExpressionType()\" style=\"width: 100%; margin: 1%; background:lightcoral;\">\u0421\u043C\u0435\u043D\u0430 \u0440\u0435\u0436\u0438\u043C\u0430</a>\n\t\t\t</div>\n\t\t\t<div class=\"col d-flex justify-content-center\" style=\"padding: 1%;\">\n\t\t\t\t<a class=\"btn btn-secondary\" onclick=\"\" style=\"width: 100%; margin: 1%;\" disabled>\u0413\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043E\u0442\u0432\u0435\u0442\u0430</a>\n\t\t\t</div>\n\t\t</div>";
 	    }
 	  }, {
 	    key: "showExerciseControls",
@@ -247,13 +247,20 @@ this.BX.Proj = this.BX.Proj || {};
 	        }
 	      }
 	      var data = this.expressionList[this.instructions.openedInstruction].saveAllData();
+	      data.arePreviewGenerated = this.expressionList[this.instructions.openedInstruction].arePreviewGenerated;
+	      if (Object.keys(data).length !== 2 && !data.arePreviewGenerated) {
+	        this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041D\u0435\u043B\u044C\u0437\u044F \u0441\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0433\u0435\u043D\u0435\u0440\u0430\u0442\u043E\u0440\u0430, \u043F\u043E\u043A\u0430 \u043D\u0435 \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u043E\u0432\u0430\u043B\u0441\u044F \u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u043F\u0440\u0435\u0434\u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440</div>";
+	        return;
+	      }
 	      this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 	      document.getElementById('ExpressionType').innerHTML = 'задача';
 	      this.generatorWindowType = 'task';
 	      if (data.preview !== '') {
 	        this.instructions.exercisesPreviewList[this.instructions.openedInstruction] = data.preview;
 	      }
+	      this.currentGeneratorWindow.openedInstruction = -1;
 	      this.currentGeneratorWindow = this.instructions;
+	      this.currentGeneratorWindow.exercisesPreviewList[this.currentGeneratorWindow.openedInstruction] = data.preview;
 	      this.controlsContainer.innerHTML = Controls.showTaskControls();
 	      this.renderInstructions(this.instructions.openedInstruction);
 	    }
@@ -377,12 +384,22 @@ this.BX.Proj = this.BX.Proj || {};
 	  }, {
 	    key: "addInstruction",
 	    value: function addInstruction(type, color) {
+	      if (this.currentGeneratorWindow.arePreviewGenerated) {
+	        this.previewContainer.innerHTML = 'Инструкция изменилась. Требует повторной генерации предпросмотра!';
+	      }
+	      this.currentGeneratorWindow.arePreviewGenerated = false;
+	      if (type === 'customEx') {
+	        if (this.expressionList[this.currentGeneratorWindow.addedInstructions] === undefined) {
+	          this.expressionList[this.currentGeneratorWindow.addedInstructions] = new OperatorList();
+	        }
+	      }
 	      this.currentGeneratorWindow.addInstruction(type, color);
 	      this.renderInstructions();
 	    }
 	  }, {
 	    key: "clearInstructions",
 	    value: function clearInstructions(id) {
+	      this.currentGeneratorWindow.arePreviewGenerated = false;
 	      this.AdditiveContainer.innerHTML = "";
 	      this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 	      this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
@@ -395,6 +412,7 @@ this.BX.Proj = this.BX.Proj || {};
 	        } else {
 	          this.instructions = new OptionList();
 	          this.currentGeneratorWindow = this.instructions;
+	          this.expressionList = Array.from([]);
 	        }
 	      } else {
 	        this.expressionList[id] = new OperatorList();
@@ -406,6 +424,10 @@ this.BX.Proj = this.BX.Proj || {};
 	  }, {
 	    key: "deleteLastInstruction",
 	    value: function deleteLastInstruction(id) {
+	      if (this.currentGeneratorWindow.arePreviewGenerated) {
+	        this.previewContainer.innerHTML = 'Инструкция изменилась. Требует повторной генерации предпросмотра!';
+	      }
+	      this.currentGeneratorWindow.arePreviewGenerated = false;
 	      this.AdditiveContainer.innerHTML = "";
 	      if (this.currentGeneratorWindow.addedInstructions > 0) {
 	        if (this.currentGeneratorWindow.openedInstruction === this.currentGeneratorWindow.addedInstructions - 1) {
@@ -467,6 +489,9 @@ this.BX.Proj = this.BX.Proj || {};
 	      for (var operator in data) {
 	        if (data[operator].Type === 'customEx') {
 	          data[operator].exerciseSettings = this.expressionList[data[operator].id].saveAllData();
+	          if (!this.expressionList[data[operator].id].arePreviewGenerated) {
+	            this.previewContainer.innerHTML = "<div style=\"color:red;border:red 1px solid; font-size: 125%;\">\u041E\u0448\u0438\u0431\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F: \u041D\u0435 \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u043E\u0432\u0430\u043B\u043E\u0441\u044C \u043F\u0440\u0435\u0432\u044C\u044E \u0434\u043B\u044F \u0432\u044B\u0440\u0430\u0436\u0435\u043D\u0438\u044F \u2116".concat(data[operator].id, "</div>");
+	          }
 	        }
 	      }
 	      if (data === false) {
@@ -490,8 +515,10 @@ this.BX.Proj = this.BX.Proj || {};
 	          _this.previewContainer.innerHTML = response.data;
 	          if (_this.previewContainer.innerHTML.includes('Ошибка')) {
 	            _this.arePreviewGenerated = 0;
+	            _this.currentGeneratorWindow.arePreviewGenerated = false;
 	          } else {
 	            _this.arePreviewGenerated = 1;
+	            _this.currentGeneratorWindow.arePreviewGenerated = true;
 	          }
 	        });
 	      }

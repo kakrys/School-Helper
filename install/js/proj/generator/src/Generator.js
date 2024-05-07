@@ -54,6 +54,12 @@ export class Generator {
 			}
 		}
 		let data = this.expressionList[this.instructions.openedInstruction].saveAllData();
+		data.arePreviewGenerated = this.expressionList[this.instructions.openedInstruction].arePreviewGenerated;
+		if (Object.keys(data).length !==2 && !data.arePreviewGenerated)
+		{
+			this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Нельзя сменить тип генератора, пока не генерировался рабочий предпросмотр</div>`;
+			return;
+		}
 		this.previewContainer.innerHTML = 'Нажмите кнопку генерации предпросмотра, чтобы посмотреть, как будет выглядеть ваше задание!';
 		document.getElementById('ExpressionType').innerHTML='задача';
 		this.generatorWindowType = 'task';
@@ -61,7 +67,9 @@ export class Generator {
 		{
 			this.instructions.exercisesPreviewList[this.instructions.openedInstruction] = data.preview;
 		}
+		this.currentGeneratorWindow.openedInstruction = -1;
 		this.currentGeneratorWindow = this.instructions;
+		this.currentGeneratorWindow.exercisesPreviewList[this.currentGeneratorWindow.openedInstruction] = data.preview;
 		this.controlsContainer.innerHTML = Controls.showTaskControls();
 		this.renderInstructions(this.instructions.openedInstruction);
 	}
@@ -190,11 +198,24 @@ export class Generator {
 	}
 	addInstruction(type, color)
 	{
+		if (this.currentGeneratorWindow.arePreviewGenerated)
+		{
+			this.previewContainer.innerHTML = 'Инструкция изменилась. Требует повторной генерации предпросмотра!';
+		}
+		this.currentGeneratorWindow.arePreviewGenerated = false;
+		if(type === 'customEx')
+		{
+			if (this.expressionList[this.currentGeneratorWindow.addedInstructions] === undefined)
+			{
+				this.expressionList[this.currentGeneratorWindow.addedInstructions] = new OperatorList();
+			}
+		}
 		this.currentGeneratorWindow.addInstruction(type, color);
 		this.renderInstructions();
 	}
 	clearInstructions(id)
 	{
+		this.currentGeneratorWindow.arePreviewGenerated = false;
 		this.AdditiveContainer.innerHTML = ``;
 		this.instructionsContainer.innerHTML = '<i>Пока тут пусто. Выберите элементы из управления ниже, чтобы начать писать инструкцию!</i>';
 		this.parametersContainer.innerHTML = '<i>Щёлкните на любой добавленный элемент в поле инструкции генератора, чтобы изменить его свойства!</i>';
@@ -211,6 +232,7 @@ export class Generator {
 			{
 				this.instructions = new OptionList();
 				this.currentGeneratorWindow = this.instructions;
+				this.expressionList = Array.from([]);
 			}
 		}
 		else
@@ -224,6 +246,11 @@ export class Generator {
 	}
 	deleteLastInstruction(id)
 	{
+		if (this.currentGeneratorWindow.arePreviewGenerated)
+		{
+			this.previewContainer.innerHTML = 'Инструкция изменилась. Требует повторной генерации предпросмотра!';
+		}
+		this.currentGeneratorWindow.arePreviewGenerated = false;
 		this.AdditiveContainer.innerHTML = ``;
 		if (this.currentGeneratorWindow.addedInstructions > 0)
 		{
@@ -299,6 +326,10 @@ export class Generator {
 			if (data[operator].Type === 'customEx')
 			{
 				data[operator].exerciseSettings = this.expressionList[data[operator].id].saveAllData();
+				if (!this.expressionList[data[operator].id].arePreviewGenerated)
+				{
+					this.previewContainer.innerHTML = `<div style="color:red;border:red 1px solid; font-size: 125%;">Ошибка отображения: Не генерировалось превью для выражения №${data[operator].id}</div>`;
+				}
 			}
 		}
 		if (data === false)
@@ -329,10 +360,12 @@ export class Generator {
 					if (this.previewContainer.innerHTML.includes('Ошибка'))
 					{
 						this.arePreviewGenerated = 0;
+						this.currentGeneratorWindow.arePreviewGenerated = false;
 					}
 					else
 					{
 						this.arePreviewGenerated = 1;
+						this.currentGeneratorWindow.arePreviewGenerated = true;
 					}
 				});
 		}
