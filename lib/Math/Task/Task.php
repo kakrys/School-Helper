@@ -74,7 +74,7 @@ class Task
 						{
 							$phrases[] = $text;
 						}
-						$contentForRender[] = ['rand.Text', $phrases(array_rand($phrases))];
+						$contentForRender[] = ['rand.Text', $phrases[array_rand($phrases)]];
 					}
 					break;
 				case 'check':
