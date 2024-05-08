@@ -20,10 +20,10 @@ class MaterialsComponent extends CBitrixComponent
 		$this->arResult['CLASS'] = $class;
 		$this->arResult['SUBJECT'] = $subject;
 		$themes = MaterialsRepository::getThemesByClassAndSubject($class,$subject);
-		if (empty($themes))
-		{
-			LocalRedirect('/404');
-		}
+		// if (empty($themes))
+		// {
+		// 	LocalRedirect('/404');
+		// }
 		$this->arResult['THEMES'] = $themes;
 	}
 }

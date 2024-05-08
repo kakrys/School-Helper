@@ -23,9 +23,14 @@ global $USER;
 			<div style="min-height: 83vh; flex-grow: 1;">
 				<div class="d-flex flex-column" style="margin-left: 1%;">
 					<div class="border bg-light">
+
 						<div id="theme-1" class="collapse show">
 							<p style="align-self: center;">
+								<?php if (!empty($arResult['THEMES'])):?>
 								Выберите тему, чтобы увидеть подробную информацию по ней
+								<?php else:?>
+								Материалы по теме отсутствуют
+								<?php endif;?>
 							</p>
 						</div>
 						<?php foreach ($arResult['THEMES'] as $theme):?>
