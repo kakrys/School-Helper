@@ -4,17 +4,21 @@ namespace Proj\Independent\Math\Exercise;
 
 class ExerciseChecker
 {
-	public string $exerciseStringRepresentation;
-	public string $error;
-	public array $errorPos = [];
-	public array $rulesArray = [];
+	private string $exerciseStringRepresentation;
+	private string $error;
+	private array $errorPos = [];
+	private array $rulesArray = [];
 	public function __construct(array $Exercise)
 	{
 		$this->exerciseStringRepresentation = $Exercise['preview'];
 		unset($Exercise['preview']);
 		$this->rulesArray = $Exercise;
 	}
-	public function checkExercisePreBuild():bool
+	public function getError()
+	{
+		return $this->error;
+	}
+	public function checkExercisePreBuild(string $mode = 'outer'):bool
 	{
 		$operatorsReplacement = [
 			['√¯', 'N'],
@@ -22,7 +26,7 @@ class ExerciseChecker
 			['/', ':'],
 			['?¿', '?'],
 		];
-		$operators = ['N', ':', '+', '-', '*', '^', '?'];
+		$operators = ['N', ':', '+', '-', '*', '^', '?',];
 		$exerciseStringRepresentation = $this->exerciseStringRepresentation;
 		$exerciseToCheck = $exerciseStringRepresentation;
 		foreach ($operatorsReplacement as $opRep)
@@ -30,20 +34,23 @@ class ExerciseChecker
 			$exerciseToCheck = str_replace($opRep[0],$opRep[1],$exerciseToCheck);
 		}
 		$splittedExercise = str_split($exerciseToCheck);
-		if (substr_count($exerciseStringRepresentation,'[X]') < 2)
+		if ($mode !== 'inner')
 		{
-			if (count(array_diff(['N', '^'],$splittedExercise)) === 2)
+			if (substr_count($exerciseStringRepresentation,'[X]') < 2)
 			{
-				$this->error = "Выражение, имеющее меньше двух чисел не имеет смысла к рассчётам.";
-				return false;
+				if (count(array_diff(['N', '^'],$splittedExercise)) === 2)
+				{
+					$this->error = "Выражение, имеющее меньше двух чисел не имеет смысла к рассчётам.";
+					return false;
+				}
 			}
-		}
-		if (count($splittedExercise) < 3)
-		{
-			if (count(array_diff(['N', '^'],$splittedExercise)) === 2)
+			if (count($splittedExercise) < 3)
 			{
-				$this->error = "Выражение, имеющее меньше трёх элементов (без корня или степени) не имеет смысла к рассчётам.";
-				return false;
+				if (count(array_diff(['N', '^'],$splittedExercise)) === 2)
+				{
+					$this->error = "Выражение, имеющее меньше трёх элементов (без корня или степени) не имеет смысла к рассчётам.";
+					return false;
+				}
 			}
 		}
 		if (in_array($splittedExercise[0], $operators) && $splittedExercise[0] !== 'N')
@@ -65,6 +72,13 @@ class ExerciseChecker
 					$this->error = "Настройки случайного оператора блокируют все доступные операторы";
 					return false;
 				}
+			}
+			if ($splittedExercise[$i-1] === 'X' && $splittedExercise[$i] === 'X')
+			{
+				$this->error = "Два числа без оператора между ними";
+				$this->errorPos[] = $i;
+				$this->errorPos[] = $i+1;
+				return false;
 			}
 			if (in_array($splittedExercise[$i-1], $operators) && in_array($splittedExercise[$i], $operators))
 			{
@@ -125,15 +139,17 @@ class ExerciseChecker
 				if($check[1] === 'Оператор перед "закрывающим" модулем' || $check[1] === 'Оператор после "открывающего" модуля')
 				{
 					$newPreview = '';
+					$moduleRules = [];
+					$modulePreview = '';
 					$splittedExercise = str_split($exerciseToCheck);
 					$absCheck = 0;
-					for ($i = 1; $i < count($splittedExercise) ; $i++)
+					for ($i = 0; $i < count($splittedExercise) ; $i++)
 					{
 						if ($splittedExercise[$i] === '|')
 						{
-							if ($absCheck === 0)
+							if ($absCheck === 0 || $absCheck === 2)
 							{
-								$absCheck = 1;
+								$absCheck +=1;
 							}
 							else if ($absCheck === 1)
 							{
@@ -152,17 +168,29 @@ class ExerciseChecker
 								];
 							}
 						}
-						if ($absCheck === 0 || ($absCheck===2 && $splittedExercise[$i] !== '|'))
+						if ($absCheck === 0 || $absCheck > 2)
 						{
 							$newPreview.= $splittedExercise[$i];
 							$newRules[] = $this->rulesArray[$i];
 						}
+						if ($absCheck === 1 && $splittedExercise[$i] !== '|')
+						{
+							$modulePreview .= $splittedExercise[$i];
+							$moduleRules[] = $this->rulesArray[$i];
+						}
 					}
 					$newRules['preview'] = str_replace('X', '[X]', $newPreview);
+					$moduleRules['preview'] = str_replace('X', '[X]', $modulePreview);
 					$test = new ExerciseChecker($newRules);
 					if (!$test->checkExercisePreBuild())
 					{
 						$this->error = $check[1];
+						return false;
+					}
+					$innerTest = new ExerciseChecker($moduleRules);
+					if (!$innerTest->checkExercisePreBuild('inner'))
+					{
+						$this->error = "В модуле: ". $innerTest->getError();
 						return false;
 					}
 				}

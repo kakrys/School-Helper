@@ -157,11 +157,15 @@ export class CheckOption extends Option {
 			}
 		}
 		this.correctCountError = '';
-		if (count===0 && Object.keys(this.innerContainer).length !== 0)
+		if (count === 0 && Object.keys(this.innerContainer).length !== 0)
 		{
 			this.correctCountError = 'Нет верных ответов. Задание нерешаемое!'
 		}
 		let phrasesCount = Object.keys(this.innerContainer).length;
+		if (count === phrasesCount)
+		{
+			this.additionErrors.answerCount = `Количество генерируемых фраз и количество генерируемых ответов совпадает`
+		}
 		if (this.parameters.correctAnswers < 1 || this.parameters.correctAnswers > count)
 		{
 			this.additionErrors.answerCount = `Указано неверное количество ответов`

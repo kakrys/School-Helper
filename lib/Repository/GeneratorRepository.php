@@ -15,7 +15,7 @@ class GeneratorRepository
 			$resultSubject = \Proj\Independent\Model\ClassSubjectTable::getList([
 				'select' => [ 'SUBJ_NAME' => 'SUBJECT.SUBJECT_NAME'],
 				'filter' => [
-					'=CLASS.ID' => $class["CLASS_NUMBER"]
+					'=CLASS.CLASS_NUMBER' => $class["CLASS_NUMBER"]
 				]])->fetchAll();
 
 			if (!empty($resultSubject))

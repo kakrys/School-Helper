@@ -4,8 +4,8 @@ namespace Proj\Independent\Math\Exercise;
 
 class ExerciseRender
 {
-	public string $pattern;
-	public array $dictionary = [
+	private string $pattern;
+	private array $dictionary = [
 		'-' => '&#8722',
 		];
 
@@ -13,7 +13,7 @@ class ExerciseRender
 	{
 		$this->pattern = $pattern;
 	}
-	public function findAllRenderBlocks(string $pattern):array
+	private function findAllRenderBlocks(string $pattern):array
 	{
 		$bracketsRegExp = '/(?:Root|Deg|Fraction)\{[^{}]*}/';
 		$matches = [];
@@ -40,7 +40,7 @@ class ExerciseRender
 		return $subject;
 	}
 
-	public function deepHtmlInsert(string $pattern, callable $typedInsert, string $operator,int $position, array &$renderBlocks)
+	private function deepHtmlInsert(string $pattern, callable $typedInsert, string $operator,int $position, array &$renderBlocks)
 	{
 		$workString = str_split($pattern);
 		$isOperatorApproved = false;
@@ -115,7 +115,7 @@ class ExerciseRender
 		}
 		$renderBlocks[$position] = $typedInsert($element1, $element2);
 	}
-	public function numberHandling(string $number, callable $typedInsert, string $operator = '')
+	private function numberHandling(string $number, callable $typedInsert, string $operator = '')
 	{
 		$isAbsolute = false;
 		$renderString = '';
@@ -152,7 +152,6 @@ class ExerciseRender
 	}
 	public function getHtmlView(array $renderNumbers = [])
 	{
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "-------------------------Улетели в рендер!-----------------\n", FILE_APPEND);
 		$pattern = $this->pattern;
 		$pattern = str_split($pattern);
 		$count = 0;
@@ -188,7 +187,6 @@ class ExerciseRender
 		}
 		$pattern = implode('',$pattern);
 		$renderBlocks = $this->findAllRenderBlocks($pattern);
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", print_r($renderBlocks, true)."\n", FILE_APPEND);
 		for ($i=0;$i<count($renderBlocks); $i++)
 		{
 			if ($renderBlocks[$i][0] === 'Fraction')
@@ -227,7 +225,6 @@ class ExerciseRender
 					$workString = str_replace($match,'X',$workString);
 					$numberReplacement[] = $renderNumbers[$pointer];
 				}
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "$workString\n", FILE_APPEND);
 				$pointer = 0;
 				$blockPointer = 0;
 				$workString = str_split($workString);
@@ -269,7 +266,7 @@ class ExerciseRender
 		return '<div class="d-flex">'.$renderPattern.'</div>';
 	}
 
-	public function insertObjectIntoStandartContainer(string $object, string $translate = ''):string
+	private function insertObjectIntoStandartContainer(string $object, string $translate = ''):string
 	{
 		return "<div class='d-flex align-self-center align-items-center' style='padding: 1px 1px 1px 1px;$translate'>
 					$object
@@ -277,7 +274,7 @@ class ExerciseRender
 			";
 	}
 
-	public function insertObjectIntoFractionPattern(string $numerator, string $denominator, string $object = ''):string
+	private function insertObjectIntoFractionPattern(string $numerator, string $denominator):string
 	{
 		return "<div class='d-flex justify-content-center' style='padding: 1px 1px 1px 1px;'>
 					<div class='d-flex flex-column'>
@@ -292,7 +289,7 @@ class ExerciseRender
 			";
 	}
 
-	public function insertObjectIntoRootPattern(string $exponent, string $number, string $object = '', int $objScaling = 1):string
+	private function insertObjectIntoRootPattern(string $exponent, string $number, int $objScaling = 1):string
 	{
 		$scaleY=1.1+($objScaling-1)*1.5;
 		$scaleX=2+($objScaling-1)*0.5;
@@ -323,7 +320,7 @@ class ExerciseRender
 		}
 	}
 
-	public function insertObjectIntoPowerPattern(string $number,string $exponent, string $object = ''):string
+	private function insertObjectIntoPowerPattern(string $number,string $exponent):string
 	{
 		return "<div class='d-flex' style='justify-content: center; align-items: center; padding: 1px 1px 1px 1px;'>
 					<div class='d-flex align-items-center'>

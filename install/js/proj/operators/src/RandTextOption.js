@@ -93,7 +93,7 @@ export class RandTextOption extends Option{
 				}
 				else
 				{
-					this.errors[index*2+1] = Validator.isInteger(weight.value);
+					this.errors[index*2+1] = Validator.isPositiveInteger(weight.value);
 				}
 			}
 			index++;

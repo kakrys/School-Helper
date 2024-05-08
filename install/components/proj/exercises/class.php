@@ -17,14 +17,13 @@ class Exercises extends CBitrixComponent
 		$exercises = \Proj\Independent\Repository\ExercisesRepository::getExercisesByVariant($generatorCode);
 		#file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "А вот такие у нас задачки нынче:".print_r($exercises, true)."\n", FILE_APPEND);
 		$newExercises = [];
-		mt_srand(abs(intval(hexdec($generatorCode))));
 		foreach ($exercises as $exercise)
 		{
 			if ($exercise['GENERATOR_CODE'] !== null)
 			{
 				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "-------\n", FILE_APPEND);
 				$exerciseManager = unserialize(gzuncompress($exercise['EXERCISE_GENERATOR_RULES']));
-				$exercise['EXERCISE_CONDITION'] = $exerciseManager->constructExercise($generatorCode);
+				$exercise['EXERCISE_CONDITION'] = $exerciseManager->constructExercise(abs(intval(hexdec($generatorCode))));
 				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "ВОТ МЫ НАДЕЛАЛИ ДЕЛОВ".$exercise['EXERCISE_CONDITION']."\n", FILE_APPEND);
 				$exercise['ANSWER'] = $exerciseManager->solve();
 				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "А такой типа ответ".print_r($exerciseManager->solve(), true)."\n", FILE_APPEND);

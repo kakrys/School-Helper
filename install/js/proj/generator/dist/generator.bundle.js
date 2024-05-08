@@ -503,6 +503,7 @@ this.BX.Proj = this.BX.Proj || {};
 	        return;
 	      }
 	      this.currentGeneratorWindow.showOption(this.currentGeneratorWindow.openedInstruction, this.parametersContainer);
+	      data.mode = this.generatorWindowType;
 	      if (data.preview === '') {
 	        this.previewContainer.innerHTML = "<i>\u041D\u0435\u0447\u0435\u0433\u043E \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0430\u0442\u044C: \u0432\u044B \u043D\u0435 \u0432\u044B\u0431\u0440\u0430\u043B\u0438 \u0438\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438!</i>";
 	      } else {

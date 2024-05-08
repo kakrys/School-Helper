@@ -342,6 +342,7 @@ export class Generator {
 			return;
 		}
 		this.currentGeneratorWindow.showOption(this.currentGeneratorWindow.openedInstruction, this.parametersContainer)
+		data.mode = this.generatorWindowType;
 		if (data.preview === '')
 		{
 			this.previewContainer.innerHTML = `<i>Нечего отображать: вы не выбрали инструкции!</i>`;

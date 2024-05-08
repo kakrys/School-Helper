@@ -24,7 +24,6 @@ class Check extends CBitrixComponent
 			LocalRedirect('/');
 		}
 
-		mt_srand(abs(intval(hexdec($generatorCode))));
 		foreach ($selectionResult as $item)
 		{
 			if ($item['EXERCISE_GENERATOR_RULES'] === null)
@@ -34,7 +33,7 @@ class Check extends CBitrixComponent
 			else
 			{
 				$exerciseManager = unserialize(gzuncompress($item['EXERCISE_GENERATOR_RULES']));
-				$exerciseManager->constructExercise($generatorCode);
+				$exerciseManager->constructExercise(abs(intval(hexdec($generatorCode))));
 				$correctAnswers[] = $exerciseManager->solve();
 			}
 		}
