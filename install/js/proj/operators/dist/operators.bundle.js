@@ -117,6 +117,14 @@ this.BX.Proj = this.BX.Proj || {};
 	      return false;
 	    }
 	  }, {
+	    key: "isPositiveInteger",
+	    value: function isPositiveInteger(value) {
+	      if (!/^\d+$/.test(value)) {
+	        return 'Значение не является положительным целым числом';
+	      }
+	      return false;
+	    }
+	  }, {
 	    key: "min",
 	    value: function min(value, _min) {
 	      if (Validator.isNumeric(value)) {
@@ -711,6 +719,9 @@ this.BX.Proj = this.BX.Proj || {};
 	        this.correctCountError = 'Нет верных ответов. Задание нерешаемое!';
 	      }
 	      var phrasesCount = Object.keys(this.innerContainer).length;
+	      if (count === phrasesCount) {
+	        this.additionErrors.answerCount = "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u0443\u0435\u043C\u044B\u0445 \u0444\u0440\u0430\u0437 \u0438 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0433\u0435\u043D\u0435\u0440\u0438\u0440\u0443\u0435\u043C\u044B\u0445 \u043E\u0442\u0432\u0435\u0442\u043E\u0432 \u0441\u043E\u0432\u043F\u0430\u0434\u0430\u0435\u0442";
+	      }
 	      if (this.parameters.correctAnswers < 1 || this.parameters.correctAnswers > count) {
 	        this.additionErrors.answerCount = "\u0423\u043A\u0430\u0437\u0430\u043D\u043E \u043D\u0435\u0432\u0435\u0440\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043E\u0442\u0432\u0435\u0442\u043E\u0432";
 	      }
@@ -934,7 +945,7 @@ this.BX.Proj = this.BX.Proj || {};
 	          if (weight.value === '' || weight.disabled === true) {
 	            _this3.errors[index * 2 + 1] = false;
 	          } else {
-	            _this3.errors[index * 2 + 1] = Validator.isInteger(weight.value);
+	            _this3.errors[index * 2 + 1] = Validator.isPositiveInteger(weight.value);
 	          }
 	        }
 	        index++;

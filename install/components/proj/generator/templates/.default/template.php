@@ -7,7 +7,6 @@ Bitrix\Main\UI\Extension::load('proj.generator');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Independent");
-
 $jsonData = json_encode($arResult['CST_DATA']);
 ?>
 	<div class="container-fluid mt-1 main d-flex" style="margin-top: 1%; flex-grow: 1;">

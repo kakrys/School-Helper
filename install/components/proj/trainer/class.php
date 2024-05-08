@@ -66,7 +66,6 @@ class TrainerComponent extends CBitrixComponent
 																	'filter' => ['THEME_ID' => $themeID],
 																	'runtime' => [
 																		'RAND' => [
-																			'data_type' => 'float',
 																			'expression' => ['RAND()'],
 																		],
 																	],

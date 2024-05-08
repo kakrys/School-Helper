@@ -32,6 +32,14 @@ export class Validator
 		}
 		return false;
 	}
+	static isPositiveInteger(value)
+	{
+		if (!(/^\d+$/.test(value)))
+		{
+			return 'Значение не является положительным целым числом';
+		}
+		return false;
+	}
 	static min(value, min)
 	{
 		if(Validator.isNumeric(value))

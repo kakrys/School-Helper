@@ -5,8 +5,6 @@ use Bitrix\Main\Routing\RoutingConfigurator;
 return function (RoutingConfigurator $routes) {
 
 	$routes->get('/', new PublicPageController('/local/modules/proj.independent/views/main-menu.php'));
-	#$routes->post('/task/create', [\Up\Tasks\Controller\TaskEditor::class, 'add']); оставлено как пример
-	#$routes->post('/task/delete', [\Up\Tasks\Controller\TaskEditor::class, 'delete']); оставлено как пример
 	$routes->get('/teacher', new PublicPageController('/local/modules/proj.independent/views/teacher.php'));
 	$routes->get('/student', new PublicPageController('/local/modules/proj.independent/views/student.php'));
 	$routes->get('/login', new PublicPageController('/local/modules/proj.independent/views/login.php'));
@@ -68,7 +66,6 @@ return function (RoutingConfigurator $routes) {
 	$routes->get('/answers', new PublicPageController('/local/modules/proj.independent/views/answers.php'));
 	$routes->get('/about', new PublicPageController('/local/modules/proj.independent/views/about.php'));
 	$routes->get('/generator', new PublicPageController('/local/modules/proj.independent/views/generator.php'));
-	$routes->get('/test', new PublicPageController('/local/modules/proj.independent/views/test.php'));
 	$routes->post('/trainer/{class}/{subject}', new PublicPageController('/local/modules/proj.independent/views/trainer.php'));
 
 	$routes->any('/{route}',new PublicPageController('/local/modules/proj.independent/views/404.php'));

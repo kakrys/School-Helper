@@ -4,9 +4,9 @@ namespace Proj\Independent\Math\Exercise;
 
 class ExerciseParser
 {
-	public array $generatorRules;
+	private array $generatorRules;
 	private string $stringExercise;
-	public string $renderExercise;
+	private string $renderExercise;
 	private array $postRules = [];
 	private string $error = '';
 	private Exercise $exerciseInstance;
@@ -95,21 +95,7 @@ class ExerciseParser
 					$ExerciseElements[] = 'X';
 			}
 		}
-		for ($i = 1; $i < count($exercise); $i++)
-		{
-			if ($exercise[$i-1] === 'X' && ($exercise[$i] === 'X' || $exercise[$i] === '(' || $exercise[$i] === '|'))
-			{
-				$ExerciseElements[$i-1]=$ExerciseElements[$i-1] . "*";
-			}
-			if (($exercise[$i-1] === ')' || $exercise[$i-1] === '|') && $exercise[$i] === 'X')
-			{
-				$ExerciseElements[$i-1]=$ExerciseElements[$i-1] . "*";
-			}
-			if (($exercise[$i-1] === ')' || $exercise[$i-1] === '|') && ($exercise[$i] === '(' || $exercise[$i] ==='|'))
-			{
-				$ExerciseElements[$i-1] = $ExerciseElements[$i-1] . "*";
-			}
-		}
+
 		$stringExercise = implode('',$ExerciseElements);#OP|* and *|OP
 		$postRegExpMultiply = [
 			['/[-+*:?^Nrfd\/]\|\*/', function($match){return substr($match, 0,2);}],

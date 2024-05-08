@@ -6,15 +6,13 @@ use Proj\Independent\Math\Objects\Root;
 
 class Exercise
 {
-	public string $exercisePattern;
-	public string $exerciseHtmlPattern;
-	public array $numberGeneratorRules;
-	public string $answer;
-	public array $solveByStep;
-	public string $htmlRepresentation;
-	public array $answerArray;
-	public string $renderExercise;
+	private string $exercisePattern;
+	private string $exerciseHtmlPattern;
+	private array $numberGeneratorRules;
+	private string $renderExercise;
 	private string $error = '';
+	public string $answer;
+	public array $answerArray;
 
 	public function __construct(string $exercisePattern, string $exerciseHtmlPattern, array $numberGeneratorRules)
 	{
@@ -22,21 +20,28 @@ class Exercise
 		$this->exerciseHtmlPattern = $exerciseHtmlPattern;
 		$this->numberGeneratorRules = $numberGeneratorRules;
 	}
-	public function getError():void
+	public function getError():string
 	{
-		$this->renderExercise = $this->error;
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "ОШИБКА\n", FILE_APPEND);
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "$this->error", FILE_APPEND);
+		return $this->error;
 	}
 
-	public function constructExercise():string
+	public function constructExercise(int $seed = null, $mode = 'outer'):string
 	{
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "-----------------------------------------\nГенерация конкретного задания\n", FILE_APPEND);
+		if ($mode !== 'inner')
+		{
+			if ($seed === null)
+			{
+				mt_srand(microtime(true)*1000000);
+			}
+			else
+			{
+				mt_srand($seed);
+			}
+		}
 		$exercise = $this->exerciseHtmlPattern;
 		$innerExercise = $this->exercisePattern;
 		$matches = [];
 		$rules = $this->numberGeneratorRules;
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Взяли строку к работе: $exercise\n", FILE_APPEND);
 		while (preg_match_all('/\?/',$exercise,$matches))
 		{
 			$rule = [];
@@ -50,10 +55,6 @@ class Exercise
 					break;
 				}
 			}
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "---Прилетели в рандомных операторов\n", FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Вот, что внутри исключений:\n", FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", print_r($rule['OperatorsExclude'], true), FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "\n", FILE_APPEND);
 			$operators = ['+','-','*',':','^','N'];
 			$operator = $operators[mt_rand(0,count($operators)-1)];
 			while (in_array($operator, $rule['OperatorsExclude']))
@@ -76,72 +77,31 @@ class Exercise
 			$innerExercise = $this::stringReplaceOneSymbolByAString($matches[0][0],$newOperator,$innerExercise);
 			$this->exerciseHtmlPattern = ExerciseParser::prepareHtmlPattern($exercise);
 			$exercise = $this->exerciseHtmlPattern;
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Закончили итерацию рандомных операторов\n", FILE_APPEND);
 		}
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Ща попадём в цикл генерации чисел\n", FILE_APPEND);
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Тем временем вот наше задание: $exercise\n", FILE_APPEND);
 		$numbers = [];
 		while (preg_match_all('/X/',$exercise,$matches))
 		{
 			$rule = $rules[0];
 			unset($rules[0]);
 			$rules = array_values($rules);
-			$number = '';
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "---Прилетели в ЧИСЛО!\n", FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Настройка чисел с запятой такая:\n", FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", print_r($rule['FloatDigits'], true), FILE_APPEND);
-			$generatorVariants = [];
-			if ($rule['integer'] !== 'false')
+			$number = $this->generateNumber($rule['MinNumber'],$rule['MaxNumber'],$rule, $this->parseNumberSettings($rule));
+			$startTime = time();
+			$endTime = $startTime + 3;
+			if ($rule['Exclude'] !== [] && $rule['Exclude'] !== null)
 			{
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Поняли, что есть настройка целых чисел\n", FILE_APPEND);
-				$generatorVariants[] = 'Integer';
-			}
-			if ($rule['Fraction'] !== ['none'])
-			{
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Поняли, что есть настройка дробей\n", FILE_APPEND);
-				$generatorVariants[] = 'Fraction';
-			}
-			if ($rule['Root'] !== ['none'])
-			{
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Поняли, что есть настройка корней\n", FILE_APPEND);
-				$generatorVariants[] = 'Root';
-			}
-			if ($rule['Absolute'] !== ['none'])
-			{
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Поняли, что есть настройка отрицательных чисел\n", FILE_APPEND);
-				if($rule['MinNumber'] >= 0)
+				while (in_array($number, $rule['Exclude']))
 				{
-					file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Сравнили с мин значением\n", FILE_APPEND);
-					$generatorVariants[] = 'Absolute';
+					$this->generateNumber($rule['MinNumber'],$rule['MaxNumber'],$rule, $this->parseNumberSettings($rule));
+					if (time()>=$endTime)
+					{
+						$this->error = 'Превышено время ожидания генерации. Измените настройки, вероятно, в них ошибка!';
+						return $this->error;
+					}
 				}
 			}
-			if ($rule['FloatDigits'][0] === 'true' || is_float($rule['MinNumber']) || is_float($rule['MaxNumber']))
-			{
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Поняли, что есть настройка десятичных дробей\n", FILE_APPEND);
-				$digitsMin = [0, 0];
-				$digitsMax = [0, 0];
-				if(is_float($rule['MinNumber']))
-				{
-					$digitsMin = explode('.',$rules[0]['MinNumber']);
-				}
-				if(is_float($rule['MaxNumber']))
-				{
-					$digitsMax = explode('.',$rules[0]['MaxNumber']);
-				}
-				$rule['FloatDigits'][0] = 'true';
-				$rule['FloatDigits'][1] = max(strlen($digitsMin[1]),strlen($digitsMax[1]), $rule['FloatDigits'][1]);
-				$generatorVariants[] = 'Float';
-			}
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Чекать настройки прекратили, получили те, что ниже\n", FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", print_r($generatorVariants, true), FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "\n", FILE_APPEND);
-			$number = $this->generateNumber($rule['MinNumber'],$rule['MaxNumber'],$rule,$generatorVariants);
 			$numbers[] = $number;
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Сгенерили $number\n", FILE_APPEND);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Было $exercise\n", FILE_APPEND);
 			$exercise = $this::stringReplaceOneSymbolByAString($matches[0][0], $number, $exercise);
 			$innerExercise = $this::stringReplaceOneSymbolByAString($matches[0][0], $number, $innerExercise);
-			file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Стало $exercise\n", FILE_APPEND);
 		}
 		$renderObject = new ExerciseRender($this->exerciseHtmlPattern);
 		$this->exerciseHtmlPattern = $exercise;
@@ -161,14 +121,52 @@ class Exercise
 		}
 		return implode('',$subject);
 	}
+	private function parseNumberSettings($rule):array
+	{
+		$number = '';
+		$generatorVariants = [];
+		if ($rule['integer'] !== 'false')
+		{
+			$generatorVariants[] = 'Integer';
+		}
+		if ($rule['Fraction'] !== ['none'])
+		{
+			$generatorVariants[] = 'Fraction';
+		}
+		if ($rule['Root'] !== ['none'])
+		{
+			$generatorVariants[] = 'Root';
+		}
+		if ($rule['Absolute'] !== ['none'])
+		{
+			if($rule['MinNumber'] >= 0)
+			{
+				$generatorVariants[] = 'Absolute';
+			}
+		}
+		if ($rule['FloatDigits'][0] === 'true' || is_float($rule['MinNumber']) || is_float($rule['MaxNumber']))
+		{
+			$digitsMin = [0, 0];
+			$digitsMax = [0, 0];
+			if(is_float($rule['MinNumber']))
+			{
+				$digitsMin = explode('.',$rule['MinNumber']);
+			}
+			if(is_float($rule['MaxNumber']))
+			{
+				$digitsMax = explode('.',$rule['MaxNumber']);
+			}
+			$rule['FloatDigits'][0] = 'true';
+			$rule['FloatDigits'][1] = max(strlen($digitsMin[1]),strlen($digitsMax[1]), $rule['FloatDigits'][1]);
+			$generatorVariants[] = 'Float';
+		}
+		return $generatorVariants;
+	}
 	private function generateNumber(int $min, int $max, array $rule, array $numberTypes = ['integer'])
 	{
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Прилетели в Конкретное ЧИСЛО\n", FILE_APPEND);
-		file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Позволительна ли комбинация типов?". $rule['Combination']."\n", FILE_APPEND);
 		switch ($numberTypes[mt_rand(0,count($numberTypes)-1)])
 		{
 			case 'Fraction':
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Будет дробь\n", FILE_APPEND);
 				$fraction = Fraction::rand_fraction($rule['MinNumber'], $rule['MaxNumber'], $rule['Fraction']);
 				if (!$fraction)
 				{
@@ -178,12 +176,10 @@ class Exercise
 				$number = (string)$fraction;
 				break;
 			case 'Float':
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Будет число с точкой\n", FILE_APPEND);
 				$deg = $rule['FloatDigits'][1];
 				$number =  mt_rand($rule['MinNumber']*pow(10,$deg), $rule['MaxNumber']*pow(10,$deg))/pow(10,$deg);
 				break;
 			case 'Root':
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Будет корень\n", FILE_APPEND);
 				if($rule['Combination'] === 'true')
 				{
 					$newNumberTypes = array_diff($numberTypes, ['Root']);
@@ -192,18 +188,16 @@ class Exercise
 				}
 				else
 				{
-					file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Что там за настройки у корня?". $rule['Root'][0]."\n", FILE_APPEND);
 					$root = Root::rand_root($rule['MinNumber'], $rule['MaxNumber'], $rule['Root'][0]);
 					if (!$root)
 					{
 						$this->error = 'Подбор значений занимает слишком много времени! Попробуйте изменить параметры генерации...';
 						return false;
 					}
-					$number = $root;
+					$number = "$root";
 				}
 				break;
 			case 'Absolute':
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Будет модуль\n", FILE_APPEND);
 				$numberToAdd = mt_rand($rule['MinNumber'], $rule['MaxNumber']);
 				if($rule['Combination'] === 'true')
 				{
@@ -239,21 +233,10 @@ class Exercise
 				}
 				break;
 			default:
-				file_put_contents($_SERVER["DOCUMENT_ROOT"]."/logFile.txt", "Будет Целое\n", FILE_APPEND);
 				$number =  mt_rand(ceil($rule['MinNumber']), floor($rule['MaxNumber']));
 		}
 		return $number;
 	}
-	public function makeRender()
-	{
-
-	}
-
-	public function calculateByCondition()
-	{
-
-	}
-
 	private function parse(string $exercise): array|string
 	{
 		$regExpBracket = '/\([^()]*\)/';

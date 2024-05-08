@@ -3,6 +3,7 @@
 namespace Proj\Independent\Repository;
 
 use Proj\Independent\Math\Exercise\ExerciseParser;
+use Proj\Independent\Math\Task\TaskParser;
 use Proj\Independent\Model\ExerciseTable;
 use function Sodium\add;
 
@@ -39,6 +40,20 @@ class ExercisesRepository
 		if ($mode === 'exercise')
 		{
 			$exercise = new ExerciseParser($exercise);
+			$exerciseInstance = $exercise->getExerciseInstance();
+			ExerciseTable::add(
+				[
+					'EXERCISE_DESCRIPTION' => 'Вычислите значение выражения',
+					'GENERATOR_CODE' => $exercisePreview,
+					'EXERCISE_GENERATOR_RULES' => gzcompress(serialize($exerciseInstance)),
+					'THEME_ID' => GeneratorRepository::getThemeIdFromName($themeName),
+					'ANSWER' => 'GeneratorProvided',
+				]
+			);
+		}
+		else
+		{
+			$exercise = new TaskParser($exercise);
 			$exerciseInstance = $exercise->getExerciseInstance();
 			ExerciseTable::add(
 				[
